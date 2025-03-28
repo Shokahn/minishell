@@ -1,0 +1,5 @@
+*.o
+*.cache_exists
+*.a
+minishell
+obj/
