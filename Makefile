@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/03/21 17:52:41 by stdevis          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 GREEN = \033[32m
 YELLOW = \033[33m
@@ -21,11 +10,13 @@ ITALIC = \033[3m
 
 OBJ_DIR = obj/
 SRC_DIR = src/
+INCLUDE = headers/
 
-SRC = lexeur.c prompt.c
+SRC = prompt.c lexeur.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
 CFLAGS = -Wall -Wextra -Werror -g3
+EXTRAFLAGS = -lreadline
 FSANITIZE = -fsanitize=address
 MAKE = make --no-print-directory
 
@@ -45,7 +36,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 $(NAME): $(LIBFT) $(OBJ)
 	@echo ""
 	@echo "		🚀 $(BOLD)$(YELLOW)Linking $(NAME)...$(RESET)"
-	@cc $(CFLAGS) $(OBJ) -o $(NAME) -L $(LIBFT_DIR) -lft
+	@cc $(CFLAGS) $(OBJ) -o $(NAME) -I $(INCLUDE) $(LIBFT) $(EXTRAFLAGS)
 	@echo ""
 	@echo "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME) has been created$(RESET) ✅ "
 	@echo ""
@@ -61,10 +52,8 @@ clean:
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)
-	@echo "💾 $(YELLOW)Cleaning $(NAME) object files$(RESET)"
-	@echo " ↪️ $(YELLOW)$(BOLD)$(NAME) object files have been cleaned$(RESET) ✅"
-	@echo ""
-	@echo "	👉 $(BOLD)$(GREEN)Object files have been cleaned$(RESET) ❎"
+	@echo "🗑️ $(YELLOW)$(BOLD) minishell$(RESET)$(YELLOW) object files cleaned$(RESET)"
+
 
 
 fclean: clean

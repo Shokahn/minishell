@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:19:11 by stdevis          ###   ########.fr       */
+/*   Created: 2024/10/16 16:03:27 by stdevis           #+#    #+#             */
+/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <dirent.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <termcap.h>
-#include <termios.h>
-#include <ttyent.h>
-#include <unistd.h>
-#include "../libft/headers/libft.h"
+#include "../headers/libft.h"
+
+char	*ft_strdup(const char *s1)
+{
+	char	*dup;
+	size_t	i;
+	size_t	len_s1;
+
+	len_s1 = ft_strlen(s1);
+	i = 0;
+	dup = malloc(sizeof(char) * len_s1 + 1);
+	if (!dup)
+		return (NULL);
+	while (s1[i])
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+/*int	main(void)
+{
+	printf("%s\n", ft_strdup("ab\0cde"));
+	printf("%s\n", strdup("ab\0cde"));
+}*/

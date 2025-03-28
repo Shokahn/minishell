@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/21 15:03:53 by stdevis           #+#    #+#              #
-#    Updated: 2025/03/21 18:30:00 by stdevis          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 GREEN = \033[32m
 YELLOW = \033[33m
@@ -17,40 +6,64 @@ RESET = \033[0m
 BOLD = \033[1m
 UNDERLINE = \033[4m
 
-LIBFT_DIR = libft_original
-PRINTF_DIR = Printf
-GNL_DIR = GNL
-
-LIBFT = $(LIBFT_DIR)/libft_original.a
-PRINTF = $(PRINTF_DIR)/libftprintf.a
-GNL = $(GNL_DIR)/GNL.a
+LIBFT_DIR = libft_original/
+PRINTF_DIR = Printf/
+GNL_DIR = GNL/
+OBJ_DIR = obj/
 
 NAME = libft.a 
-MAKE = make --no-print-directory
+AR = ar rcs
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+
+LIBFT_FILES = \
+    ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint \
+    ft_strlen ft_memset ft_bzero ft_memcpy ft_memmove \
+    ft_strlcpy ft_strlcat ft_toupper ft_tolower ft_strchr \
+    ft_strrchr ft_strncmp ft_memchr ft_memcmp ft_strnstr \
+    ft_atoi ft_calloc ft_strdup ft_substr ft_strjoin ft_strtrim \
+    ft_split ft_itoa ft_strmapi ft_striteri ft_putchar_fd \
+    ft_putendl_fd ft_putnbr_fd ft_putstr_fd \
+	ft_lstadd_front_bonus ft_lstnew_bonus ft_lstsize_bonus ft_lstlast_bonus \
+	ft_lstadd_back_bonus ft_lstdelone_bonus ft_lstclear_bonus ft_lstiter_bonus \
+	ft_lstmap_bonus ft_free
+
+PRINTF_FILES = \
+	ft_printf_char ft_printf ft_printf_hexa ft_printf_hexup \
+	ft_printf_integer ft_printf_string ft_printf_pointer	\
+	ft_printf_unsigned
+
+GNL_FILES = \
+	get_next_line get_next_line_utils
+
+SRC = $(addprefix $(LIBFT_DIR), $(addsuffix .c, $(LIBFT_FILES))) \
+      $(addprefix $(PRINTF_DIR), $(addsuffix .c, $(PRINTF_FILES))) \
+      $(addprefix $(GNL_DIR), $(addsuffix .c, $(GNL_FILES)))
+
+OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
+
 
 all: $(NAME)
 
-$(NAME):
+$(OBJ_DIR)%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+
+$(NAME): $(OBJ)
 	@echo ""
 	@echo "		⚙ $(UNDERLINE)$(BOLD)Building libft$(RESET) ⚙"
-	@$(MAKE) -C $(LIBFT_DIR)
-	@$(MAKE) -C $(PRINTF_DIR)
-	@$(MAKE) -C $(GNL_DIR)
-	@echo ""
-	@ar rcs $(NAME) $(LIBFT) $(PRINTF) $(GNL)
+	@$(AR) $(NAME) $(OBJ)
 	@ranlib $(NAME)
+	@echo ""
 	@echo "    📚 $(BOLD)$(BLUE)SUCCESS: $(NAME) has been created$(RESET) 📚"
 	@echo ""
 
 clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@$(MAKE) -C $(PRINTF_DIR) clean
-	@$(MAKE) -C $(GNL_DIR) clean
+	@rm -rf $(OBJ_DIR)
+	@echo "🗑️ $(YELLOW)$(BOLD) libft$(RESET)$(YELLOW) object files cleaned$(RESET)"
 
 fclean: clean
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@$(MAKE) -C $(PRINTF_DIR) fclean
-	@$(MAKE) -C $(GNL_DIR) fclean
 	@rm -f $(NAME)
 	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
 	@echo "↪️ $(BOLD)$(YELLOW)libft has been cleaned$(RESET) ✅"

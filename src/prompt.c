@@ -1,14 +1,45 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 14:38:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/21 17:32:33 by stdevis          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int	main(void)
+{
+	char	*cwd;
+	char	*input;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("getcwd failed\n");
+		return (1);
+	}
+	while (1)
+	{
+		input = readline(GREEN BOLD "minishell> " RESET);
+		if (!input)
+			break ;
+		else
+		{	
+			add_history(input);
+			minishell(input);
+		}
+		free(input);
+	}
+	free(cwd);
+}
