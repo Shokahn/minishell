@@ -6,13 +6,14 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:19:11 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/02 14:35:27 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../libft/headers/libft.h"
 #include <dirent.h>
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,4 +26,24 @@
 #include <termios.h>
 #include <ttyent.h>
 #include <unistd.h>
-#include "../libft/headers/libft.h"
+
+typedef struct s_node
+{
+	int				type;
+	char			*inside;
+	struct s_node	*next;
+
+}					t_node;
+
+typedef struct s_data
+{
+	t_node			*first;
+	char			*input;
+	int				*sep;
+	int				len;
+	char			**line;
+	int				count_sep;
+}					t_data;
+
+// error
+void				free_error(t_data *shell, int type, char *message);
