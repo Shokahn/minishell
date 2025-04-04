@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/04/02 14:35:27 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/04 14:08:49 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 #include <ttyent.h>
 #include <unistd.h>
 
+#define TEST printf(BOLD RED "test\n" RESET);
+#define TEST2 printf(BOLD GREEN "test\n" RESET);
+
 typedef struct s_node
 {
 	int				type;
@@ -40,7 +43,7 @@ typedef struct s_data
 	t_node			*first;
 	char			*input;
 	int				*sep;
-	int				len;
+	int				len_input;
 	char			**line;
 	int				count_sep;
 }					t_data;
