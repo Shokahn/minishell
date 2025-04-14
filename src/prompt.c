@@ -8,12 +8,11 @@ t_data	*init_shell(void)
 	shell = malloc(sizeof(t_data));
 	if (!shell)
 		return (NULL);
-	shell->first = NULL;
+	shell->token = NULL;
 	shell->input = NULL;
 	shell->sep = 0;
-	shell->len_input = 0;
+	shell->token_count = 0;
 	shell->line = NULL;
-	shell->count_sep = 0;
 	return (shell);
 }
 /*
@@ -29,11 +28,11 @@ int	pass_the_quote_separator(t_data *shell, char *input, char c, int i)
 	while (input[i] && input[i] != c)
 		i++;
 	if (!input[i])
-		free_error(shell, 0, "No quote ending the first one\n");
+		ft_error(shell, 0, "No quote ending the first one\n");
 	return (i + 1);
 }
 
-void	count_separator(t_data *shell, char *input)
+void	define_separator(t_data *shell, char *input)
 {
 	int	i;
 
@@ -50,7 +49,6 @@ void	count_separator(t_data *shell, char *input)
 		else if (input[i] == ' ')
 		{
 			shell->sep[i] = 1;
-			shell->count_sep++;
 			i++;
 		}
 		else if (((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<'
@@ -58,13 +56,11 @@ void	count_separator(t_data *shell, char *input)
 		{
 			shell->sep[i] = 3;
 			shell->sep[i + 1] = -1;
-			shell->count_sep++;
 			i += 2;
 		}
 		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
 		{
 			shell->sep[i] = 2;
-			shell->count_sep++;
 			i++;
 		}
 	}
@@ -77,17 +73,19 @@ int	wcount(char *input, t_data *shell)
 
 	i = 0;
 	count = 0;
-	while (input[i])
+	while(input[i])
 	{
-		while (input[i] && shell->sep[i] == 1)
+		count++;
+		while(input[i] && (shell->sep[i] == 0 || shell->sep[i] == 1))
 			i++;
-		if (input[i] && shell->sep[i] != 1)
+		if (input[i] && shell->sep[i] == 2)
+			count++;
+		if (input[i] && shell->sep[i] == 3 && shell->sep[i + 1] == -1)
 		{
 			count++;
-			i++;
-			while (input[i] && shell->sep[i] != 1 && shell->sep[i] != 2)
-				i++;
+			i += 2;
 		}
+		i++;
 	}
 	return (count);
 }
@@ -152,7 +150,7 @@ char	**makesplit(char **line, t_data *shell, char *input)
 	return (line);
 }
 
-void	validate_syntax(t_data *shell, char *input)
+int	validate_syntax(t_data *shell, char *input)
 {
 	int	i;
 
@@ -160,21 +158,27 @@ void	validate_syntax(t_data *shell, char *input)
 	while (input[i])
 	{
 		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i]
+			&& input[i + 2] == input[i] && input[i + 3] == input[i])
+			return (ft_error(shell, 0,
+					"minishell: syntax error near unexpected token '>>'\n"), 0);
+		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i]
 			&& input[i + 2] == input[i])
-			free_error(shell, 0, "3 or more redirection sign consecutively\n");
+			return (ft_error(shell, 0,
+					"minishell: syntax error near unexpected token '>'\n"), 0);
 		if (input[i] == '|' && input[i + 1] == '|')
-			free_error(shell, 0, "2 or more pipes consecutively\n");
+			return (ft_error(shell, 0,
+					"minishell: syntax error near unexpected token '|'\n"), 0);
 		i++;
 	}
+	return (1);
 }
 
 char	**split_line(t_data *shell, char *input)
 {
 	char	**line;
 
-	validate_syntax(shell, input);
-	count_separator(shell, input);
-	line = malloc(sizeof(char *) * (wcount(input, shell) + 1));
+	define_separator(shell, input);
+	line = malloc(sizeof(char *) * ( wcount(input, shell) + 2));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, shell, shell->input);
@@ -183,37 +187,45 @@ char	**split_line(t_data *shell, char *input)
 	return (line);
 }
 
-void	lexeur(t_data *shell)
+int	lexeur(t_data *shell)
 {
-	int	i;
+	int	len_input;
 
-	i = 0;
-	shell->len_input = ft_strlen(shell->input);
-	shell->sep = ft_calloc(sizeof(int), shell->len_input);
+	len_input = ft_strlen(shell->input);
+	shell->sep = ft_calloc(sizeof(int), len_input);
 	if (!shell->sep)
-		free_error(shell, 0, "sep malloc failed\n");
+		return (ft_error(shell, 0, "sep malloc failed\n"), 0);
+	if (!validate_syntax(shell, shell->input))
+		return (0);
 	shell->line = split_line(shell, shell->input);
-	if (!shell->line[i])
-		free_error(shell, 0, "split line failed\n");
-	/* 	while (shell->line[i])
-		{
-			phrase_identification(shell->line[i], i);
-			i++;
-		} */
-	while (shell->line[i])
+	if (!shell->line)
+		return (ft_error(shell, 0, "split line failed\n"), 0);
+	while (shell->line[shell->token_count])
 	{
-		printf("[%d] : %s\n", i, shell->line[i]);
-		i++;
+		printf("[%d] : %s\n", shell->token_count,
+			shell->line[shell->token_count]);
+		shell->token_count++;
 	}
+	printf("%d\n", shell->token_count);
+	return (1);
 }
-void	minishell(char *input, t_data *shell)
+int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
-	if (!ft_strncmp(input, "exit", 4)) //dont forget to free
+	shell->token_count = 0;
+	if (!ft_strncmp(input, "exit", 4)) // dont forget to free
+	{
+		printf("exit\n");
 		exit(0);
+	}
 	if (!shell)
-		free_error(shell, 0, "Shell malloc allocation failed\n");
-	lexeur(shell);
+	{
+		ft_error(shell, 0, "Shell malloc allocation failed\n");
+		return (0);
+	}
+	if (!lexeur(shell))
+		return (0);
+	return (1);
 }
 
 int	main(int ac, char **av)
@@ -237,7 +249,8 @@ int	main(int ac, char **av)
 		else
 		{
 			add_history(input);
-			minishell(input, shell);
+			if (!minishell(input, shell))
+				continue ;
 		}
 		free(input);
 	}

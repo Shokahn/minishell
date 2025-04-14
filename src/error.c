@@ -1,7 +1,7 @@
 
 #include "../includes/minishell.h"
 
-void	free_error(t_data *shell, int type, char *message)
+void	ft_error(t_data *shell, int type, char *message)
 {
 	if (shell)
 	{

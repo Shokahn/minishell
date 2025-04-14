@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/04/04 14:08:49 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:19:51 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,25 @@
 #define TEST printf(BOLD RED "test\n" RESET);
 #define TEST2 printf(BOLD GREEN "test\n" RESET);
 
-typedef struct s_node
+
+typedef struct s_token
 {
 	int				type;
 	char			*inside;
-	struct s_node	*next;
+	struct s_token	*next;
+	struct s_token	*prev;
 
-}					t_node;
+}					t_token;
 
 typedef struct s_data
 {
-	t_node			*first;
+	t_token			*token;
+
 	char			*input;
 	int				*sep;
-	int				len_input;
+	int				token_count;
 	char			**line;
-	int				count_sep;
 }					t_data;
 
 // error
-void				free_error(t_data *shell, int type, char *message);
+void				ft_error(t_data *shell, int type, char *message);

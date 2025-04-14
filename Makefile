@@ -15,7 +15,7 @@ INCLUDE = headers/
 SRC = prompt.c error.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -fPIC -g3
 EXTRAFLAGS = -lreadline
 FSANITIZE = -fsanitize=address
 MAKE = make --no-print-directory
