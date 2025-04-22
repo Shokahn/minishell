@@ -189,13 +189,58 @@ int	lexeur(t_data *shell)
 	return (1);
 }
 
+int	pipe_startend(t_data *shell)
+{
+	t_token	*current;
+
+	current = shell->token;
+	if (current->type == 1)
+		return (0);
+	while (current)
+	{
+		if (current->next == NULL)
+		{
+			if (current->type == 1)
+				return (0);
+		}
+		current = current->next;
+	}
+	return (1);
+}
+
+int	no_file_after_redir(t_data *shell)
+{
+	t_token	*current;
+
+	current = shell->token;
+	while (current)
+	{
+		if (current->type == REDIR_IN || current->type == REDIR_OUT
+			|| current->type == APPEND || current->type == HEREDOC)
+		{
+			if (!current->next)
+				return (0);
+			else if (current->next->type == 0)
+				return (1);
+			else
+				return (0);
+		}
+		current =  current->next;
+	}
+	return (0);
+}
+
 int	parsing(t_data *shell)
 {
 	if (shell->sep[0] == 4)
-	{
-		ft_error(shell, 0, "minishell : syntax error quote in unquoted cell\n");
-		return (0);
-	}
+		return (ft_error(shell, 0,
+				"minishell : syntax error quote in unquoted cell\n"), 0);
+	if (!(pipe_startend(shell)))
+		return (ft_error(shell, 0,
+				"minishell : syntax error near unexpected token '|'\n"), 0);
+	if (!(no_file_after_redir(shell)))
+		return (ft_error(shell, 0,
+				"bash: syntax error near unexpected token 'newline'\n"), 0);
 	return (1);
 }
 
@@ -307,9 +352,9 @@ int	minishell(char *input, t_data *shell)
 	}
 	if (!lexeur(shell))
 		return (0);
-	if (!parsing(shell))
-		return (0);
 	if (!making_the_list(shell))
+		return (0);
+	if (!parsing(shell))
 		return (0);
 	print_token_list(shell);
 	return (1);
