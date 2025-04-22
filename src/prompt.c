@@ -1,34 +1,20 @@
 
 #include "../includes/minishell.h"
 
-t_data	*init_shell(void)
+void	init_shell(t_data *shell)
 {
-	t_data	*shell;
-
-	shell = malloc(sizeof(t_data));
-	if (!shell)
-		return (NULL);
-	shell->token = NULL;
 	shell->input = NULL;
 	shell->sep = 0;
-	shell->token_count = 0;
 	shell->line = NULL;
-	return (shell);
+	shell->token = NULL;
 }
-/*
-void	phrase_identification(char *node, int i)
-{
-	int	y;
-
-	if (ft_strncmp(node, "|", ft_strlen(node)))
-} */
 int	pass_the_quote_separator(t_data *shell, char *input, char c, int i)
 {
 	i++;
 	while (input[i] && input[i] != c)
 		i++;
 	if (!input[i])
-		ft_error(shell, 0, "No quote ending the first one\n");
+		shell->sep[0] = 4;
 	return (i + 1);
 }
 
@@ -73,10 +59,10 @@ int	wcount(char *input, t_data *shell)
 
 	i = 0;
 	count = 0;
-	while(input[i])
+	while (input[i])
 	{
 		count++;
-		while(input[i] && (shell->sep[i] == 0 || shell->sep[i] == 1))
+		while (input[i] && (shell->sep[i] == 0 || shell->sep[i] == 1))
 			i++;
 		if (input[i] && shell->sep[i] == 2)
 			count++;
@@ -134,7 +120,7 @@ char	**makesplit(char **line, t_data *shell, char *input)
 			i += 2;
 			continue ;
 		}
-		while (input[i] && shell->sep[i] == 0)
+		while (input[i] && (shell->sep[i] == 0 || shell->sep[i] == 4))
 			i++;
 		if (start < i)
 		{
@@ -178,7 +164,7 @@ char	**split_line(t_data *shell, char *input)
 	char	**line;
 
 	define_separator(shell, input);
-	line = malloc(sizeof(char *) * ( wcount(input, shell) + 2));
+	line = malloc(sizeof(char *) * (wcount(input, shell) + 2));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, shell, shell->input);
@@ -200,38 +186,139 @@ int	lexeur(t_data *shell)
 	shell->line = split_line(shell, shell->input);
 	if (!shell->line)
 		return (ft_error(shell, 0, "split line failed\n"), 0);
-	while (shell->line[shell->token_count])
-	{
-		printf("[%d] : %s\n", shell->token_count,
-			shell->line[shell->token_count]);
-		shell->token_count++;
-	}
-	printf("%d\n", shell->token_count);
 	return (1);
 }
+
+int	parsing(t_data *shell)
+{
+	if (shell->sep[0] == 4)
+	{
+		ft_error(shell, 0, "minishell : syntax error quote in unquoted cell\n");
+		return (0);
+	}
+	return (1);
+}
+
+t_token	*create_node(char *inside)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return (NULL);
+	new->inside = ft_strdup(inside);
+	if (!new->inside) // need to free still
+	{
+		return (NULL);
+	}
+	new->next = NULL;
+	new->prev = NULL;
+	new->type = 0;
+	return (new);
+}
+
+t_token	*line_to_token(t_data *shell)
+{
+	int		i;
+	t_token	*head;
+	t_token	*tail;
+	t_token	*new;
+
+	i = 0;
+	head = NULL;
+	tail = NULL;
+	while (shell->line[i])
+	{
+		new = create_node(shell->line[i]);
+		if (!new)
+			return (NULL);
+		if (!head)
+			head = new;
+		else
+		{
+			tail->next = new;
+			new->prev = tail;
+		}
+		tail = new;
+		i++;
+	}
+	return (head);
+}
+
+void	define_type(t_token *current)
+{
+	if (!ft_strncmp(current->inside, "|", 1))
+		current->type = PIPE;
+	else if (!ft_strncmp(current->inside, ">>", 2))
+		current->type = APPEND;
+	else if (!ft_strncmp(current->inside, "<<", 2))
+		current->type = HEREDOC;
+	else if (!ft_strncmp(current->inside, ">", 1))
+		current->type = REDIR_OUT;
+	else if (!ft_strncmp(current->inside, "<", 1))
+		current->type = REDIR_IN;
+	else
+		current->type = WORD;
+}
+
+void	identification_token(t_data *shell)
+{
+	t_token	*current;
+
+	current = shell->token;
+	while (current)
+	{
+		define_type(current);
+		current = current->next;
+	}
+}
+
+int	making_the_list(t_data *shell)
+{
+	shell->token = line_to_token(shell);
+	if (!shell->token)
+		return (0);
+	identification_token(shell);
+	return (1);
+}
+
+void	print_token_list(t_data *shell)
+{
+	int		i;
+	t_token	*current;
+
+	i = 0;
+	current = shell->token;
+	while (current)
+	{
+		printf("[%d] : %s : type = %d\n", i, current->inside, current->type);
+		current = current->next;
+		i++;
+	}
+}
+
 int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
-	shell->token_count = 0;
 	if (!ft_strncmp(input, "exit", 4)) // dont forget to free
 	{
 		printf("exit\n");
 		exit(0);
 	}
-	if (!shell)
-	{
-		ft_error(shell, 0, "Shell malloc allocation failed\n");
-		return (0);
-	}
 	if (!lexeur(shell))
 		return (0);
+	if (!parsing(shell))
+		return (0);
+	if (!making_the_list(shell))
+		return (0);
+	print_token_list(shell);
 	return (1);
 }
 
 int	main(int ac, char **av)
 {
 	char	*input;
-	t_data	*shell;
+	t_data	shell;
 
 	(void)av;
 	if (ac != 1)
@@ -240,7 +327,7 @@ int	main(int ac, char **av)
 			2);
 		exit(1);
 	}
-	shell = init_shell();
+	init_shell(&shell);
 	while (1)
 	{
 		input = readline(GREEN BOLD "minishell> " RESET);
@@ -249,7 +336,7 @@ int	main(int ac, char **av)
 		else
 		{
 			add_history(input);
-			if (!minishell(input, shell))
+			if (!minishell(input, &shell))
 				continue ;
 		}
 		free(input);
