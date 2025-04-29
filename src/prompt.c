@@ -7,6 +7,7 @@ void	init_shell(t_data *shell)
 	shell->sep = 0;
 	shell->line = NULL;
 	shell->token = NULL;
+	shell->cmd = NULL;
 }
 int	pass_the_quote_separator(t_data *shell, char *input, char c, int i)
 {
@@ -25,14 +26,14 @@ void	define_separator(t_data *shell, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] != '|' && input[i] != ' ' && input[i] != '"'
+		if (input[i] != '|' && !(ft_isspace(input[i])) && input[i] != '"'
 			&& input[i] != '\'' && input[i] != '<' && input[i] != '>')
 			i++;
 		else if (input[i] == '"')
 			i = pass_the_quote_separator(shell, input, '"', i);
 		else if (input[i] == '\'')
 			i = pass_the_quote_separator(shell, input, '\'', i);
-		else if (input[i] == ' ')
+		else if (ft_isspace(input[i]))
 		{
 			shell->sep[i] = 1;
 			i++;
@@ -41,7 +42,6 @@ void	define_separator(t_data *shell, char *input)
 					&& input[i + 1] == '<')))
 		{
 			shell->sep[i] = 3;
-			shell->sep[i + 1] = -1;
 			i += 2;
 		}
 		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
@@ -61,12 +61,17 @@ int	wcount(char *input, t_data *shell)
 	count = 0;
 	while (input[i])
 	{
-		count++;
-		while (input[i] && (shell->sep[i] == 0 || shell->sep[i] == 1))
-			i++;
-		if (input[i] && shell->sep[i] == 2)
+		if (input[i] && shell->sep[i] == 0)
 			count++;
-		if (input[i] && shell->sep[i] == 3 && shell->sep[i + 1] == -1)
+		while (input[i] && shell->sep[i] == 0)
+			i++;
+		if (input[i] && shell->sep[i] == 1)
+			count++;
+		while(input[i] && shell->sep[i] == 1)
+			i++;
+		if (input[i] && shell->sep[i] == 2 )
+			count++;
+		if (input[i] && shell->sep[i] == 3)
 		{
 			count++;
 			i += 2;
@@ -114,7 +119,7 @@ char	**makesplit(char **line, t_data *shell, char *input)
 			i++;
 			continue ;
 		}
-		if (shell->sep[i] == 3 && shell->sep[i + 1] == -1)
+		if (shell->sep[i] == 3)
 		{
 			line[j++] = wcreate(i, i + 2, input);
 			i += 2;
@@ -159,12 +164,29 @@ int	validate_syntax(t_data *shell, char *input)
 	return (1);
 }
 
+void	print_sep(t_data *shell)
+{
+	int i;
+
+	i = 0;
+	while(shell->input[i])
+	{
+		printf("[%d]", shell->sep[i]);
+		i++;
+	}
+	printf("\n");
+}
+
 char	**split_line(t_data *shell, char *input)
 {
 	char	**line;
+	int	count;
 
 	define_separator(shell, input);
-	line = malloc(sizeof(char *) * (wcount(input, shell) + 2));
+	print_sep(shell);
+	count = wcount(input, shell);
+	printf("word count = %d\n", count);
+	line = malloc(sizeof(char *) * (count + 2));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, shell, shell->input);
@@ -225,9 +247,9 @@ int	no_file_after_redir(t_data *shell)
 			else
 				return (0);
 		}
-		current =  current->next;
+		current = current->next;
 	}
-	return (0);
+	return (1);
 }
 
 int	parsing(t_data *shell)
@@ -327,20 +349,193 @@ int	making_the_list(t_data *shell)
 	return (1);
 }
 
-void	print_token_list(t_data *shell)
+void	print_cmds(t_cmd *cmd)
 {
+	t_redir	*r;
+	int		y;
+
+	y = 1;
+	while (cmd)
+	{
+		printf("CMD[%d]:\n", y);
+		for (int i = 1; cmd->cmd && cmd->cmd[i]; i++)
+			printf("  arg[%d]: %s\n", i, cmd->cmd[i]);
+		r = cmd->redir;
+		while (r)
+		{
+			printf("  redir: type = %d, file = %s\n", r->type, r->file);
+			r = r->next;
+		}
+		printf("----------\n");
+		cmd = cmd->next;
+		y++;
+	}
+}
+
+t_cmd	*init_cmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->cmd = NULL;
+	cmd->next = NULL;
+	cmd->redir = NULL;
+	return (cmd);
+}
+
+t_redir	*init_redir(t_token *token)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir || !token || !token->next)
+		return (NULL);
+	redir->type = token->type;
+	redir->file = strdup(token->next->inside);
+	redir->next = NULL;
+	return (redir);
+}
+
+void	add_redir(t_redir **redir_list, t_redir *new)
+{
+	t_redir	*tmp;
+
+	if (!*redir_list)
+		*redir_list = new;
+	else
+	{
+		tmp = *redir_list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
+int	count_args(t_token *start, t_token *end)
+{
+	t_token	*tmp;
+	int		count;
+
+	tmp = start;
+	count = 0;
+	while (tmp && tmp != end)
+	{
+		if (tmp->type == WORD)
+			count++;
+		else if (tmp->type != WORD)
+			count--;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+char	**collect_cmd_args(t_token *start, t_token *end)
+{
+	char	**args;
+	int		count_arg;
 	int		i;
-	t_token	*current;
+
+	i = 0;
+	count_arg = count_args(start, end);
+	printf("nbr of args = %d\n", count_arg);
+	args = malloc(sizeof(char *) * count_arg + 1);
+	if (!args)
+		return (NULL);
+	while (start && start != end)
+	{
+		if (start->type == WORD)
+		{
+			if (i == 0 || (start->prev && start->prev->type != REDIR_IN
+					&& start->prev->type != REDIR_OUT
+					&& start->prev->type != APPEND
+					&& start->prev->type != HEREDOC))
+				args[i] = strdup(start->inside);
+			start = start->next;
+		}
+		else
+			start = start->next;
+		i++;
+	}
+	args[i] = NULL;
+	return (args);
+}
+t_token	*fill_cmd(t_token *token, t_cmd *cmd)
+{
+	t_token	*start;
+	t_token	*tmp;
+	t_redir	*redir;
+
+	start = token;
+	tmp = token;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->type == REDIR_IN || tmp->type == REDIR_OUT
+			|| tmp->type == APPEND || tmp->type == HEREDOC)
+		{
+			redir = init_redir(tmp);
+			add_redir(&cmd->redir, redir);
+			tmp = tmp->next->next;
+		}
+		else
+			tmp = tmp->next;
+	}
+	cmd->cmd = collect_cmd_args(start, tmp);
+	return (tmp);
+}
+
+t_cmd	*parse_tokens(t_token *token)
+{
+	t_cmd	*first;
+	t_cmd	*last;
+	t_cmd	*cmd;
+
+	first = NULL;
+	last = NULL;
+	while (token)
+	{
+		cmd = init_cmd();
+		token = fill_cmd(token, cmd);
+		if (!first)
+			first = cmd;
+		else
+			last->next = cmd;
+		last = cmd;
+		if (token && token->type == PIPE)
+			token = token->next;
+	}
+	return (first);
+}
+void	print_token(t_data *shell)
+{
+	t_token *current;
+	int i;
 
 	i = 0;
 	current = shell->token;
 	while (current)
 	{
-		printf("[%d] : %s : type = %d\n", i, current->inside, current->type);
+		printf("token[%d] = %s\n", i, current->inside);
 		current = current->next;
 		i++;
 	}
+	printf(BOLD GREEN"----------\n"RESET);
 }
+
+void print_line(t_data *shell)
+{
+	int i;
+
+	i = 0;
+	while (shell->line[i])
+	{
+		printf("line[%d] = %s\n", i, shell->line[i]);
+		i++;
+	}
+	printf(BOLD RED"----------\n"RESET);
+}
+
 
 int	minishell(char *input, t_data *shell)
 {
@@ -356,7 +551,10 @@ int	minishell(char *input, t_data *shell)
 		return (0);
 	if (!parsing(shell))
 		return (0);
-	print_token_list(shell);
+	shell->cmd = parse_tokens(shell->token);
+	print_line(shell);
+	print_token(shell);
+	print_cmds(shell->cmd);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:07:35 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:36:13 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ static char	**ft_makesplit(char **split, const char *s, char c)
 			}
 		}
 		split[j] = NULL;
-		return (split);
 	}
-	return (NULL);
+	return (split);
 }
 
 char	**ft_split(char const *s, char c)

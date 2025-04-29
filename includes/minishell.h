@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/04/22 14:16:20 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:21:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define TEST printf(BOLD RED "test\n" RESET);
 # define TEST2 printf(BOLD GREEN "test\n" RESET);
 
-
 typedef enum e_type
 {
 	WORD,
@@ -41,8 +40,7 @@ typedef enum e_type
 	REDIR_IN,  // <
 	REDIR_OUT, // >
 	APPEND,    // >>
-	HEREDOC    // <<
-
+	HEREDOC,   // <<
 }					t_type;
 
 typedef struct s_token
@@ -51,8 +49,21 @@ typedef struct s_token
 	char			*inside;
 	struct s_token	*next;
 	struct s_token	*prev;
-
 }					t_token;
+
+typedef struct s_redir
+{
+	t_type			type;
+	char			*file;
+	struct s_redir	*next;
+}					t_redir;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	t_redir			*redir;
+	struct s_cmd	*next;
+}					t_cmd;
 
 typedef struct s_data
 {
@@ -60,6 +71,7 @@ typedef struct s_data
 	int				*sep;
 	char			**line;
 	t_token			*token;
+	t_cmd			*cmd;
 
 }					t_data;
 
