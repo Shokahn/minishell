@@ -463,6 +463,7 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 	args[i] = NULL;
 	return (args);
 }
+
 t_token	*fill_cmd(t_token *token, t_cmd *cmd)
 {
 	t_token	*start;
