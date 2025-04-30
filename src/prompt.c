@@ -61,22 +61,24 @@ int	wcount(char *input, t_data *shell)
 	count = 0;
 	while (input[i])
 	{
+		if (input[i] && shell->sep[i] == 4)
+			i++;
 		if (input[i] && shell->sep[i] == 0)
 			count++;
 		while (input[i] && shell->sep[i] == 0)
 			i++;
-		if (input[i] && shell->sep[i] == 1)
-			count++;
 		while(input[i] && shell->sep[i] == 1)
 			i++;
-		if (input[i] && shell->sep[i] == 2 )
+		if (input[i] && shell->sep[i] == 2)
+		{
 			count++;
+			i++;
+		}
 		if (input[i] && shell->sep[i] == 3)
 		{
 			count++;
 			i += 2;
 		}
-		i++;
 	}
 	return (count);
 }
@@ -186,7 +188,7 @@ char	**split_line(t_data *shell, char *input)
 	print_sep(shell);
 	count = wcount(input, shell);
 	printf("word count = %d\n", count);
-	line = malloc(sizeof(char *) * (count + 2));
+	line = malloc(sizeof(char *) * (count));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, shell, shell->input);
@@ -358,7 +360,7 @@ void	print_cmds(t_cmd *cmd)
 	while (cmd)
 	{
 		printf("CMD[%d]:\n", y);
-		for (int i = 1; cmd->cmd && cmd->cmd[i]; i++)
+		for (int i = 0; cmd->cmd && cmd->cmd[i]; i++)
 			printf("  arg[%d]: %s\n", i, cmd->cmd[i]);
 		r = cmd->redir;
 		while (r)
