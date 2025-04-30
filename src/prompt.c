@@ -67,7 +67,7 @@ int	wcount(char *input, t_data *shell)
 			count++;
 		while (input[i] && shell->sep[i] == 0)
 			i++;
-		while(input[i] && shell->sep[i] == 1)
+		while (input[i] && shell->sep[i] == 1)
 			i++;
 		if (input[i] && shell->sep[i] == 2)
 		{
@@ -168,21 +168,22 @@ int	validate_syntax(t_data *shell, char *input)
 
 void	print_sep(t_data *shell)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(shell->input[i])
+	while (shell->input[i])
 	{
 		printf("[%d]", shell->sep[i]);
 		i++;
 	}
 	printf("\n");
+	printf(BOLD YELLOW "----------\n" RESET);
 }
 
 char	**split_line(t_data *shell, char *input)
 {
 	char	**line;
-	int	count;
+	int		count;
 
 	define_separator(shell, input);
 	print_sep(shell);
@@ -438,8 +439,10 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 	char	**args;
 	int		count_arg;
 	int		i;
+	int		check;
 
 	i = 0;
+	check = 0;
 	count_arg = count_args(start, end);
 	printf("nbr of args = %d\n", count_arg);
 	args = malloc(sizeof(char *) * count_arg + 1);
@@ -447,20 +450,18 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 		return (NULL);
 	while (start && start != end)
 	{
-		if (start->type == WORD)
+		if (start->type == WORD && (check == 0 || (start->prev
+				&& start->prev->type != REDIR_IN
+				&& start->prev->type != REDIR_OUT && start->prev->type != APPEND
+				&& start->prev->type != HEREDOC)))
 		{
-			if (i == 0 || (start->prev && start->prev->type != REDIR_IN
-					&& start->prev->type != REDIR_OUT
-					&& start->prev->type != APPEND
-					&& start->prev->type != HEREDOC))
-				args[i] = strdup(start->inside);
-			start = start->next;
+			args[i] = strdup(start->inside);
+			i++;
 		}
-		else
-			start = start->next;
-		i++;
+		start = start->next;
+		check++;
 	}
-	args[i] = NULL;
+	args[i] = '\0';
 	return (args);
 }
 
@@ -512,8 +513,8 @@ t_cmd	*parse_tokens(t_token *token)
 }
 void	print_token(t_data *shell)
 {
-	t_token *current;
-	int i;
+	t_token	*current;
+	int		i;
 
 	i = 0;
 	current = shell->token;
@@ -523,22 +524,22 @@ void	print_token(t_data *shell)
 		current = current->next;
 		i++;
 	}
-	printf(BOLD GREEN"----------\n"RESET);
+	printf(BOLD GREEN "----------\n" RESET);
 }
 
-void print_line(t_data *shell)
+void	print_line(t_data *shell)
 {
-	int i;
+	int	i;
 
 	i = 0;
+	printf(BOLD CYAN "----------\n" RESET);
 	while (shell->line[i])
 	{
 		printf("line[%d] = %s\n", i, shell->line[i]);
 		i++;
 	}
-	printf(BOLD RED"----------\n"RESET);
+	printf(BOLD RED "----------\n" RESET);
 }
-
 
 int	minishell(char *input, t_data *shell)
 {
@@ -585,6 +586,5 @@ int	main(int ac, char **av)
 			if (!minishell(input, &shell))
 				continue ;
 		}
-		free(input);
 	}
 }
