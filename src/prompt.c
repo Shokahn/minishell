@@ -8,6 +8,7 @@ void	init_shell(t_data *shell)
 	shell->line = NULL;
 	shell->token = NULL;
 	shell->cmd = NULL;
+	shell->env = NULL;
 }
 int	pass_the_quote_separator(t_data *shell, char *input, char c, int i)
 {
@@ -217,6 +218,7 @@ int	lexeur(t_data *shell)
 int	pipe_startend(t_data *shell)
 {
 	t_token	*current;
+			int i;
 
 	current = shell->token;
 	if (current->type == 1)
@@ -246,11 +248,12 @@ int	no_file_after_redir(t_data *shell)
 			if (!current->next)
 				return (0);
 			else if (current->next->type == 0)
-				return (1);
+				current = current->next;
 			else
 				return (0);
 		}
-		current = current->next;
+		else
+			current = current->next;
 	}
 	return (1);
 }
@@ -451,9 +454,10 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 	while (start && start != end)
 	{
 		if (start->type == WORD && (check == 0 || (start->prev
-				&& start->prev->type != REDIR_IN
-				&& start->prev->type != REDIR_OUT && start->prev->type != APPEND
-				&& start->prev->type != HEREDOC)))
+					&& start->prev->type != REDIR_IN
+					&& start->prev->type != REDIR_OUT
+					&& start->prev->type != APPEND
+					&& start->prev->type != HEREDOC)))
 		{
 			args[i] = strdup(start->inside);
 			i++;
@@ -461,7 +465,7 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 		start = start->next;
 		check++;
 	}
-	args[i] = '\0';
+	args[i] = NULL;
 	return (args);
 }
 
@@ -541,7 +545,101 @@ void	print_line(t_data *shell)
 	printf(BOLD RED "----------\n" RESET);
 }
 
-int	minishell(char *input, t_data *shell)
+t_env	*add_env_node(char *str, t_data *shell)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (ft_error(shell, 0, "malloc failed\n"), NULL);
+	new->next = NULL;
+	new->str = str;
+	return (new);
+}
+
+void	link_env_node(t_env **first, t_env *new)
+{
+	t_env	*tmp;
+
+	if (!(*first))
+	{
+		*first = new;
+		return ;
+	}
+	tmp = *first;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+t_env	*get_env(t_data *shell, char **envp)
+{
+	int		i;
+	t_env	*first;
+	t_env	*current;
+
+	i = 0;
+	first = NULL;
+	while (envp[i])
+	{
+		current = add_env_node(envp[i], shell);
+		if (!current)
+			return (0);
+		link_env_node(&first, current);
+		i++;
+	}
+	return (first);
+}
+
+void	print_env(t_data *shell)
+{
+	t_env	*tmp;
+
+	tmp = shell->env;
+	while (tmp)
+	{
+		printf("%s\n", tmp->str);
+		tmp = tmp->next;
+	}
+}
+
+void	extract_variable(char **inside)
+{
+	
+
+
+}
+
+void expand_string(char **inside, t_data *shell)
+{
+	int i;
+
+	i = 0;
+	while (*inside[i])
+	{
+		if (*inside[i] == '$')
+		{
+			extract_variable(inside);
+		}
+	}
+}
+
+
+int	expandation(t_data *shell, char **envp)
+{
+	shell->env = get_env(shell, envp);
+	if (!shell->env)
+		return (0);
+	while (shell->token)
+	{
+		if (shell->token->type == WORD)
+			expand_string(&shell->token->inside, shell)
+	}
+	print_env(shell);
+	return (1);
+}
+
+int	minishell(char *input, t_data *shell, char **envp)
 {
 	shell->input = input;
 	if (!ft_strncmp(input, "exit", 4)) // dont forget to free
@@ -553,6 +651,8 @@ int	minishell(char *input, t_data *shell)
 		return (0);
 	if (!making_the_list(shell))
 		return (0);
+	if (!expandation(shell, envp))
+		return (0);
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
@@ -562,7 +662,7 @@ int	minishell(char *input, t_data *shell)
 	return (1);
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_data	shell;
@@ -583,7 +683,7 @@ int	main(int ac, char **av)
 		else
 		{
 			add_history(input);
-			if (!minishell(input, &shell))
+			if (!minishell(input, &shell, envp))
 				continue ;
 		}
 	}

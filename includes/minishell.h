@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/04/30 14:42:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/01 17:34:01 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
+typedef struct s_env
+{
+	char			*str;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_data
 {
 	char			*input;
@@ -72,6 +78,7 @@ typedef struct s_data
 	char			**line;
 	t_token			*token;
 	t_cmd			*cmd;
+	t_env			*env;
 
 }					t_data;
 
