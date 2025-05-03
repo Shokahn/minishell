@@ -6,7 +6,7 @@
 /*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/02 15:51:51 by bri              ###   ########.fr       */
+/*   Updated: 2025/05/02 22:31:49 by bri              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 
 
-
 void    free_tab(char **tab)
 {
     int i;
@@ -279,6 +278,73 @@ int open_pipe(int fd[2], t_cmd *current)
     return (1);
 }
 
+void	redir_in_handler(t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->file, O_RDONLY);
+	if (fd = -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, 0); //change stdin?
+	close(fd);
+}
+
+void	redir_out_handler(t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd = -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, 1);  //change stdout?
+	close(fd);
+}
+
+void	append_handler(t_redir *redir)
+{
+	int	fd;
+
+	fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd = -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, 1);  //change stdout?
+	close(fd);
+}
+
+void	ft_heredoc()
+{
+}
+
+void	handle_redirections(t_cmd *cmd)
+{
+	t_redir	*redir;
+
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (redir->type == REDIR_IN)
+			redir_in_handler(redir);
+		else if (redir->type == REDIR_OUT)
+			redir_out_handler(redir);
+		else if (redir->type == APPEND)
+			append_handler(redir);
+		else if (redir->type == HEREDOC)
+			ft_heredoc(redir);
+		else
+			break;
+		redir = redir->next;
+	}
+}
+
 void    launch_child(int *in_fd, t_cmd **current, t_data **data, int *fd)
 {
     if (*in_fd != 0)
@@ -286,6 +352,8 @@ void    launch_child(int *in_fd, t_cmd **current, t_data **data, int *fd)
         dup2(*in_fd, 0); //if not first cmd, read from pipe
         close(*in_fd);
     }
+	if ((*current)->redir)
+		handle_redirections(*current);
     if ((*current)->next)
     {
         close(fd[0]);
