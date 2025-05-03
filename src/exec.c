@@ -6,210 +6,73 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/03 19:08:18 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:27:07 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_envsize(t_env *lst)
 {
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-void	ft_free_index(char **split, int j)
-{
-	int	i;
-
-	i = 0;
-	while (i < j)
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*dup;
-	size_t	i;
-	size_t	len_s1;
-
-	len_s1 = ft_strlen(s1);
-	i = 0;
-	dup = malloc(sizeof(char) * len_s1 + 1);
-	if (!dup)
-		return (NULL);
-	while (s1[i])
-	{
-		dup[i] = s1[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
-
-static int	ft_wcount(char const *s, char c)
-{
-	int	i;
 	int	count;
 
-	i = 0;
-	count = 1;
-	while (s[i])
+	count = 0;
+	while (lst)
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		if (s[i] && s[i] != c)
-		{
-			count++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
+		count++;
+		lst = lst->next;
 	}
 	return (count);
 }
 
-static char	*ft_wcreate(int start, int end, const char *str)
+char	**ft_list_to_tab(t_env *env)
 {
-	char	*word;
-	int		j;
-
-	j = 0;
-	word = malloc(sizeof(char) * ((end - start) + 1));
-	if (!word)
-		return (NULL);
-	while (start < end)
-	{
-		word[j] = str[start];
-		start++;
-		j++;
-	}
-	word[j] = '\0';
-	return (word);
-}
-
-static char	**ft_makesplit(char **split, const char *s, char c)
-{
-	int	i;
-	int	j;
-	int	start;
+	char	**tab;
+	int		i;
 
 	i = 0;
-	j = 0;
-	while (s[i])
+	tab = malloc(sizeof(char *) * (ft_envsize(env) + 1));
+	if (!tab)
+		return (NULL);
+	while (env)
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		start = i;
-		while (s[i] && s[i] != c)
-			i++;
-		if (start < i)
+		tab[i] = ft_strdup(env->str);
+		if (!tab[i++])
 		{
-			split[j] = ft_wcreate(start, i, s);
-			if (!split[j++])
-			{
-				ft_free_index(split, j - 1);
-				return (NULL);
-			}
+			perror("free the rest of tab to avoid leaks, too lazy to do it right now");
+			return (NULL);
 		}
-		split[j] = NULL;
+		env = env->next;
 	}
-	return (split);
+	tab[i] = 0;
+	return (tab);
 }
 
-char	**ft_split(char const *s, char c)
+char    **ft_tab_dup(char **tab)
 {
-	char	**split;
-	char	**result;
+    char    **copy;
+    int     i;
+    int     l;
 
-	if (!s)
-		return (NULL);
-	split = malloc(sizeof(char *) * ft_wcount(s, c));
-	if (!split)
-		return (NULL);
-	result = ft_makesplit(split, s, c);
-	if (!result)
-		return (NULL);
-	return (split);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	size_t	j;
-	size_t	total_len;
-	char	*str_join;
-
-	if (!s1 || !s2)
-		return (NULL);
-	total_len = ft_strlen(s1) + ft_strlen(s2);
-	str_join = malloc(sizeof(char) * total_len + 1);
-	if (!str_join)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		str_join[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		str_join[i + j] = s2[j];
-		j++;
-	}
-	str_join[i + j] = '\0';
-	return (str_join);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n)
-		i++;
-	if (n == i)
-		return (0);
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void    free_tab(char **tab)
-{
-    int i;
-
+    if (!tab || !tab[0])
+        return (NULL);
+    l = 0;
+    while (tab[l])
+        l++;
+    copy = malloc(sizeof(char *) * (l + 1));
     i = 0;
-    if (!tab)
-        return ;
     while (tab[i])
     {
-        free(tab[i]);
+        copy[i] = ft_strdup(tab[i]);
+        if (!copy[i])
+        {
+            ft_free_tab(copy);
+            return (NULL);
+        }
         i++;
     }
-    free(tab);
+    copy[i] = 0;
+    return (copy);
 }
 
 char    **get_paths(char **env)
@@ -233,7 +96,7 @@ char    *find_valid_path(const char *str, t_data *data)
     char    *pathname;
     char    *tmp;
 
-    paths = get_paths(data->env);
+    paths = get_paths(data->env_tab);
     if (!paths)
         return (NULL);
     i = 0;
@@ -243,14 +106,14 @@ char    *find_valid_path(const char *str, t_data *data)
         pathname = ft_strjoin(tmp, str);
         if (access(pathname, X_OK) == 0)
         {
-            free_tab(paths);
+            ft_free_tab(paths);
             return (pathname);
         }
         free(tmp);
         free(pathname);
         i++;
     }
-    free_tab(paths);
+    ft_free_tab(paths);
     return (NULL);
 }
 
@@ -264,7 +127,7 @@ void    exec_cmd(t_data **data, t_cmd **cmd)
 		perror("command not found");
     	exit(EXIT_FAILURE);
 	}
-    execve(path, (*cmd)->cmd, (*data)->env);
+    execve(path, (*cmd)->cmd, (*data)->env_tab);
     perror("execve failed");
     exit(EXIT_FAILURE);
 }
@@ -392,6 +255,7 @@ void    handle_parent(int *in_fd, t_cmd **current, int *fd)
     *current = (*current)->next;
 }
 
+//split this function
 void    setup_exec(t_data *data)
 {
     int     fd[2];
@@ -399,9 +263,8 @@ void    setup_exec(t_data *data)
     pid_t   pid;
     t_cmd   *current;
 
-    if (!data || !data->cmd)
-        return ;
     in_fd = 0; //stdin
+	data->env_tab = ft_list_to_tab(data->env);
     current = data->cmd;
     while (current)
     {
@@ -421,38 +284,8 @@ void    setup_exec(t_data *data)
     pickup_children();
 }
 
-//
-//
-//
 
-char    **ft_tab_dup(char **tab)
-{
-    char    **copy;
-    int     i;
-    int     l;
-
-    if (!tab || !tab[0])
-        return (NULL);
-    l = 0;
-    while (tab[l])
-        l++;
-    copy = malloc(sizeof(char *) * (l + 1));
-    i = 0;
-    while (tab[i])
-    {
-        copy[i] = ft_strdup(tab[i]);
-        if (!copy[i])
-        {
-            free_tab(copy);
-            return (NULL);
-        }
-        i++;
-    }
-    copy[i] = 0;
-    return (copy);
-}
-
-int main(int ac, char **av, char **env)
+/*int main(int ac, char **av, char **env)
 {
     t_data  *data = malloc(sizeof(t_data));
     t_cmd   *cmd = malloc(sizeof(t_cmd));
@@ -494,4 +327,4 @@ int main(int ac, char **av, char **env)
 	free(redir1);
 	free(redir2);
 	//free(redir3);
-}
+}*/

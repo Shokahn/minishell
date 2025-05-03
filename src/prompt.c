@@ -651,11 +651,12 @@ int	minishell(char *input, t_data *shell, char **envp)
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
-	
-	print_env(shell);
+	printf("\n\n\033[1mOutput :\033[0m\n\n");
+	setup_exec(shell);
+	/*print_env(shell);
 	print_line(shell);
 	print_token(shell);
-	print_cmds(shell->cmd);
+	print_cmds(shell->cmd);*/
 	return (1);
 }
 

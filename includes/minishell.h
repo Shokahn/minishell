@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/01 17:34:01 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/03 20:23:53 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <termios.h>
 # include <ttyent.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # define TEST printf(BOLD RED "test\n" RESET);
 # define TEST2 printf(BOLD GREEN "test\n" RESET);
@@ -79,8 +80,11 @@ typedef struct s_data
 	t_token			*token;
 	t_cmd			*cmd;
 	t_env			*env;
-
+	char			**env_tab;
 }					t_data;
+
+// exec
+void				setup_exec(t_data *data);
 
 // error
 void				ft_error(t_data *shell, int type, char *message);
