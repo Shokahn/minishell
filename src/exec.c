@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/02 22:31:49 by bri              ###   ########.fr       */
+/*   Updated: 2025/05/03 19:08:18 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,13 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 
 
+
+
+
+
+
+
+
 void    free_tab(char **tab)
 {
     int i;
@@ -253,7 +260,10 @@ void    exec_cmd(t_data **data, t_cmd **cmd)
 
     path = find_valid_path((*cmd)->cmd[0], *data);
     if (!path)
-        return ;
+	{
+		perror("command not found");
+    	exit(EXIT_FAILURE);
+	}
     execve(path, (*cmd)->cmd, (*data)->env);
     perror("execve failed");
     exit(EXIT_FAILURE);
@@ -283,7 +293,7 @@ void	redir_in_handler(t_redir *redir)
 	int	fd;
 
 	fd = open(redir->file, O_RDONLY);
-	if (fd = -1)
+	if (fd == -1)
 	{
 		perror("open");
 		exit(EXIT_FAILURE);
@@ -297,7 +307,7 @@ void	redir_out_handler(t_redir *redir)
 	int	fd;
 
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd = -1)
+	if (fd == -1)
 	{
 		perror("open");
 		exit(EXIT_FAILURE);
@@ -311,7 +321,7 @@ void	append_handler(t_redir *redir)
 	int	fd;
 
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd = -1)
+	if (fd == -1)
 	{
 		perror("open");
 		exit(EXIT_FAILURE);
@@ -320,8 +330,15 @@ void	append_handler(t_redir *redir)
 	close(fd);
 }
 
-void	ft_heredoc()
+//Heredoc = do nothing right now, to implement!!!
+//implementing heredoc : 
+// https://medium.com/@oduwoledare/heredoc-a-deep-dive-23c82992e522 interesting article
+// shell inside of shell, have to redo parsing on input, shellception??? POG 
+void	ft_heredoc(t_redir *redir)
 {
+	if (redir->type == HEREDOC)
+		write(1, "no heredoc yet\n", 15);
+	return ;
 }
 
 void	handle_redirections(t_cmd *cmd)
@@ -437,26 +454,44 @@ char    **ft_tab_dup(char **tab)
 
 int main(int ac, char **av, char **env)
 {
-    t_data  *data;
-    t_cmd   *cmd;
-    char    *cmd1[] = {"ls", "-l", NULL};
-    char    *cmd2[] = {"grep", ".c", NULL};
-	char	*cmd3[] = {"wc", "-l", NULL};
+    t_data  *data = malloc(sizeof(t_data));
+    t_cmd   *cmd = malloc(sizeof(t_cmd));
+
+	t_redir	*redir1 = malloc(sizeof(t_redir));
+	t_redir	*redir2 = malloc(sizeof(t_redir));
+	//t_redir *redir3 = malloc(sizeof(t_redir));
+
+    char    *cmd1[] = {"sort", NULL};
+    char	*cmd2[] = {"uniq", NULL};
+	//char	*cmd3[] = {"wc", "-l", NULL};
 
     (void)ac;
     (void)av;
-    data = malloc(sizeof(t_data));
-    cmd = malloc(sizeof(t_cmd));
-    cmd->next = malloc(sizeof(t_cmd));
-	cmd->next->next = malloc(sizeof(t_cmd));
-    data->env = ft_tab_dup(env);
+
+	data->env = ft_tab_dup(env);
     data->cmd = cmd;
+
+    cmd->next = malloc(sizeof(t_cmd));
+	//cmd->next->next = malloc(sizeof(t_cmd));
     cmd->cmd = cmd1;
     cmd->next->cmd = cmd2;
-	cmd->next->next->cmd = cmd3;
+	//cmd->next->next->cmd = cmd3;
+
+	cmd->redir = redir1;
+	redir1->type = REDIR_IN;
+	redir1->file = "input.txt";
+	cmd->next->redir = redir2;
+	redir2->type = REDIR_OUT;
+	redir2->file = "output.txt";
+
     setup_exec(data);
     free(data);
-	free(cmd->next->next);
+
+	//free(cmd->next->next);
     free(cmd->next);
     free(cmd);
+
+	free(redir1);
+	free(redir2);
+	//free(redir3);
 }
