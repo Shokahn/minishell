@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/03 20:23:53 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/03 21:47:03 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,14 @@ typedef struct s_data
 	t_env			*env;
 	char			**env_tab;
 }					t_data;
+
+typedef struct s_fd
+{
+	int			in_fd;
+	int			out_fd;
+	struct s_fd	*next;
+}				t_fd;
+
 
 // exec
 void				setup_exec(t_data *data);

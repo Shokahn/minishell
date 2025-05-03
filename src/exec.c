@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/03 20:27:07 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/03 21:08:07 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,48 +283,3 @@ void    setup_exec(t_data *data)
     }
     pickup_children();
 }
-
-
-/*int main(int ac, char **av, char **env)
-{
-    t_data  *data = malloc(sizeof(t_data));
-    t_cmd   *cmd = malloc(sizeof(t_cmd));
-
-	t_redir	*redir1 = malloc(sizeof(t_redir));
-	t_redir	*redir2 = malloc(sizeof(t_redir));
-	//t_redir *redir3 = malloc(sizeof(t_redir));
-
-    char    *cmd1[] = {"sort", NULL};
-    char	*cmd2[] = {"uniq", NULL};
-	//char	*cmd3[] = {"wc", "-l", NULL};
-
-    (void)ac;
-    (void)av;
-
-	data->env = ft_tab_dup(env);
-    data->cmd = cmd;
-
-    cmd->next = malloc(sizeof(t_cmd));
-	//cmd->next->next = malloc(sizeof(t_cmd));
-    cmd->cmd = cmd1;
-    cmd->next->cmd = cmd2;
-	//cmd->next->next->cmd = cmd3;
-
-	cmd->redir = redir1;
-	redir1->type = REDIR_IN;
-	redir1->file = "input.txt";
-	cmd->next->redir = redir2;
-	redir2->type = REDIR_OUT;
-	redir2->file = "output.txt";
-
-    setup_exec(data);
-    free(data);
-
-	//free(cmd->next->next);
-    free(cmd->next);
-    free(cmd);
-
-	free(redir1);
-	free(redir2);
-	//free(redir3);
-}*/
