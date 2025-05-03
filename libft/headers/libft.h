@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:08:19 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/21 16:20:55 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:37:39 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int					ft_toupper(int c);
 void				ft_free_array(int **array, int len);
 void				ft_free_tab(char **tab);
 void				ft_free_index(char **split, int j);
+int					ft_isspace(int c);
 
 typedef struct s_list
 {
