@@ -218,7 +218,6 @@ int	lexeur(t_data *shell)
 int	pipe_startend(t_data *shell)
 {
 	t_token	*current;
-			int i;
 
 	current = shell->token;
 	if (current->type == 1)
@@ -603,16 +602,13 @@ void	print_env(t_data *shell)
 	}
 }
 
-void	extract_variable(char **inside)
+/* void	extract_variable(char **inside)
 {
-	
-
-
 }
 
-void expand_string(char **inside, t_data *shell)
+void	expand_string(char **inside, t_data *shell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (*inside[i])
@@ -627,9 +623,6 @@ void expand_string(char **inside, t_data *shell)
 
 int	expandation(t_data *shell, char **envp)
 {
-	shell->env = get_env(shell, envp);
-	if (!shell->env)
-		return (0);
 	while (shell->token)
 	{
 		if (shell->token->type == WORD)
@@ -637,8 +630,7 @@ int	expandation(t_data *shell, char **envp)
 	}
 	print_env(shell);
 	return (1);
-}
-
+} */
 int	minishell(char *input, t_data *shell, char **envp)
 {
 	shell->input = input;
@@ -651,11 +643,16 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	if (!making_the_list(shell))
 		return (0);
-	if (!expandation(shell, envp))
+	shell->env = get_env(shell, envp);
+	if (!shell->env)
 		return (0);
+	// if (!expandation(shell, envp))
+	// return (0);
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
+	
+	print_env(shell);
 	print_line(shell);
 	print_token(shell);
 	print_cmds(shell->cmd);
