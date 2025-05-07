@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/03 21:47:03 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:55:49 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,25 @@ typedef struct s_data
 	t_token			*token;
 	t_cmd			*cmd;
 	t_env			*env;
-	char			**env_tab;
 }					t_data;
 
-typedef struct s_fd
+typedef struct s_store
 {
-	int			in_fd;
-	int			out_fd;
-	struct s_fd	*next;
-}				t_fd;
+	int				fd[2];
+    int				in_fd;
+    pid_t			pid;
+    t_cmd			*current;
+	char			**env_tab;
+}				t_store;
+
+/*typedef void (*built_in_func)(char **args);
+
+typedef struct s_built_in_cmd
+{
+	const char		*cmd;
+	built_in_func	handler;
+}	t_built_in_cmd;			OTHER WAY FOR BUILT IN FUNCS USING FUNCTION POINTERS?*/
+
 
 
 // exec

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/03 21:08:07 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:04:36 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ char    **get_paths(char **env)
     return (NULL);
 }
 
-char    *find_valid_path(const char *str, t_data *data)
+char    *find_valid_path(const char *str, t_store *store)
 {
     char    **paths;
     int     i;
     char    *pathname;
     char    *tmp;
 
-    paths = get_paths(data->env_tab);
+    paths = get_paths(store->env_tab);
     if (!paths)
         return (NULL);
     i = 0;
@@ -117,17 +117,17 @@ char    *find_valid_path(const char *str, t_data *data)
     return (NULL);
 }
 
-void    exec_cmd(t_data **data, t_cmd **cmd)
+void    exec_cmd(t_store *store, t_cmd *cmd)
 {
     char    *path;
 
-    path = find_valid_path((*cmd)->cmd[0], *data);
+    path = find_valid_path(cmd->cmd[0], store);
     if (!path)
 	{
 		perror("command not found");
     	exit(EXIT_FAILURE);
 	}
-    execve(path, (*cmd)->cmd, (*data)->env_tab);
+    execve(path, cmd->cmd, store->env_tab);
     perror("execve failed");
     exit(EXIT_FAILURE);
 }
@@ -225,61 +225,109 @@ void	handle_redirections(t_cmd *cmd)
 	}
 }
 
-void    launch_child(int *in_fd, t_cmd **current, t_data **data, int *fd)
+void    launch_child(t_store *store)
 {
-    if (*in_fd != 0)
+    if (store->in_fd != 0)
     {
-        dup2(*in_fd, 0); //if not first cmd, read from pipe
-        close(*in_fd);
+        dup2(store->in_fd, 0); //if not first cmd, read from pipe
+        close(store->in_fd);
     }
-	if ((*current)->redir)
-		handle_redirections(*current);
-    if ((*current)->next)
+	if (store->current->redir)
+		handle_redirections(store->current);
+    if (store->current->next)
     {
-        close(fd[0]);
-        dup2(fd[1], 1); //write in pipe
-        close(fd[1]);
+        close(store->fd[0]);
+        dup2(store->fd[1], 1); //write in pipe
+        close(store->fd[1]);
     }
-    exec_cmd(data, current);
+    exec_cmd(store, store->current);
 }
 
-void    handle_parent(int *in_fd, t_cmd **current, int *fd)
+void    handle_parent(t_store *store)
 {
-    if (*in_fd != 0)
-        close(*in_fd);
-    if ((*current)->next)
+    if (store->in_fd != 0)
+        close(store->in_fd);
+    if (store->current->next)
     {
-        close(fd[1]);
-        *in_fd = fd[0]; //save for next
+        close(store->fd[1]);
+        store->in_fd = store->fd[0]; //save for next
     }
-    *current = (*current)->next;
+    store->current = store->current->next;
+}
+
+void	init_store(t_store *store, t_data *data)
+{
+	store->pid = -2;
+	store->fd[0] = -2;
+	store->fd[1] = -2;
+	store->in_fd = 0;
+	store->current = data->cmd;
+	store->env_tab = ft_list_to_tab(data->env);
+}
+
+int	is_built_in(t_cmd *cmd)
+{
+	int		i;
+	char	*built_in_funcs[7];
+
+	i = 0;
+	built_in_funcs[0] = "ecouille";
+	built_in_funcs[1] = "cd_2";
+	built_in_funcs[2] = "pwd_2";
+	built_in_funcs[3] = "export_2";
+	built_in_funcs[4] = "unset_2";
+	built_in_funcs[5] = "env_2";
+	built_in_funcs[6] = "exit_2";
+	while (i <= 6)
+	{
+		if (ft_strncmp(cmd->cmd[0], built_in_funcs[i], ft_strlen(cmd->cmd[0])) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	exec_built_in(t_cmd *cmd)
+{
+	if (ft_strncmp(cmd->cmd[0], "ecouille", 9) == 0)
+		write(1, "execute built-in echo\n", 22);
 }
 
 //split this function
 void    setup_exec(t_data *data)
 {
-    int     fd[2];
-    int     in_fd;
-    pid_t   pid;
-    t_cmd   *current;
+	t_store	*store;
 
-    in_fd = 0; //stdin
-	data->env_tab = ft_list_to_tab(data->env);
-    current = data->cmd;
-    while (current)
+	store = malloc(sizeof(t_store));
+    if (!store)
+	{
+        perror("Failed to allocate memory for store");
+        return;
+    }
+	init_store(store, data);
+    while (store->current)
     {
-        if (open_pipe(fd, current) == 0)
-            return ;
-        pid = fork();
-        if (pid == -1)
-        {
-            perror("fork");
-            return ;
-        }
-        else if (pid == 0)
-            launch_child(&in_fd, &current, &data, fd);
-        else
-            handle_parent(&in_fd, &current, fd);
+		if (is_built_in(store->current))
+		{
+			exec_built_in(store->current);
+			store->current = store->current->next;
+		}
+		else
+		{
+			if (open_pipe(store->fd, store->current) == 0)
+            	return ;
+        	store->pid = fork();
+        	if (store->pid == -1)
+        	{
+            	perror("fork");
+            	return ;
+        	}
+        	else if (store->pid == 0)
+            	launch_child(store);
+        	else
+            	handle_parent(store);
+		}
     }
     pickup_children();
+	free(store);
 }
