@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/07 16:55:49 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:54:32 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ typedef struct s_built_in_cmd
 {
 	const char		*cmd;
 	built_in_func	handler;
-}	t_built_in_cmd;			OTHER WAY FOR BUILT IN FUNCS USING FUNCTION POINTERS?*/
+	s_built_in_cmd	*next;
+}	t_built_in_cmd;*/
 
 
 

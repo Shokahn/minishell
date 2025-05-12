@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/07 17:04:36 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:58:12 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,17 +193,6 @@ void	append_handler(t_redir *redir)
 	close(fd);
 }
 
-//Heredoc = do nothing right now, to implement!!!
-//implementing heredoc : 
-// https://medium.com/@oduwoledare/heredoc-a-deep-dive-23c82992e522 interesting article
-// shell inside of shell, have to redo parsing on input, shellception??? POG 
-void	ft_heredoc(t_redir *redir)
-{
-	if (redir->type == HEREDOC)
-		write(1, "no heredoc yet\n", 15);
-	return ;
-}
-
 void	handle_redirections(t_cmd *cmd)
 {
 	t_redir	*redir;
@@ -217,8 +206,6 @@ void	handle_redirections(t_cmd *cmd)
 			redir_out_handler(redir);
 		else if (redir->type == APPEND)
 			append_handler(redir);
-		else if (redir->type == HEREDOC)
-			ft_heredoc(redir);
 		else
 			break;
 		redir = redir->next;
@@ -265,13 +252,36 @@ void	init_store(t_store *store, t_data *data)
 	store->env_tab = ft_list_to_tab(data->env);
 }
 
+void ft_echo(char **args, int fd_out)
+{
+	int	i;
+	int	newline_toggle;
+
+	if (fd_out == -2)
+		fd_out = 1;
+	i = 1;
+	newline_toggle = 1;
+	if (strncmp(args[1], "-n", 3) == 0)
+	{
+		newline_toggle = 0;
+		i++;
+	}
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], fd_out);
+		i++;
+	}
+	if (newline_toggle == 1)
+		ft_putchar_fd('\n', fd_out);
+}
+
 int	is_built_in(t_cmd *cmd)
 {
 	int		i;
 	char	*built_in_funcs[7];
 
 	i = 0;
-	built_in_funcs[0] = "ecouille";
+	built_in_funcs[0] = "echo_2";
 	built_in_funcs[1] = "cd_2";
 	built_in_funcs[2] = "pwd_2";
 	built_in_funcs[3] = "export_2";
@@ -280,17 +290,17 @@ int	is_built_in(t_cmd *cmd)
 	built_in_funcs[6] = "exit_2";
 	while (i <= 6)
 	{
-		if (ft_strncmp(cmd->cmd[0], built_in_funcs[i], ft_strlen(cmd->cmd[0])) == 0)
+		if (ft_strncmp(cmd->cmd[0], built_in_funcs[i], 10) == 0)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	exec_built_in(t_cmd *cmd)
+void	exec_built_in(t_store *store)
 {
-	if (ft_strncmp(cmd->cmd[0], "ecouille", 9) == 0)
-		write(1, "execute built-in echo\n", 22);
+	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
+		ft_echo(store->current->cmd, store->fd[1]);
 }
 
 //split this function
@@ -309,7 +319,7 @@ void    setup_exec(t_data *data)
     {
 		if (is_built_in(store->current))
 		{
-			exec_built_in(store->current);
+			exec_built_in(store);
 			store->current = store->current->next;
 		}
 		else
@@ -322,7 +332,7 @@ void    setup_exec(t_data *data)
             	perror("fork");
             	return ;
         	}
-        	else if (store->pid == 0)
+        	else if (store->pid == 1)
             	launch_child(store);
         	else
             	handle_parent(store);
