@@ -547,12 +547,26 @@ void	print_line(t_data *shell)
 t_env	*add_env_node(char *str, t_data *shell)
 {
 	t_env	*new;
+	char	*split[2];
+	int		i;
+	int		start;
 
+	i = 0;
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (ft_error(shell, 0, "malloc failed\n"), NULL);
 	new->next = NULL;
-	new->str = str;
+	while (str[i] && str[i] != '=')
+		i++;
+	split[0] = ft_calloc(sizeof(char), (i + 2));
+	split[0] = ft_substr(str, 0, i);
+	start = i + 1;
+	while(str[i])
+		i++;
+	split[1] = ft_calloc(sizeof(char), i - start + 1);
+	split[1] = ft_substr(str, start, i - start);
+	new->name = split[0];
+	new->inside = split[1];
 	return (new);
 }
 
@@ -597,40 +611,78 @@ void	print_env(t_data *shell)
 	tmp = shell->env;
 	while (tmp)
 	{
-		printf("%s\n", tmp->str);
+		printf("%s=", tmp->name);
+		printf("%s\n", tmp->inside);
 		tmp = tmp->next;
 	}
 }
 
-/* void	extract_variable(char **inside)
+int	pass_the_quote(char *inside, int i)
 {
+	while (inside[i] && inside[i] != '\'')
+		i++;
+	return (i + 1);
 }
 
-void	expand_string(char **inside, t_data *shell)
+int	pass_the_dquote(char *inside, int i, int *check)
+{
+	while (inside[i] && inside[i] != '\"')
+	{
+		if (inside[i] == '$')
+			return (*check = 1, i);
+		i++;
+	}
+	return (*check = 0, i + 1);
+}
+
+int	extract_variable(char *inside, int i)
+{
+	int start;
+
+	start = i;
+	if (!ft_isalpha(inside[i]))
+		return (0);
+	i++;
+	while(inside[i] && inside[i] )
+
+}
+
+int	expand_string(char *inside, t_data *shell)
 {
 	int	i;
+	int check;
 
+	(void)shell;
 	i = 0;
-	while (*inside[i])
+	check = 0;
+	while (inside[i])
 	{
-		if (*inside[i] == '$')
-		{
-			extract_variable(inside);
-		}
+		if (inside[i] == '\'' && inside[i + 1])
+			i = pass_the_quote(inside, i + 1);
+		if ((inside[i] == '\"' || check == 1) && inside[i + 1])
+			i = pass_the_dquote(inside, i + 1, &check);
+		if (inside[i] == '$' && inside[i + 1])
+			if (!extract_variable(inside, i + 1))
+				return (0);
+		else
+			i++;
 	}
+	return (1);
 }
 
-
-int	expandation(t_data *shell, char **envp)
+int	expandation(t_data *shell)
 {
-	while (shell->token)
+	t_token *tmp;
+	tmp = shell->token;
+	while (tmp)
 	{
-		if (shell->token->type == WORD)
-			expand_string(&shell->token->inside, shell)
+		if (tmp->type == WORD)
+			if (!expand_string(tmp->inside, shell));
+				return (0);
+		tmp = tmp->next;
 	}
-	print_env(shell);
 	return (1);
-} */
+}
 int	minishell(char *input, t_data *shell, char **envp)
 {
 	shell->input = input;
@@ -644,19 +696,19 @@ int	minishell(char *input, t_data *shell, char **envp)
 	if (!making_the_list(shell))
 		return (0);
 	shell->env = get_env(shell, envp);
+	//print_env(shell);
 	if (!shell->env)
 		return (0);
-	// if (!expandation(shell, envp))
-	// return (0);
+	if (!expandation(shell))
+		return (0);
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
+	// print_line(shell);
+	// print_token(shell);
+	print_cmds(shell->cmd);
 	printf("\n\n\033[1mOutput :\033[0m\n\n");
 	setup_exec(shell);
-	/*print_env(shell);
-	print_line(shell);
-	print_token(shell);
-	print_cmds(shell->cmd);*/
 	return (1);
 }
 

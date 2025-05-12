@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/03 20:23:53 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:52:49 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/headers/libft.h"
 # include <dirent.h>
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -29,7 +30,6 @@
 # include <termios.h>
 # include <ttyent.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 # define TEST printf(BOLD RED "test\n" RESET);
 # define TEST2 printf(BOLD GREEN "test\n" RESET);
@@ -68,7 +68,8 @@ typedef struct s_cmd
 
 typedef struct s_env
 {
-	char			*str;
+	char			*inside;
+	char			*name;
 	struct s_env	*next;
 }					t_env;
 
