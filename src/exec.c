@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/12 17:58:12 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/12 18:03:12 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	ft_envsize(t_env *lst)
 char	**ft_list_to_tab(t_env *env)
 {
 	char	**tab;
+	char	*join;
 	int		i;
 
 	i = 0;
@@ -36,10 +37,14 @@ char	**ft_list_to_tab(t_env *env)
 		return (NULL);
 	while (env)
 	{
-		tab[i] = ft_strdup(env->str);
+		join = ft_strjoin(env->name, "=");
+		if (!join)
+			return (NULL);
+		join = ft_strjoin(join, env->inside);
+		tab[i] = ft_strdup(join);
 		if (!tab[i++])
 		{
-			perror("free the rest of tab to avoid leaks, too lazy to do it right now");
+			perror("free the rest of tab to avoid leaks,too lazy to do it right now");
 			return (NULL);
 		}
 		env = env->next;
@@ -48,107 +53,107 @@ char	**ft_list_to_tab(t_env *env)
 	return (tab);
 }
 
-char    **ft_tab_dup(char **tab)
+char	**ft_tab_dup(char **tab)
 {
-    char    **copy;
-    int     i;
-    int     l;
+	char	**copy;
+	int		i;
+	int		l;
 
-    if (!tab || !tab[0])
-        return (NULL);
-    l = 0;
-    while (tab[l])
-        l++;
-    copy = malloc(sizeof(char *) * (l + 1));
-    i = 0;
-    while (tab[i])
-    {
-        copy[i] = ft_strdup(tab[i]);
-        if (!copy[i])
-        {
-            ft_free_tab(copy);
-            return (NULL);
-        }
-        i++;
-    }
-    copy[i] = 0;
-    return (copy);
+	if (!tab || !tab[0])
+		return (NULL);
+	l = 0;
+	while (tab[l])
+		l++;
+	copy = malloc(sizeof(char *) * (l + 1));
+	i = 0;
+	while (tab[i])
+	{
+		copy[i] = ft_strdup(tab[i]);
+		if (!copy[i])
+		{
+			ft_free_tab(copy);
+			return (NULL);
+		}
+		i++;
+	}
+	copy[i] = 0;
+	return (copy);
 }
 
-char    **get_paths(char **env)
+char	**get_paths(char **env)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (env[i])
-    {
-        if (ft_strncmp("PATH", env[i], 4) == 0)
-            return (ft_split(env[i], ':'));
-        i++;
-    }
-    return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp("PATH", env[i], 4) == 0)
+			return (ft_split(env[i], ':'));
+		i++;
+	}
+	return (NULL);
 }
 
-char    *find_valid_path(const char *str, t_store *store)
+char	*find_valid_path(const char *str, t_data *data)
 {
-    char    **paths;
-    int     i;
-    char    *pathname;
-    char    *tmp;
+	char	**paths;
+	int		i;
+	char	*pathname;
+	char	*tmp;
 
-    paths = get_paths(store->env_tab);
-    if (!paths)
-        return (NULL);
-    i = 0;
-    while (paths[i])
-    {
-        tmp = ft_strjoin(paths[i], "/");
-        pathname = ft_strjoin(tmp, str);
-        if (access(pathname, X_OK) == 0)
-        {
-            ft_free_tab(paths);
-            return (pathname);
-        }
-        free(tmp);
-        free(pathname);
-        i++;
-    }
-    ft_free_tab(paths);
-    return (NULL);
+	paths = get_paths(data->env_tab);
+	if (!paths)
+		return (NULL);
+	i = 0;
+	while (paths[i])
+	{
+		tmp = ft_strjoin(paths[i], "/");
+		pathname = ft_strjoin(tmp, str);
+		if (access(pathname, X_OK) == 0)
+		{
+			ft_free_tab(paths);
+			return (pathname);
+		}
+		free(tmp);
+		free(pathname);
+		i++;
+	}
+	ft_free_tab(paths);
+	return (NULL);
 }
 
 void    exec_cmd(t_store *store, t_cmd *cmd)
 {
-    char    *path;
+	char	*path;
 
     path = find_valid_path(cmd->cmd[0], store);
     if (!path)
 	{
 		perror("command not found");
-    	exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
     execve(path, cmd->cmd, store->env_tab);
     perror("execve failed");
     exit(EXIT_FAILURE);
 }
 
-void    pickup_children(void)
+void	pickup_children(void)
 {
-    while (wait(NULL) > 0) //wait returns -1 when no children are left?
-        ;
+	while (wait(NULL) > 0) // wait returns -1 when no children are left?
+		;
 }
 
-int open_pipe(int fd[2], t_cmd *current)
+int	open_pipe(int fd[2], t_cmd *current)
 {
-    if (current->next)
-    {
-        if (pipe(fd) == -1)
-        {
-            perror("pipe");
-            return (0);
-        }
-    }
-    return (1);
+	if (current->next)
+	{
+		if (pipe(fd) == -1)
+		{
+			perror("pipe");
+			return (0);
+		}
+	}
+	return (1);
 }
 
 void	redir_in_handler(t_redir *redir)
@@ -161,7 +166,7 @@ void	redir_in_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 0); //change stdin?
+	dup2(fd, 0); // change stdin?
 	close(fd);
 }
 
@@ -175,7 +180,7 @@ void	redir_out_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 1);  //change stdout?
+	dup2(fd, 1); // change stdout?
 	close(fd);
 }
 
@@ -189,7 +194,7 @@ void	append_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 1);  //change stdout?
+	dup2(fd, 1); // change stdout?
 	close(fd);
 }
 
@@ -207,7 +212,7 @@ void	handle_redirections(t_cmd *cmd)
 		else if (redir->type == APPEND)
 			append_handler(redir);
 		else
-			break;
+			break ;
 		redir = redir->next;
 	}
 }
@@ -303,8 +308,8 @@ void	exec_built_in(t_store *store)
 		ft_echo(store->current->cmd, store->fd[1]);
 }
 
-//split this function
-void    setup_exec(t_data *data)
+// split this function
+void	setup_exec(t_data *data)
 {
 	t_store	*store;
 
