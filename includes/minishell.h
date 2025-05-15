@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/12 09:52:49 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:24:44 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 {
 	t_type			type;
 	char			*inside;
+	int				expand;
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;

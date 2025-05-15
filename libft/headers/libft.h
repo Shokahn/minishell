@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:08:19 by stdevis           #+#    #+#             */
-/*   Updated: 2025/04/24 14:37:39 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:26:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char				*ft_strjoin(char const *s1, char const *s2);
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-int					ft_strncmp(const char *s1, const char *s2, size_t n);
+int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strnstr(const char *haystack, const char *needle,
 						size_t len);
 char				*ft_strrchr(const char *s, int c);
@@ -61,6 +61,8 @@ void				ft_free_array(int **array, int len);
 void				ft_free_tab(char **tab);
 void				ft_free_index(char **split, int j);
 int					ft_isspace(int c);
+char				*ft_strndup(const char *s1, size_t n);
+int					ft_strncmp(const char *s1, const char *s2, size_t n);
 
 typedef struct s_list
 {

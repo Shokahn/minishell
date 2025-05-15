@@ -62,7 +62,7 @@ fclean: clean
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
-	@echo " ↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
+	@echo "↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
 	@rm -f $(NAME)
 	@echo ""
 	@echo "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
