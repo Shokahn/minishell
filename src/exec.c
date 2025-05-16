@@ -82,14 +82,14 @@ char	**get_paths(char **env)
 	return (NULL);
 }
 
-char	*find_valid_path(const char *str, t_data *data)
+char	*find_valid_path(const char *str, t_store *store)
 {
 	char	**paths;
 	int		i;
 	char	*pathname;
 	char	*tmp;
 
-	paths = get_paths(data->env_tab);
+	paths = get_paths(store->env_tab);
 	if (!paths)
 		return (NULL);
 	i = 0;
@@ -205,56 +205,11 @@ void	handle_redirections(t_cmd *cmd)
 	}
 }
 
-void    launch_child(t_store *store)
-{
-	if (store->in_fd != 0)
-	{
-		dup2(store->in_fd, 0); //if not first cmd, read from pipe
-    	close(store->in_fd);
-    }
-	if (store->current->redir)
-		handle_redirections(store->current);
-    if (store->current->next)
-    {
-        close(store->fd[0]);
-        dup2(store->fd[1], 1); //write in pipe
-    	close(store->fd[1]);
-    }
-	if (is_built_in(store->current))
-		exec_built_in(store);
-	else
-		exec_cmd(store, store->current);
-}
-
-void    handle_parent(t_store *store)
-{
-    if (store->in_fd != 0)
-        close(store->in_fd);
-    if (store->current->next)
-    {
-        close(store->fd[1]);
-        store->in_fd = store->fd[0]; //save for next
-    }
-    store->current = store->current->next;
-}
-
-void	init_store(t_store *store, t_data *data)
-{
-	store->pid = -2;
-	store->fd[0] = -2;
-	store->fd[1] = -2;
-	store->in_fd = 0;
-	store->current = data->cmd;
-	store->env_tab = ft_list_to_tab(data->env);
-}
-
-void ft_echo(char **args, int fd_out)
+void ft_echo(char **args)
 {
 	int	i;
 	int	newline_toggle;
 
-	if (fd_out == -2)
-		fd_out = 1;
 	i = 1;
 	newline_toggle = 1;
 	if (strncmp(args[1], "-n", 3) == 0)
@@ -264,11 +219,11 @@ void ft_echo(char **args, int fd_out)
 	}
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], fd_out);
+		ft_putstr_fd(args[i], 1);
 		i++;
 	}
 	if (newline_toggle == 1)
-		ft_putchar_fd('\n', fd_out);
+		ft_putchar_fd('\n', 1);
 }
 
 int	is_built_in(t_cmd *cmd)
@@ -296,7 +251,102 @@ int	is_built_in(t_cmd *cmd)
 void	exec_built_in(t_store *store)
 {
 	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
-		ft_echo(store->current->cmd, store->fd[1]);
+		ft_echo(store->current->cmd);
+}
+
+void    launch_child(t_store *store)
+{
+	if (store->in_fd != 0)
+	{
+		dup2(store->in_fd, 0); //if not first cmd, read from pipe
+    	close(store->in_fd);
+    }
+    if (store->current->next)
+    {
+        close(store->fd[0]);
+        dup2(store->fd[1], 1); //write in pipe
+    	close(store->fd[1]);
+    }
+	if (store->current->redir)
+		handle_redirections(store->current);
+	if (is_built_in(store->current))
+	{
+		exec_built_in(store);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		exec_cmd(store, store->current);
+}
+
+void    handle_parent(t_store *store)
+{
+    if (store->in_fd != 0)
+        close(store->in_fd);
+    if (store->current->next)
+    {
+        close(store->fd[1]);
+        store->in_fd = store->fd[0]; //save for next
+    }
+    store->current = store->current->next;
+}
+
+void	init_store(t_store *store, t_data *data)
+{
+	store->pid = -2;
+	store->fd[0] = -2;
+	store->fd[1] = -2;
+	store->in_fd = 0;
+	store->current = data->cmd;
+	store->env_tab = ft_list_to_tab(data->env);
+}
+
+void	save_fds(t_store *store)
+{
+	store->std_in = dup(0);
+	store->std_out = dup(1);
+
+	if (store->std_in < 0 || store->std_out < 0)
+		perror("dup fail");
+}
+
+void	reset_fds(t_store *store)
+{
+	dup2(store->std_in, 0);
+	dup2(store->std_out, 1);
+	close(store->std_in);
+	close(store->std_out);
+}
+
+void	exec_cmds(t_store *store)
+{
+	if (is_built_in(store->current) && !store->current->next)
+	{
+		if (store->current->redir)
+		{
+			save_fds(store);
+			handle_redirections(store->current);
+		}
+		exec_built_in(store);
+		if (store->current->redir)
+			reset_fds(store);
+		store->current = store->current->next;
+	}
+    while (store->current)
+    {
+			if (open_pipe(store->fd, store->current) == 0)
+            	return ;
+        	store->pid = fork();
+        	if (store->pid == -1)
+        	{
+            	perror("fork");
+            	return ;
+        	}
+        	else if (store->pid == 0)
+            	launch_child(store);
+        	else
+            	handle_parent(store);
+    }
+    pickup_children();
 }
 
 // split this function
@@ -311,26 +361,6 @@ void	setup_exec(t_data *data)
         return;
     }
 	init_store(store, data);
-	if (is_built_in(store->current) && !store->current->next)
-	{
-		exec_built_in(store);
-		store->current = store->current->next;
-	}
-    while (store->current)
-    {
-			if (open_pipe(store->fd, store->current) == 0)
-            	return ;
-        	store->pid = fork();
-        	if (store->pid == -1)
-        	{
-            	perror("fork");
-            	return ;
-        	}
-        	else if (store->pid == 1)
-            	launch_child(store);
-        	else
-            	handle_parent(store);
-    }
-    pickup_children();
+	exec_cmds(store);
 	free(store);
 }

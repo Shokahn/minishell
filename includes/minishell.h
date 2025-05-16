@@ -79,6 +79,8 @@ typedef struct s_store
     pid_t			pid;
     t_cmd			*current;
 	char			**env_tab;
+	int				std_in;
+	int				std_out;
 }				t_store;
 
 /*typedef void (*built_in_func)(char **args);
@@ -97,5 +99,8 @@ void				setup_exec(t_data *data);
 
 // error
 void				ft_error(t_data *shell, int type, char *message);
+
+//signals
+void				setup_signals(void);
 
 #endif
