@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/12 18:03:12 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:08:28 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,10 @@ void	handle_redirections(t_cmd *cmd)
 
 void    launch_child(t_store *store)
 {
-    if (store->in_fd != 0)
-    {
-        dup2(store->in_fd, 0); //if not first cmd, read from pipe
-        close(store->in_fd);
+	if (store->in_fd != 0)
+	{
+		dup2(store->in_fd, 0); //if not first cmd, read from pipe
+    	close(store->in_fd);
     }
 	if (store->current->redir)
 		handle_redirections(store->current);
@@ -230,9 +230,12 @@ void    launch_child(t_store *store)
     {
         close(store->fd[0]);
         dup2(store->fd[1], 1); //write in pipe
-        close(store->fd[1]);
+    	close(store->fd[1]);
     }
-    exec_cmd(store, store->current);
+	if (is_built_in(store->current))
+		exec_built_in(store);
+	else
+		exec_cmd(store, store->current);
 }
 
 void    handle_parent(t_store *store)
@@ -320,15 +323,13 @@ void	setup_exec(t_data *data)
         return;
     }
 	init_store(store, data);
+	if (is_built_in(store->current) && !store->current->next)
+	{
+		exec_built_in(store);
+		store->current = store->current->next;
+	}
     while (store->current)
     {
-		if (is_built_in(store->current))
-		{
-			exec_built_in(store);
-			store->current = store->current->next;
-		}
-		else
-		{
 			if (open_pipe(store->fd, store->current) == 0)
             	return ;
         	store->pid = fork();
@@ -341,7 +342,6 @@ void	setup_exec(t_data *data)
             	launch_child(store);
         	else
             	handle_parent(store);
-		}
     }
     pickup_children();
 	free(store);
