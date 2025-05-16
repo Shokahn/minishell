@@ -622,7 +622,7 @@ int	pass_the_quote(char *inside, int i)
 {
 	while (inside[i] && inside[i] != '\'')
 		i++;
-	return (i + 1);
+	return (i);
 }
 
 int	pass_the_dquote(char *inside, int i, int *check)
@@ -635,7 +635,7 @@ int	pass_the_dquote(char *inside, int i, int *check)
 			return (*check = 1, i);
 		i++;
 	}
-	return (*check = 0, i + 1);
+	return (*check = 0, i);
 }
 
 int	end_of_expansion_or_not(char *inside, int i)
@@ -664,19 +664,30 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 	char	*before;
 	char	*after;
 	char	*tmp;
-	int		end;
+	char 	*joined;
 
-	end = 0;
-	while (current->inside[end])
-		end++;
-	before = ft_strndup(current->inside, end - (end - start) - 1);
+	before = ft_strndup(current->inside, start - 1);
 	tmp = ft_strjoin(before, expand);
-	after = ft_substr(current->inside, i, end - i);
-	tmp = ft_strjoin(tmp, after);
 	printf("before = %s\n", before);
+	free(before);
+	after = ft_substr(current->inside, i, ft_strlen(current->inside) - i);
+	joined = ft_strjoin(tmp, after);
 	printf("after = %s\n", after);
-	printf("all = %s\n", tmp);
+	free(tmp);
+	free(after);
+	free(current->inside);
+	current->inside = joined;
+	printf("current->inside = %s\n", current->inside);
+}
 
+int return_after_quote(t_token *current)
+{
+	int i;
+
+	i = 0;
+	while (current->inside[i] && (current->inside[i] == '\'' || current->inside[i] == '\"'))
+		i++;
+	return (i);
 }
 
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
@@ -700,26 +711,25 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 	{
 		expand = ft_strdup("");
 		replace_value(expand, current, i, i + 1);
-		return (i + 1);
 	}
-	return (i);
+	return (return_after_quote(current));
 }
 
-int	expand_string(t_token *current, char *inside, t_data *shell)
+int	expand_string(t_token *current, t_data *shell)
 {
 	int	i;
 	int	check;
 
 	i = 0;
 	check = 0;
-	while (inside[i])
+	while (current->inside[i])
 	{
-		if (inside[i] == '\'' && inside[i + 1])
-			i = pass_the_quote(inside, i + 1);
-		if ((inside[i] == '\"' || check == 1) && inside[i + 1])
-			i = pass_the_dquote(inside, i + 1, &check);
-		if (inside[i] == '$' && inside[i + 1])
-			i = extract_variable(inside, i + 1, current, shell);
+		if (current->inside[i] == '\'' && current->inside[i + 1])
+			i = pass_the_quote(current->inside, i + 1);
+		if ((current->inside[i] == '\"' || check == 1) && current->inside[i + 1])
+			i = pass_the_dquote(current->inside, i + 1, &check);
+		if (current->inside[i] == '$' && current->inside[i + 1])
+			i = extract_variable(current->inside, i + 1, current, shell);
 		else
 			i++;
 	}
@@ -734,7 +744,7 @@ int	expandation(t_data *shell)
 	while (tmp)
 	{
 		if (tmp->type == WORD)
-			if (!expand_string(tmp, tmp->inside, shell))
+			if (!expand_string(tmp, shell))
 				return (0);
 		tmp = tmp->next;
 	}
