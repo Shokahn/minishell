@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 12:04:05 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/13 13:25:07 by stdevis          ###   ########.fr       */
+/*   Created: 2025/05/13 13:10:04 by stdevis           #+#    #+#             */
+/*   Updated: 2025/05/13 13:20:20 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strndup(const char *s1, size_t n)
 {
-	size_t	i;
+	char *dup;
+	size_t i;
+	size_t len;
 
+	len = 0;
+	while (s1[len] && len < n)
+		len++;
 	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n)
+	dup = malloc(sizeof(char) * len + 1);
+	if (!dup)
+		return (NULL);
+	while (i < len)
+	{
+		dup[i] = s1[i];
 		i++;
-	if (n == i)
-		return (0);
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	dup[len] = '\0';
+	return (dup);
 }
-
-/*int	main(void)
-{
-	char s1[] = {12};
-	char s2[] = {-18};
-	size_t n = 7;
-	printf("%d \n", ft_strncmp(s1, s2, n));
-	printf("%d \n", strncmp(s1, s2, n));
-}*/

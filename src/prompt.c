@@ -286,6 +286,7 @@ t_token	*create_node(char *inside)
 	new->next = NULL;
 	new->prev = NULL;
 	new->type = 0;
+	new->expand = 0;
 	return (new);
 }
 
@@ -345,7 +346,7 @@ void	identification_token(t_data *shell)
 	}
 }
 
-int	making_the_list(t_data *shell)
+int	making_token(t_data *shell)
 {
 	shell->token = line_to_token(shell);
 	if (!shell->token)
@@ -561,7 +562,7 @@ t_env	*add_env_node(char *str, t_data *shell)
 	split[0] = ft_calloc(sizeof(char), (i + 2));
 	split[0] = ft_substr(str, 0, i);
 	start = i + 1;
-	while(str[i])
+	while (str[i])
 		i++;
 	split[1] = ft_calloc(sizeof(char), i - start + 1);
 	split[1] = ft_substr(str, start, i - start);
@@ -626,6 +627,8 @@ int	pass_the_quote(char *inside, int i)
 
 int	pass_the_dquote(char *inside, int i, int *check)
 {
+	if (inside[i - 1] == '$'  && *check == 1)
+		return (i - 1);
 	while (inside[i] && inside[i] != '\"')
 	{
 		if (inside[i] == '$')
@@ -635,24 +638,78 @@ int	pass_the_dquote(char *inside, int i, int *check)
 	return (*check = 0, i + 1);
 }
 
-int	extract_variable(char *inside, int i)
+int	end_of_expansion_or_not(char *inside, int i)
 {
-	int start;
+	while (inside[i] && (ft_isalpha(inside[i]) || ft_isdigit(inside[i]) || inside[i] == '_'))
+		i++;
+	return (i);
+}
 
-	start = i;
-	if (!ft_isalpha(inside[i]))
-		return (0);
-	i++;
-	while(inside[i] && inside[i] )
+char	*check_value(t_data *shell, char *name)
+{
+	t_env	*current;
+
+	current = shell->env;
+	while (current)
+	{
+		if (!ft_strcmp(name, current->name))
+			return (current->inside);
+		current = current->next;
+	}
+	return (ft_strdup(""));
+}
+
+void	replace_value(char *expand, t_token *current, int start, int i)
+{
+	char	*before;
+	char	*after;
+	char	*tmp;
+	int		end;
+
+	end = 0;
+	while (current->inside[end])
+		end++;
+	before = ft_strndup(current->inside, end - (end - start) - 1);
+	tmp = ft_strjoin(before, expand);
+	after = ft_substr(current->inside, i, end - i);
+	tmp = ft_strjoin(tmp, after);
+	printf("before = %s\n", before);
+	printf("after = %s\n", after);
+	printf("all = %s\n", tmp);
 
 }
 
-int	expand_string(char *inside, t_data *shell)
+int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
+{
+	int		start;
+	char	*name;
+	char	*expand;
+
+	current->expand++;
+	if (ft_isalpha(inside[i]) || inside[i] == '_')
+	{	start = i;
+		i = end_of_expansion_or_not(inside, i + 1);
+		name = ft_substr(inside, start, i - start);
+		printf(GREEN "i after expand = %d\n" RESET, i);
+		printf(RED "name = %s\n" RESET, name);
+		expand = check_value(shell, name);
+		printf(RED "expand = %s\n" RESET, expand);
+		replace_value(expand, current, start, i);
+	}
+	else if (ft_isdigit(inside[i]))
+	{
+		expand = ft_strdup("");
+		replace_value(expand, current, i, i + 1);
+		return (i + 1);
+	}
+	return (i);
+}
+
+int	expand_string(t_token *current, char *inside, t_data *shell)
 {
 	int	i;
-	int check;
+	int	check;
 
-	(void)shell;
 	i = 0;
 	check = 0;
 	while (inside[i])
@@ -662,8 +719,7 @@ int	expand_string(char *inside, t_data *shell)
 		if ((inside[i] == '\"' || check == 1) && inside[i + 1])
 			i = pass_the_dquote(inside, i + 1, &check);
 		if (inside[i] == '$' && inside[i + 1])
-			if (!extract_variable(inside, i + 1))
-				return (0);
+			i = extract_variable(inside, i + 1, current, shell);
 		else
 			i++;
 	}
@@ -672,12 +728,13 @@ int	expand_string(char *inside, t_data *shell)
 
 int	expandation(t_data *shell)
 {
-	t_token *tmp;
+	t_token	*tmp;
+
 	tmp = shell->token;
 	while (tmp)
 	{
 		if (tmp->type == WORD)
-			if (!expand_string(tmp->inside, shell));
+			if (!expand_string(tmp, tmp->inside, shell))
 				return (0);
 		tmp = tmp->next;
 	}
@@ -693,7 +750,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 	}
 	if (!lexeur(shell))
 		return (0);
-	if (!making_the_list(shell))
+	if (!making_token(shell))
 		return (0);
 	shell->env = get_env(shell, envp);
 	//print_env(shell);
@@ -705,7 +762,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
 	// print_line(shell);
-	// print_token(shell);
+	//print_token(shell);
 	print_cmds(shell->cmd);
 	printf("\n\n\033[1mOutput :\033[0m\n\n");
 	setup_exec(shell);
