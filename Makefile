@@ -12,7 +12,7 @@ OBJ_DIR = obj/
 SRC_DIR = src/
 INCLUDE = headers/
 
-SRC = prompt.c error.c exec.c
+SRC = prompt.c error.c exec.c signals.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
 CFLAGS = -Wall -Wextra -Werror -fPIC -g3
