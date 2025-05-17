@@ -16,6 +16,7 @@ int	ft_envsize(t_env *lst)
 char	**ft_list_to_tab(t_env *env)
 {
 	char	**tab;
+	char	*tmp;
 	char	*join;
 	int		i;
 
@@ -25,16 +26,26 @@ char	**ft_list_to_tab(t_env *env)
 		return (NULL);
 	while (env)
 	{
-		join = ft_strjoin(env->name, "=");
-		if (!join)
-			return (NULL);
-		join = ft_strjoin(join, env->inside);
-		tab[i] = ft_strdup(join);
-		if (!tab[i++])
+		tmp = ft_strjoin(env->name, "=");
+		if (!tmp)
 		{
-			perror("free the rest of tab to avoid leaks,too lazy to do it right now");
+			ft_free_tab(tab);
 			return (NULL);
 		}
+		join = ft_strjoin(tmp, env->inside);
+		free(tmp);
+		if (!join)
+		{
+			ft_free_tab(tab);
+			return (NULL);
+		}
+		tab[i] = join;
+		if (!tab[i])
+		{
+			ft_free_tab(tab);
+			return (NULL);
+		}
+		i++;
 		env = env->next;
 	}
 	tab[i] = 0;
@@ -122,6 +133,8 @@ void    exec_cmd(t_store *store, t_cmd *cmd)
 	}
     execve(path, cmd->cmd, store->env_tab);
     perror("execve failed");
+	ft_free_tab(store->env_tab);
+	free(store);
     exit(EXIT_FAILURE);
 }
 
@@ -349,7 +362,6 @@ void	exec_cmds(t_store *store)
     pickup_children();
 }
 
-// split this function
 void	setup_exec(t_data *data)
 {
 	t_store	*store;
@@ -362,5 +374,6 @@ void	setup_exec(t_data *data)
     }
 	init_store(store, data);
 	exec_cmds(store);
+	ft_free_tab(store->env_tab);
 	free(store);
 }

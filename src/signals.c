@@ -1,15 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
+/*   Updated: 2025/05/17 18:59:29 by brcoppie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-void	sig_handler(int signal, siginfo_t *info, void *nothing)
+void	sig_handler(int sig, siginfo_t *info, void *nothing)
 {
 	(void)nothing;
 	(void)info;
-	if (signal == SIGINT)
+	if (sig == SIGINT)
+	{
+		rl_replace_line("", 0);
 		write(1, "\n\033[32mminishell> \033[0m", 22);
+	}
 	else
 		return ;
 }
 
+// sigaction is overkill
 void	setup_signals(void)
 {
 	struct sigaction	sa;
@@ -22,3 +38,4 @@ void	setup_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 // control+D sends EOF --> to handle in readline loop || automatic?
+// free is not automatic!!
