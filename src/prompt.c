@@ -792,6 +792,7 @@ int	main(int ac, char **av, char **envp)
 		exit(1);
 	}
 	init_shell(&shell);
+	setup_signals();
 	while (1)
 	{
 		input = readline(GREEN BOLD "minishell> " RESET);

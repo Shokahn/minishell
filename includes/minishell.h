@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 14:26:20 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/16 14:32:24 by shokahn          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -82,13 +70,37 @@ typedef struct s_data
 	t_token			*token;
 	t_cmd			*cmd;
 	t_env			*env;
-	char			**env_tab;
 }					t_data;
+
+typedef struct s_store
+{
+	int				fd[2];
+    int				in_fd;
+    pid_t			pid;
+    t_cmd			*current;
+	char			**env_tab;
+	int				std_in;
+	int				std_out;
+}				t_store;
+
+/*typedef void (*built_in_func)(char **args);
+
+typedef struct s_built_in_cmd
+{
+	const char		*cmd;
+	built_in_func	handler;
+	s_built_in_cmd	*next;
+}	t_built_in_cmd;*/
+
+
 
 // exec
 void				setup_exec(t_data *data);
 
 // error
 void				ft_error(t_data *shell, int type, char *message);
+
+//signals
+void				setup_signals(void);
 
 #endif

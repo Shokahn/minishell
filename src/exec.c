@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/21 13:21:15 by bri               #+#    #+#             */
-/*   Updated: 2025/05/13 13:22:08 by stdevis          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 int	ft_envsize(t_env *lst)
@@ -94,14 +82,14 @@ char	**get_paths(char **env)
 	return (NULL);
 }
 
-char	*find_valid_path(const char *str, t_data *data)
+char	*find_valid_path(const char *str, t_store *store)
 {
 	char	**paths;
 	int		i;
 	char	*pathname;
 	char	*tmp;
 
-	paths = get_paths(data->env_tab);
+	paths = get_paths(store->env_tab);
 	if (!paths)
 		return (NULL);
 	i = 0;
@@ -122,19 +110,19 @@ char	*find_valid_path(const char *str, t_data *data)
 	return (NULL);
 }
 
-void	exec_cmd(t_data **data, t_cmd **cmd)
+void    exec_cmd(t_store *store, t_cmd *cmd)
 {
 	char	*path;
 
-	path = find_valid_path((*cmd)->cmd[0], *data);
-	if (!path)
+    path = find_valid_path(cmd->cmd[0], store);
+    if (!path)
 	{
 		perror("command not found");
 		exit(EXIT_FAILURE);
 	}
-	execve(path, (*cmd)->cmd, (*data)->env_tab);
-	perror("execve failed");
-	exit(EXIT_FAILURE);
+    execve(path, cmd->cmd, store->env_tab);
+    perror("execve failed");
+    exit(EXIT_FAILURE);
 }
 
 void	pickup_children(void)
@@ -198,17 +186,6 @@ void	append_handler(t_redir *redir)
 	close(fd);
 }
 
-// Heredoc = do nothing right now, to implement!!!
-// implementing heredoc :
-// https://medium.com/@oduwoledare/heredoc-a-deep-dive-23c82992e522 interesting article
-// shell inside of shell, have to redo parsing on input, shellception??? POG
-void	ft_heredoc(t_redir *redir)
-{
-	if (redir->type == HEREDOC)
-		write(1, "no heredoc yet\n", 15);
-	return ;
-}
-
 void	handle_redirections(t_cmd *cmd)
 {
 	t_redir	*redir;
@@ -222,113 +199,168 @@ void	handle_redirections(t_cmd *cmd)
 			redir_out_handler(redir);
 		else if (redir->type == APPEND)
 			append_handler(redir);
-		else if (redir->type == HEREDOC)
-			ft_heredoc(redir);
 		else
 			break ;
 		redir = redir->next;
 	}
 }
 
-void	launch_child(int *in_fd, t_cmd **current, t_data **data, int *fd)
+void ft_echo(char **args)
 {
-	if (*in_fd != 0)
+	int	i;
+	int	newline_toggle;
+
+	i = 1;
+	newline_toggle = 1;
+	if (strncmp(args[1], "-n", 3) == 0)
 	{
-		dup2(*in_fd, 0); // if not first cmd, read from pipe
-		close(*in_fd);
+		newline_toggle = 0;
+		i++;
 	}
-	if ((*current)->redir)
-		handle_redirections(*current);
-	if ((*current)->next)
+	while (args[i])
 	{
-		close(fd[0]);
-		dup2(fd[1], 1); // write in pipe
-		close(fd[1]);
+		ft_putstr_fd(args[i], 1);
+		i++;
 	}
-	exec_cmd(data, current);
+	if (newline_toggle == 1)
+		ft_putchar_fd('\n', 1);
 }
 
-void	handle_parent(int *in_fd, t_cmd **current, int *fd)
+int	is_built_in(t_cmd *cmd)
 {
-	if (*in_fd != 0)
-		close(*in_fd);
-	if ((*current)->next)
+	int		i;
+	char	*built_in_funcs[7];
+
+	i = 0;
+	built_in_funcs[0] = "echo_2";
+	built_in_funcs[1] = "cd_2";
+	built_in_funcs[2] = "pwd_2";
+	built_in_funcs[3] = "export_2";
+	built_in_funcs[4] = "unset_2";
+	built_in_funcs[5] = "env_2";
+	built_in_funcs[6] = "exit_2";
+	while (i <= 6)
 	{
-		close(fd[1]);
-		*in_fd = fd[0]; // save for next
+		if (ft_strncmp(cmd->cmd[0], built_in_funcs[i], 10) == 0)
+			return (1);
+		i++;
 	}
-	*current = (*current)->next;
+	return (0);
+}
+
+void	exec_built_in(t_store *store)
+{
+	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
+		ft_echo(store->current->cmd);
+}
+
+void    launch_child(t_store *store)
+{
+	if (store->in_fd != 0)
+	{
+		dup2(store->in_fd, 0); //if not first cmd, read from pipe
+    	close(store->in_fd);
+    }
+    if (store->current->next)
+    {
+        close(store->fd[0]);
+        dup2(store->fd[1], 1); //write in pipe
+    	close(store->fd[1]);
+    }
+	if (store->current->redir)
+		handle_redirections(store->current);
+	if (is_built_in(store->current))
+	{
+		exec_built_in(store);
+		exit(EXIT_SUCCESS);
+	}
+	else
+		exec_cmd(store, store->current);
+}
+
+void    handle_parent(t_store *store)
+{
+    if (store->in_fd != 0)
+        close(store->in_fd);
+    if (store->current->next)
+    {
+        close(store->fd[1]);
+        store->in_fd = store->fd[0]; //save for next
+    }
+    store->current = store->current->next;
+}
+
+void	init_store(t_store *store, t_data *data)
+{
+	store->pid = -2;
+	store->fd[0] = -2;
+	store->fd[1] = -2;
+	store->in_fd = 0;
+	store->current = data->cmd;
+	store->env_tab = ft_list_to_tab(data->env);
+}
+
+void	save_fds(t_store *store)
+{
+	store->std_in = dup(0);
+	store->std_out = dup(1);
+
+	if (store->std_in < 0 || store->std_out < 0)
+		perror("dup fail");
+}
+
+void	reset_fds(t_store *store)
+{
+	dup2(store->std_in, 0);
+	dup2(store->std_out, 1);
+	close(store->std_in);
+	close(store->std_out);
+}
+
+void	exec_cmds(t_store *store)
+{
+	if (is_built_in(store->current) && !store->current->next)
+	{
+		if (store->current->redir)
+		{
+			save_fds(store);
+			handle_redirections(store->current);
+		}
+		exec_built_in(store);
+		if (store->current->redir)
+			reset_fds(store);
+		store->current = store->current->next;
+	}
+    while (store->current)
+    {
+			if (open_pipe(store->fd, store->current) == 0)
+            	return ;
+        	store->pid = fork();
+        	if (store->pid == -1)
+        	{
+            	perror("fork");
+            	return ;
+        	}
+        	else if (store->pid == 0)
+            	launch_child(store);
+        	else
+            	handle_parent(store);
+    }
+    pickup_children();
 }
 
 // split this function
 void	setup_exec(t_data *data)
 {
-	int		fd[2];
-	int		in_fd;
-	pid_t	pid;
-	t_cmd	*current;
+	t_store	*store;
 
-	in_fd = 0; // stdin
-	data->env_tab = ft_list_to_tab(data->env);
-	current = data->cmd;
-	while (current)
+	store = malloc(sizeof(t_store));
+    if (!store)
 	{
-		if (open_pipe(fd, current) == 0)
-			return ;
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			return ;
-		}
-		else if (pid == 0)
-			launch_child(&in_fd, &current, &data, fd);
-		else
-			handle_parent(&in_fd, &current, fd);
-	}
-	pickup_children();
+        perror("Failed to allocate memory for store");
+        return;
+    }
+	init_store(store, data);
+	exec_cmds(store);
+	free(store);
 }
-
-/*int main(int ac, char **av, char **env)
-{
-	t_data  *data = malloc(sizeof(t_data));
-	t_cmd   *cmd = malloc(sizeof(t_cmd));
-
-	t_redir	*redir1 = malloc(sizeof(t_redir));
-	t_redir	*redir2 = malloc(sizeof(t_redir));
-	//t_redir *redir3 = malloc(sizeof(t_redir));
-
-	char    *cmd1[] = {"sort", NULL};
-	char	*cmd2[] = {"uniq", NULL};
-	//char	*cmd3[] = {"wc", "-l", NULL};
-
-	(void)ac;
-	(void)av;
-
-	data->env = ft_tab_dup(env);
-	data->cmd = cmd;
-
-	cmd->next = malloc(sizeof(t_cmd));
-	//cmd->next->next = malloc(sizeof(t_cmd));
-	cmd->cmd = cmd1;
-	cmd->next->cmd = cmd2;
-	//cmd->next->next->cmd = cmd3;
-
-	cmd->redir = redir1;
-	redir1->type = REDIR_IN;
-	redir1->file = "input.txt";
-	cmd->next->redir = redir2;
-	redir2->type = REDIR_OUT;
-	redir2->file = "output.txt";
-
-	setup_exec(data);
-	free(data);
-
-	//free(cmd->next->next);
-	free(cmd->next);
-	free(cmd);
-
-	free(redir1);
-	free(redir2);
-	//free(redir3);
-}*/
