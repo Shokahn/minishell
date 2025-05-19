@@ -257,6 +257,70 @@ int	no_file_after_redir(t_data *shell)
 	return (1);
 }
 
+int	pass_the_quote(char *inside, int i)
+{
+	while (inside[i] && inside[i] != '\'')
+		i++;
+	return (i);
+}
+
+int	pass_the_dquote_check(char *inside, int i, int *check)
+{
+	if (inside[i - 1] == '$' && *check == 1)
+		return (i - 1);
+	while (inside[i] && inside[i] != '\"')
+	{
+		if (inside[i] == '$')
+			return (*check = 1, i);
+		i++;
+	}
+	return (*check = 0, i);
+}
+char	*remove_quote(t_token *current)
+{
+	int		i;
+	int		j;
+	int		in_single;
+	int		in_double;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	in_single = 0;
+	in_double = 0;
+	while (current->inside[i])
+		i++;
+	result = malloc(sizeof(char) * (i + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (current->inside[i])
+	{
+		if (current->inside[i] == '\'' && in_double == 0)
+			in_single = !in_single;
+		else if (current->inside[i] == '\"' && in_single == 0)
+			in_double = !in_double;
+		else
+			result[j++] = current->inside[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+void	token_cleaning(t_data *shell)
+{
+	t_token	*current;
+
+	current = shell->token;
+	while (current)
+	{
+		if (current->expand >= 1)
+			current->inside = remove_quote(current);
+		current = current->next;
+	}
+}
+
 int	parsing(t_data *shell)
 {
 	if (shell->sep[0] == 4)
@@ -268,6 +332,7 @@ int	parsing(t_data *shell)
 	if (!(no_file_after_redir(shell)))
 		return (ft_error(shell, 0,
 				"bash: syntax error near unexpected token 'newline'\n"), 0);
+	token_cleaning(shell);
 	return (1);
 }
 
@@ -618,29 +683,10 @@ void	print_env(t_data *shell)
 	}
 }
 
-int	pass_the_quote(char *inside, int i)
-{
-	while (inside[i] && inside[i] != '\'')
-		i++;
-	return (i);
-}
-
-int	pass_the_dquote(char *inside, int i, int *check)
-{
-	if (inside[i - 1] == '$'  && *check == 1)
-		return (i - 1);
-	while (inside[i] && inside[i] != '\"')
-	{
-		if (inside[i] == '$')
-			return (*check = 1, i);
-		i++;
-	}
-	return (*check = 0, i);
-}
-
 int	end_of_expansion_or_not(char *inside, int i)
 {
-	while (inside[i] && (ft_isalpha(inside[i]) || ft_isdigit(inside[i]) || inside[i] == '_'))
+	while (inside[i] && (ft_isalpha(inside[i]) || ft_isdigit(inside[i])
+			|| inside[i] == '_'))
 		i++;
 	return (i);
 }
@@ -664,7 +710,7 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 	char	*before;
 	char	*after;
 	char	*tmp;
-	char 	*joined;
+	char	*joined;
 
 	before = ft_strndup(current->inside, start - 1);
 	tmp = ft_strjoin(before, expand);
@@ -680,12 +726,13 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 	printf("current->inside = %s\n", current->inside);
 }
 
-int return_after_quote(t_token *current)
+int	return_after_quote(t_token *current)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (current->inside[i] && (current->inside[i] == '\'' || current->inside[i] == '\"'))
+	while (current->inside[i] && (current->inside[i] == '\''
+			|| current->inside[i] == '\"'))
 		i++;
 	return (i);
 }
@@ -698,7 +745,8 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 
 	current->expand++;
 	if (ft_isalpha(inside[i]) || inside[i] == '_')
-	{	start = i;
+	{
+		start = i;
 		i = end_of_expansion_or_not(inside, i + 1);
 		name = ft_substr(inside, start, i - start);
 		printf(GREEN "i after expand = %d\n" RESET, i);
@@ -726,8 +774,9 @@ int	expand_string(t_token *current, t_data *shell)
 	{
 		if (current->inside[i] == '\'' && current->inside[i + 1])
 			i = pass_the_quote(current->inside, i + 1);
-		if ((current->inside[i] == '\"' || check == 1) && current->inside[i + 1])
-			i = pass_the_dquote(current->inside, i + 1, &check);
+		if ((current->inside[i] == '\"' || check == 1) && current->inside[i
+			+ 1])
+			i = pass_the_dquote_check(current->inside, i + 1, &check);
 		if (current->inside[i] == '$' && current->inside[i + 1])
 			i = extract_variable(current->inside, i + 1, current, shell);
 		else
@@ -763,7 +812,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 	if (!making_token(shell))
 		return (0);
 	shell->env = get_env(shell, envp);
-	//print_env(shell);
+	// print_env(shell);
 	if (!shell->env)
 		return (0);
 	if (!expandation(shell))
@@ -772,7 +821,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
 	// print_line(shell);
-	//print_token(shell);
+	// print_token(shell);
 	print_cmds(shell->cmd);
 	printf("\n\n\033[1mOutput :\033[0m\n\n");
 	setup_exec(shell);
