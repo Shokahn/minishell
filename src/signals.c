@@ -6,16 +6,25 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/17 19:14:04 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:48:05 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	sig_handler(int sig, siginfo_t *info, void *nothing)
+static void	ignore_sig(int sig)
 {
-	(void)nothing;
-	(void)info;
+	(void)sig;
+}
+
+void	pause_signals(void)
+{
+	signal(SIGINT, ignore_sig);
+	signal(SIGQUIT, ignore_sig);
+}
+
+static void	sig_handler(int sig)
+{
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 0);
@@ -25,17 +34,10 @@ void	sig_handler(int sig, siginfo_t *info, void *nothing)
 		return ;
 }
 
-// sigaction is overkill
+// sigaction is overkill --> use signal
 void	setup_signals(void)
 {
-	struct sigaction	sa;
-
-	sa = (struct sigaction){0};
-	sa.sa_sigaction = sig_handler;
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 }
-// control+D sends EOF --> to handle in readline loop || automatic?
-// free is not automatic!!
+// control+D sends EOF

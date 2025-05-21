@@ -150,6 +150,7 @@ void	pickup_children(void)
 {
 	while (wait(NULL) > 0) // wait returns -1 when no children are left?
 		;
+	setup_signals();
 }
 
 int	open_pipe(int fd[2], t_cmd *current)
@@ -278,6 +279,7 @@ void	exec_built_in(t_store *store, t_data *data)
 
 void    launch_child(t_store *store, t_data *data)
 {
+	setup_signals();
 	if (store->in_fd != 0)
 	{
 		dup2(store->in_fd, 0); //if not first cmd, read from pipe
@@ -302,6 +304,7 @@ void    launch_child(t_store *store, t_data *data)
 
 void    handle_parent(t_store *store)
 {
+	pause_signals();
     if (store->in_fd != 0)
         close(store->in_fd);
     if (store->current->next)
