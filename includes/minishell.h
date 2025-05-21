@@ -103,5 +103,6 @@ void				ft_error(t_data *shell, int type, char *message);
 
 //signals
 void				setup_signals(void);
+void				pause_signals(void);
 
 #endif
