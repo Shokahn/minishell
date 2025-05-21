@@ -260,6 +260,7 @@ int	is_built_in(t_cmd *cmd)
 	built_in_funcs[1] = "cd_2";
 	built_in_funcs[2] = "pwd_2";
 	built_in_funcs[3] = "export";
+	built_in_funcs[3] = "export";
 	built_in_funcs[4] = "unset_2";
 	built_in_funcs[5] = "env_2";
 	built_in_funcs[6] = "exit_2";

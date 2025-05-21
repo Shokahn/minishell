@@ -333,7 +333,6 @@ int	parsing(t_data *shell)
 		return (ft_error(shell, 0,
 				"bash: syntax error near unexpected token 'newline'\n"), 0);
 	token_cleaning(shell);
-	if (!remove_quote)
 	return (1);
 }
 
@@ -822,7 +821,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
 	// print_line(shell);
-	// print_token(shell);
+	print_token(shell);
 	print_cmds(shell->cmd);
 	printf("\n\n\033[1mOutput :\033[0m\n\n");
 	setup_exec(shell);
