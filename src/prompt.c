@@ -264,18 +264,6 @@ int	pass_the_quote(char *inside, int i, char c)
 	return (i + 1);
 }
 
-int	pass_the_quote_check(char *inside, int i, int *check, char c)
-{
-	if (inside[i - 1] == '$' && *check == 1)
-		return (i);
-	while (inside[i] && inside[i] != c)
-	{
-		if (inside[i] == '$')
-			return (*check = 1, i);
-		i++;
-	}
-	return (*check = 0, i + 1);
-}
 char	*remove_quote(t_token *current)
 {
 	int		i;
@@ -315,22 +303,21 @@ void	token_cleaning(t_data *shell)
 	current = shell->token;
 	while (current)
 	{
-		if (current->expand >= 1)
-			current->inside = remove_quote(current);
+		current->inside = remove_quote(current);
 		current = current->next;
 	}
 }
 
-int *fill_the_tab(int *tab, char *input)
+int	*fill_the_tab(int *tab, char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i])
 	{
 		if (!ft_isspace(input[i]))
 			i++;
-		else if(input[i] && input[i] == '"' )
+		else if (input[i] && input[i] == '"')
 			i = pass_the_quote(input, i, '"');
 		else if (input[i] && input[i] == '\'' && input[i])
 			i = pass_the_quote(input, i, '\'');
@@ -339,19 +326,18 @@ int *fill_the_tab(int *tab, char *input)
 			tab[i] = 1;
 			i++;
 		}
-	}	
+	}
 	return (tab);
 }
 
-t_token *divide_the_expanded_token(char **line, t_token *current)
+t_token	*divide_the_expanded_token(char **line, t_token *current)
 {
-	int i;
+	int		i;
+	t_token	*new;
+	t_token	*last;
+	t_token	*tmp;
 
 	i = 0;
-	t_token *new;
-	t_token *last;
-	t_token *tmp;
-
 	if (!line || !*line)
 		return (NULL);
 	last = current->next;
@@ -359,11 +345,11 @@ t_token *divide_the_expanded_token(char **line, t_token *current)
 	current->expand = 0;
 	current->next = NULL;
 	tmp = current;
-	while(line[i])
+	while (line[i])
 	{
 		new = malloc(sizeof(t_token));
 		if (!new)
-			return (NULL); //free
+			return (NULL); // free
 		new->inside = ft_strdup(line[i++]);
 		new->expand = 0;
 		new->type = 0;
@@ -378,10 +364,10 @@ t_token *divide_the_expanded_token(char **line, t_token *current)
 
 t_token	*token_cuting(t_token *current)
 {
-	int *tab;
-	int len;
-	char **line;
-	int count;
+	int		*tab;
+	int		len;
+	char	**line;
+	int		count;
 
 	len = ft_strlen(current->inside);
 	tab = ft_calloc(len, 4);
@@ -401,22 +387,21 @@ t_token	*token_cuting(t_token *current)
 		return (NULL);
 	current->type = 0;
 	return (current);
-	
 }
 
 int	expand_token_cuting(t_data *shell)
 {
-	t_token *current;
-	t_token *tmp;
+	t_token	*current;
+	t_token	*tmp;
 
 	current = shell->token;
-	while(current)
+	while (current)
 	{
 		if (current->expand > 0)
-		{	
+		{
 			current = token_cuting(current);
 			tmp = current;
-			while(tmp)
+			while (tmp)
 			{
 				printf("current = %s | type = %d\n", tmp->inside, tmp->type);
 				tmp = tmp->next;
@@ -438,10 +423,11 @@ int	parsing(t_data *shell)
 				"minishell : syntax error near unexpected token '|'\n"), 0);
 	if (!(no_file_after_redir(shell)))
 		return (ft_error(shell, 0,
-				"minishell: syntax error near unexpected token 'newline'\n"), 0);
+				"minishell: syntax error near unexpected token 'newline'\n"),
+			0);
 	token_cleaning(shell);
 	if (!(expand_token_cuting(shell)))
-			return (0);
+		return (0);
 	return (1);
 }
 
@@ -864,18 +850,21 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 int	expand_string(t_token *current, t_data *shell)
 {
 	int	i;
-	int	check;
+	int	in_the_dquote;
 
 	i = 0;
-	check = 0;
+	in_the_dquote = 0;
 	while (current->inside[i])
 	{
-		if (current->inside[i] == '\'' && current->inside[i + 1])
+		if (current->inside[i] == '\'' && current->inside[i + 1] && in_the_dquote == 0)
 			i = pass_the_quote(current->inside, i + 1, '\'');
-		else if ((current->inside[i] == '\"' || check == 1) && current->inside[i
-			+ 1])
-			i = pass_the_quote_check(current->inside, i + 1, &check, '"');
-		else if (current->inside[i] == '$' && current->inside[i + 1] && current->inside[i + 1] != '$')
+		else if (current->inside[i] == '\"' && current->inside[i + 1])
+		{	
+			in_the_dquote = !in_the_dquote;
+			i++;
+		}
+		else if (current->inside[i] == '$' && current->inside[i + 1]
+			&& current->inside[i + 1] != '$')
 			i = extract_variable(current->inside, i + 1, current, shell);
 		else
 			i++;
