@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:08:19 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/13 13:26:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:25:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void				ft_free_index(char **split, int j);
 int					ft_isspace(int c);
 char				*ft_strndup(const char *s1, size_t n);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+char				**ft_msplit(char const *s, char *sep);
 
 typedef struct s_list
 {
