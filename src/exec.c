@@ -253,11 +253,13 @@ int	is_built_in(t_cmd *cmd)
 	int		i;
 	char	*built_in_funcs[7];
 
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return (0);
 	i = 0;
 	built_in_funcs[0] = "echo";
 	built_in_funcs[1] = "cd_2";
 	built_in_funcs[2] = "pwd_2";
-	built_in_funcs[3] = "export_2";
+	built_in_funcs[3] = "export";
 	built_in_funcs[4] = "unset_2";
 	built_in_funcs[5] = "env_2";
 	built_in_funcs[6] = "exit_2";
@@ -273,8 +275,10 @@ int	is_built_in(t_cmd *cmd)
 void	exec_built_in(t_store *store, t_data *data)
 {
 	(void)data;
-	if (ft_strncmp(store->current->cmd[0], "echo", 7) == 0)
+	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
 		ft_echo(store->current->cmd);
+	if (ft_strncmp(store->current->cmd[0], "export", 7) == 0)
+		builtin_export(store->current->cmd, data);
 }
 
 void    launch_child(t_store *store, t_data *data)

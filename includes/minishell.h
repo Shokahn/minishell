@@ -65,13 +65,13 @@ typedef struct s_env
 typedef struct s_store
 {
 	int				fd[2];
-    int				in_fd;
-    pid_t			pid;
-    t_cmd			*current;
+	int				in_fd;
+	pid_t			pid;
+	t_cmd			*current;
 	char			**env_tab;
 	int				std_in;
 	int				std_out;
-}				t_store;
+}					t_store;
 
 typedef struct s_data
 {
@@ -93,16 +93,17 @@ typedef struct s_built_in_cmd
 	s_built_in_cmd	*next;
 }	t_built_in_cmd;*/
 
-
-
 // exec
 void				setup_exec(t_data *data);
 
 // error
 void				ft_error(t_data *shell, int type, char *message);
 
-//signals
+// signals
 void				setup_signals(void);
 void				pause_signals(void);
+
+// builtin
+int					builtin_export(char **args, t_data *shell);
 
 #endif

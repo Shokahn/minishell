@@ -333,6 +333,7 @@ int	parsing(t_data *shell)
 		return (ft_error(shell, 0,
 				"bash: syntax error near unexpected token 'newline'\n"), 0);
 	token_cleaning(shell);
+	if (!remove_quote)
 	return (1);
 }
 
