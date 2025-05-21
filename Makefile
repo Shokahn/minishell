@@ -29,43 +29,43 @@ all: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c 
 	@mkdir -p $(OBJ_DIR)
-	@echo "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
+	@echo -e "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
 	@cc $(CFLAGS) -c $< -o $@
 
 
 $(NAME): $(LIBFT) $(OBJ)
 	@echo ""
-	@echo "		🚀 $(BOLD)$(YELLOW)Linking $(NAME)...$(RESET)"
+	@echo -e "		🚀 $(BOLD)$(YELLOW)Linking $(NAME)...$(RESET)"
 	@cc $(CFLAGS) $(OBJ) -o $(NAME) -I $(INCLUDE) $(LIBFT) $(EXTRAFLAGS)
 	@echo ""
-	@echo "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME) has been created$(RESET) ✅ "
+	@echo -e "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME) has been created$(RESET) ✅ "
 	@echo ""
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
-	@echo "		⚙ $(UNDERLINE)$(BOLD)Building $(NAME)$(RESET) ⚙"
+	@echo -e "		⚙ $(UNDERLINE)$(BOLD)Building $(NAME)$(RESET) ⚙"
 	@echo ""
 
 clean:
 	@echo ""
-	@echo "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"
+	@echo -e "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)
-	@echo "🗑️ $(YELLOW)$(BOLD) minishell$(RESET)$(YELLOW) object files cleaned$(RESET)"
+	@echo -e "🗑️ $(YELLOW)$(BOLD) minishell$(RESET)$(YELLOW) object files cleaned$(RESET)"
 
 
 
 fclean: clean
 	@echo ""
-	@echo "		🧹 $(BOLD)$(BLUE)Cleaning everything 🧹$(RESET)"
+	@echo -e "		🧹 $(BOLD)$(BLUE)Cleaning everything 🧹$(RESET)"
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
-	@echo "↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
+	@echo -e "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
+	@echo -e "↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
 	@rm -f $(NAME)
 	@echo ""
-	@echo "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
+	@echo -e "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
 	@echo ""
 
 re: fclean $(NAME)
