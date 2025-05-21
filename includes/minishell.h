@@ -62,16 +62,6 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-typedef struct s_data
-{
-	char			*input;
-	int				*sep;
-	char			**line;
-	t_token			*token;
-	t_cmd			*cmd;
-	t_env			*env;
-}					t_data;
-
 typedef struct s_store
 {
 	int				fd[2];
@@ -82,6 +72,17 @@ typedef struct s_store
 	int				std_in;
 	int				std_out;
 }				t_store;
+
+typedef struct s_data
+{
+	char			*input;
+	int				*sep;
+	char			**line;
+	t_token			*token;
+	t_cmd			*cmd;
+	t_env			*env;
+	t_store			*store;
+}					t_data;
 
 /*typedef void (*built_in_func)(char **args);
 

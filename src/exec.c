@@ -81,13 +81,18 @@ char	**ft_tab_dup(char **tab)
 
 char	**get_paths(char **env)
 {
-	int	i;
+	int		i;
+	char	**result;
 
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp("PATH", env[i], 4) == 0)
-			return (ft_split(env[i], ':'));
+		{
+			result = ft_split(env[i], ':');
+			result[0] = ft_substr(result[0], 5, ft_strlen(result[0]));
+			return (result);
+		}
 		i++;
 	}
 	return (NULL);
@@ -125,7 +130,10 @@ void    exec_cmd(t_store *store, t_cmd *cmd)
 {
 	char	*path;
 
-    path = find_valid_path(cmd->cmd[0], store);
+	if (access(cmd->cmd[0], X_OK) == 0)
+		path = cmd->cmd[0];
+	else
+		path = find_valid_path(cmd->cmd[0], store);
     if (!path)
 	{
 		perror("command not found");
@@ -245,7 +253,7 @@ int	is_built_in(t_cmd *cmd)
 	char	*built_in_funcs[7];
 
 	i = 0;
-	built_in_funcs[0] = "echo_2";
+	built_in_funcs[0] = "echo";
 	built_in_funcs[1] = "cd_2";
 	built_in_funcs[2] = "pwd_2";
 	built_in_funcs[3] = "export_2";
@@ -261,13 +269,14 @@ int	is_built_in(t_cmd *cmd)
 	return (0);
 }
 
-void	exec_built_in(t_store *store)
+void	exec_built_in(t_store *store, t_data *data)
 {
-	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
+	(void)data;
+	if (ft_strncmp(store->current->cmd[0], "echo", 7) == 0)
 		ft_echo(store->current->cmd);
 }
 
-void    launch_child(t_store *store)
+void    launch_child(t_store *store, t_data *data)
 {
 	if (store->in_fd != 0)
 	{
@@ -284,7 +293,7 @@ void    launch_child(t_store *store)
 		handle_redirections(store->current);
 	if (is_built_in(store->current))
 	{
-		exec_built_in(store);
+		exec_built_in(store, data);
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -330,7 +339,7 @@ void	reset_fds(t_store *store)
 	close(store->std_out);
 }
 
-void	exec_cmds(t_store *store)
+void	exec_cmds(t_store *store, t_data *data)
 {
 	if (is_built_in(store->current) && !store->current->next)
 	{
@@ -339,7 +348,7 @@ void	exec_cmds(t_store *store)
 			save_fds(store);
 			handle_redirections(store->current);
 		}
-		exec_built_in(store);
+		exec_built_in(store, data);
 		if (store->current->redir)
 			reset_fds(store);
 		store->current = store->current->next;
@@ -355,7 +364,7 @@ void	exec_cmds(t_store *store)
             	return ;
         	}
         	else if (store->pid == 0)
-            	launch_child(store);
+            	launch_child(store, data);
         	else
             	handle_parent(store);
     }
@@ -364,16 +373,14 @@ void	exec_cmds(t_store *store)
 
 void	setup_exec(t_data *data)
 {
-	t_store	*store;
-
-	store = malloc(sizeof(t_store));
-    if (!store)
+	data->store = malloc(sizeof(t_store));
+    if (!data->store)
 	{
         perror("Failed to allocate memory for store");
         return;
     }
-	init_store(store, data);
-	exec_cmds(store);
-	ft_free_tab(store->env_tab);
-	free(store);
+	init_store(data->store, data);
+	exec_cmds(data->store, data);
+	ft_free_tab(data->store->env_tab);
+	free(data->store);
 }
