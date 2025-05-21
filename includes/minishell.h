@@ -103,6 +103,10 @@ void				ft_error(t_data *shell, int type, char *message);
 
 //signals
 void				setup_signals(void);
+void				setup_sigint(void);
 void				pause_signals(void);
+
+//heredoc
+char				*exec_heredoc(char *delimiter);
 
 #endif

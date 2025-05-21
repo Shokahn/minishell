@@ -234,7 +234,7 @@ void ft_echo(char **args)
 
 	i = 1;
 	newline_toggle = 1;
-	if (strncmp(args[1], "-n", 3) == 0)
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		newline_toggle = 0;
 		i++;
@@ -279,7 +279,7 @@ void	exec_built_in(t_store *store, t_data *data)
 
 void    launch_child(t_store *store, t_data *data)
 {
-	setup_signals();
+	setup_sigint();
 	if (store->in_fd != 0)
 	{
 		dup2(store->in_fd, 0); //if not first cmd, read from pipe
