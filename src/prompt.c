@@ -267,7 +267,7 @@ int	pass_the_quote(char *inside, int i, char c)
 int	pass_the_quote_check(char *inside, int i, int *check, char c)
 {
 	if (inside[i - 1] == '$' && *check == 1)
-		return (i - 1);
+		return (i);
 	while (inside[i] && inside[i] != c)
 	{
 		if (inside[i] == '$')
@@ -835,17 +835,6 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 	printf("current->inside = %s\n", current->inside);
 }
 
-int	return_after_quote(t_token *current)
-{
-	int	i;
-
-	i = 0;
-	while (current->inside[i] && (current->inside[i] == '\''
-			|| current->inside[i] == '\"'))
-		i++;
-	return (i);
-}
-
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
 	int		start;
@@ -869,7 +858,7 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		expand = ft_strdup("");
 		replace_value(expand, current, i, i + 1);
 	}
-	return (return_after_quote(current));
+	return (i + 1);
 }
 
 int	expand_string(t_token *current, t_data *shell)
@@ -966,4 +955,4 @@ int	main(int ac, char **av, char **envp)
 	}
 }
 
-// FINIR BUILTIN EXPORT 
+// FINIR BUILTIN EXPORT + EXPAND QUI RECOMMENCE PAS !
