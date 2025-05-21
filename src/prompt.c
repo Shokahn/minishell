@@ -9,6 +9,7 @@ void	init_shell(t_data *shell)
 	shell->token = NULL;
 	shell->cmd = NULL;
 	shell->env = NULL;
+	shell->store = NULL;
 }
 int	pass_the_quote_separator(t_data *shell, char *input, char c, int i)
 {
@@ -53,7 +54,7 @@ void	define_separator(t_data *shell, char *input)
 	}
 }
 
-int	wcount(char *input, t_data *shell)
+int	wcount(char *input, int *sep)
 {
 	int	i;
 	int	count;
@@ -62,20 +63,20 @@ int	wcount(char *input, t_data *shell)
 	count = 0;
 	while (input[i])
 	{
-		if (input[i] && shell->sep[i] == 4)
+		if (input[i] && sep[i] == 4)
 			i++;
-		if (input[i] && shell->sep[i] == 0)
+		if (input[i] && sep[i] == 0)
 			count++;
-		while (input[i] && shell->sep[i] == 0)
+		while (input[i] && sep[i] == 0)
 			i++;
-		while (input[i] && shell->sep[i] == 1)
+		while (input[i] && sep[i] == 1)
 			i++;
-		if (input[i] && shell->sep[i] == 2)
+		if (input[i] && sep[i] == 2)
 		{
 			count++;
 			i++;
 		}
-		if (input[i] && shell->sep[i] == 3)
+		if (input[i] && sep[i] == 3)
 		{
 			count++;
 			i += 2;
@@ -103,7 +104,7 @@ char	*wcreate(int start, int end, const char *str)
 	return (word);
 }
 
-char	**makesplit(char **line, t_data *shell, char *input)
+char	**makesplit(char **line, int *sep, char *input)
 {
 	int	i;
 	int	j;
@@ -113,22 +114,22 @@ char	**makesplit(char **line, t_data *shell, char *input)
 	j = 0;
 	while (input[i])
 	{
-		while (input[i] && shell->sep[i] == 1)
+		while (input[i] && sep[i] == 1)
 			i++;
 		start = i;
-		if (shell->sep[i] == 2)
+		if (sep[i] == 2)
 		{
 			line[j++] = wcreate(i, i + 1, input);
 			i++;
 			continue ;
 		}
-		if (shell->sep[i] == 3)
+		if (sep[i] == 3)
 		{
 			line[j++] = wcreate(i, i + 2, input);
 			i += 2;
 			continue ;
 		}
-		while (input[i] && (shell->sep[i] == 0 || shell->sep[i] == 4))
+		while (input[i] && (sep[i] == 0 || sep[i] == 4))
 			i++;
 		if (start < i)
 		{
@@ -188,12 +189,11 @@ char	**split_line(t_data *shell, char *input)
 
 	define_separator(shell, input);
 	print_sep(shell);
-	count = wcount(input, shell);
-	printf("word count = %d\n", count);
+	count = wcount(input, shell->sep);
 	line = malloc(sizeof(char *) * (count));
 	if (!line)
 		return (NULL);
-	line = makesplit(line, shell, shell->input);
+	line = makesplit(line, shell->sep, shell->input);
 	if (!line)
 		return (NULL);
 	return (line);
@@ -257,24 +257,24 @@ int	no_file_after_redir(t_data *shell)
 	return (1);
 }
 
-int	pass_the_quote(char *inside, int i)
+int	pass_the_quote(char *inside, int i, char c)
 {
-	while (inside[i] && inside[i] != '\'')
+	while (inside[i] && inside[i] != c)
 		i++;
-	return (i);
+	return (i + 1);
 }
 
-int	pass_the_dquote_check(char *inside, int i, int *check)
+int	pass_the_quote_check(char *inside, int i, int *check, char c)
 {
 	if (inside[i - 1] == '$' && *check == 1)
 		return (i - 1);
-	while (inside[i] && inside[i] != '\"')
+	while (inside[i] && inside[i] != c)
 	{
 		if (inside[i] == '$')
 			return (*check = 1, i);
 		i++;
 	}
-	return (*check = 0, i);
+	return (*check = 0, i + 1);
 }
 char	*remove_quote(t_token *current)
 {
@@ -321,6 +321,113 @@ void	token_cleaning(t_data *shell)
 	}
 }
 
+int *fill_the_tab(int *tab, char *input)
+{
+	int i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (!ft_isspace(input[i]))
+			i++;
+		else if(input[i] && input[i] == '"' )
+			i = pass_the_quote(input, i, '"');
+		else if (input[i] && input[i] == '\'' && input[i])
+			i = pass_the_quote(input, i, '\'');
+		else if (input[i] && ft_isspace(input[i]))
+		{
+			tab[i] = 1;
+			i++;
+		}
+	}	
+	return (tab);
+}
+
+t_token *divide_the_expanded_token(char **line, t_token *current)
+{
+	int i;
+
+	i = 0;
+	t_token *new;
+	t_token *last;
+	t_token *tmp;
+
+	if (!line || !*line)
+		return (NULL);
+	last = current->next;
+	current->inside = ft_strdup(line[i++]);
+	current->expand = 0;
+	current->next = NULL;
+	tmp = current;
+	while(line[i])
+	{
+		new = malloc(sizeof(t_token));
+		if (!new)
+			return (NULL); //free
+		new->inside = ft_strdup(line[i++]);
+		new->expand = 0;
+		new->type = 0;
+		new->prev = tmp;
+		new->next = NULL;
+		tmp->next = new;
+		tmp = new;
+	}
+	tmp->next = last;
+	return (current);
+}
+
+t_token	*token_cuting(t_token *current)
+{
+	int *tab;
+	int len;
+	char **line;
+	int count;
+
+	len = ft_strlen(current->inside);
+	tab = ft_calloc(len, 4);
+	if (!tab)
+		return (NULL);
+	tab = fill_the_tab(tab, current->inside);
+	count = wcount(current->inside, tab);
+	line = malloc(sizeof(char *) * count);
+	if (!line)
+		return (NULL);
+	line = makesplit(line, tab, current->inside);
+	if (!line)
+		return (NULL);
+	free(tab);
+	current = divide_the_expanded_token(line, current);
+	if (!current)
+		return (NULL);
+	current->type = 0;
+	return (current);
+	
+}
+
+int	expand_token_cuting(t_data *shell)
+{
+	t_token *current;
+	t_token *tmp;
+
+	current = shell->token;
+	while(current)
+	{
+		if (current->expand > 0)
+		{	
+			current = token_cuting(current);
+			tmp = current;
+			while(tmp)
+			{
+				printf("current = %s | type = %d\n", tmp->inside, tmp->type);
+				tmp = tmp->next;
+			}
+		}
+		else
+			current = current->next;
+	}
+	return (1);
+}
+
 int	parsing(t_data *shell)
 {
 	if (shell->sep[0] == 4)
@@ -331,8 +438,10 @@ int	parsing(t_data *shell)
 				"minishell : syntax error near unexpected token '|'\n"), 0);
 	if (!(no_file_after_redir(shell)))
 		return (ft_error(shell, 0,
-				"bash: syntax error near unexpected token 'newline'\n"), 0);
+				"minishell: syntax error near unexpected token 'newline'\n"), 0);
 	token_cleaning(shell);
+	if (!(expand_token_cuting(shell)))
+			return (0);
 	return (1);
 }
 
@@ -524,7 +633,7 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 					&& start->prev->type != APPEND
 					&& start->prev->type != HEREDOC)))
 		{
-			args[i] = strdup(start->inside);
+			args[i] = ft_strdup(start->inside);
 			i++;
 		}
 		start = start->next;
@@ -773,11 +882,11 @@ int	expand_string(t_token *current, t_data *shell)
 	while (current->inside[i])
 	{
 		if (current->inside[i] == '\'' && current->inside[i + 1])
-			i = pass_the_quote(current->inside, i + 1);
-		if ((current->inside[i] == '\"' || check == 1) && current->inside[i
+			i = pass_the_quote(current->inside, i + 1, '\'');
+		else if ((current->inside[i] == '\"' || check == 1) && current->inside[i
 			+ 1])
-			i = pass_the_dquote_check(current->inside, i + 1, &check);
-		if (current->inside[i] == '$' && current->inside[i + 1])
+			i = pass_the_quote_check(current->inside, i + 1, &check, '"');
+		else if (current->inside[i] == '$' && current->inside[i + 1] && current->inside[i + 1] != '$')
 			i = extract_variable(current->inside, i + 1, current, shell);
 		else
 			i++;
@@ -815,6 +924,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 	// print_env(shell);
 	if (!shell->env)
 		return (0);
+	print_token(shell);
 	if (!expandation(shell))
 		return (0);
 	if (!parsing(shell))
@@ -855,3 +965,6 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 }
+
+
+// ME RESTE A APPEND AVEC CE QU'IL Y A AVANT SUR UN EXPAND DANS UN TOKEN (REDIVISER MES TOKENS QUI SONT EXPAND)

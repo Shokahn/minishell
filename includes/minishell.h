@@ -109,4 +109,7 @@ int					builtin_export(char **args, t_data *shell);
 // builtin
 int					builtin_export(char **args, t_data *shell);
 
+// builtin
+int					builtin_export(char **args, t_data *shell);
+
 #endif
