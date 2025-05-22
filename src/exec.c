@@ -346,7 +346,6 @@ void	check_for_heredoc(t_cmd *cmd)
 
 void    launch_child(t_store *store, t_data *data)
 {
-	printf("start of child: %i\n", data->cmd->redir->fd);
 	setup_sigint();
 	if (store->in_fd != 0)
 	{
@@ -450,15 +449,25 @@ void	init_heredoc(t_data *data)
 {
 	t_cmd	*cmd;
 	t_redir	*redir;
+	int		i;
 
+	i = 0;
 	cmd = data->cmd;
 	while (cmd)
 	{
+		if (i > 10)
+		{
+			printf("too many heredoc\n");
+			exit(EXIT_FAILURE);
+		}
 		redir = cmd->redir;
 		while (redir)
 		{
 			if (redir && redir->type == HEREDOC)
+			{
 				exec_heredoc(redir->file, cmd);
+				i++;
+			}
 			redir = redir->next;
 		}
 		cmd = cmd->next;

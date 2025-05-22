@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/22 19:56:33 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:18:16 by bri              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	exec_heredoc(char *delimiter, t_cmd *cmd)
 		write(fd, "\n", 1);
 		free(input);
 	}
+	close(fd);
 	cmd->redir->file = tmp_file;
-	cmd->redir->fd = fd;
+	cmd->redir->fd = open(tmp_file, O_RDONLY);
 }
