@@ -45,6 +45,7 @@ typedef struct s_redir
 {
 	t_type			type;
 	char			*file;
+	int				fd;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -107,6 +108,6 @@ void				setup_sigint(void);
 void				pause_signals(void);
 
 //heredoc
-char				*exec_heredoc(char *delimiter);
+void				exec_heredoc(char *delimiter, t_cmd *cmd);
 
 #endif

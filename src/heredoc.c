@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/21 19:24:14 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:56:33 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,55 +30,52 @@
 	return (1);
 }*/
 
-static int	fill_pipe(char *input, int fd)
+static int	create_temp_file(char **temp_file)
 {
-	int	counter;
+	int	i;
+	char	suffix[2];
 
-	counter = ft_strlen(input) + 1;
-	write(fd, input, counter);
-	write(fd, "\n", 1);
-	return (counter);
-}
-
-static char	*read_pipe(int counter, int fd)
-{
-	char	*result;
-	int		chars_read;
-
-	result = malloc(counter + 1);
-	chars_read = read(fd, result, counter);
-	if (chars_read == -1)
+	i = 0;
+	suffix[1] = '\0';
+	while (i < 10)
 	{
-		free(result);
-		return (NULL);
+		suffix[0] = i + '0';
+		*temp_file = ft_strjoin(".heredoc_", suffix);
+		if (!(*temp_file))
+			return (-1);
+		if (access(*temp_file, F_OK) != 0)
+		{
+			return (open(*temp_file, O_CREAT | O_RDWR | O_APPEND, 0600));
+		}
+		else
+			free(*temp_file);
+		i++;
 	}
-	result[counter] = '\0';
-	return (result);
+	return (-1);
 }
 
-char	*exec_heredoc(char *delimiter)
+void	exec_heredoc(char *delimiter, t_cmd *cmd)
 {
-	int		fd[2];
-	int		counter;
+	int		fd;
 	char	*input;
-	char	*result;
+	char	*tmp_file;
 
-	counter = 0;
-	if (pipe(fd) == -1)
-		return ("pipe not working");
+	fd = create_temp_file(&tmp_file);
+	if (fd == -1)
+		return ;
 	while (1)
 	{
 		input = readline("> ");
 		if (!input || (ft_strcmp(delimiter, input) == 0))
 		{
+			free(input);
 			printf("\n");
 			break;
 		}
-		counter += fill_pipe(input, fd[1]);
+		write(fd, input, ft_strlen(input));
+		write(fd, "\n", 1);
 		free(input);
 	}
-	close(fd[1]);
-	result = read_pipe(counter, fd[0]);
-	return (result);
+	cmd->redir->file = tmp_file;
+	cmd->redir->fd = fd;
 }
-
