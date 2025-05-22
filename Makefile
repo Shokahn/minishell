@@ -10,9 +10,11 @@ ITALIC = \033[3m
 
 OBJ_DIR = obj/
 SRC_DIR = src/
+BUILTIN_DIR = builtin/
 INCLUDE = headers/
 
-SRC = prompt.c error.c exec.c signals.c heredoc.c
+BUILTIN = export.c
+SRC = prompt.c error.c exec.c signals.c heredoc.c $(addprefix $(BUILTIN_DIR), $(BUILTIN))
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
 CFLAGS = -Wall -Wextra -Werror -fPIC -g3
@@ -27,10 +29,10 @@ NAME = minishell
 
 all: $(NAME)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c 
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(dir $@)
 	@echo -e "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
-	@cc $(CFLAGS) -c $< -o $@
+	@cc $(CFLAGS) -I $(INCLUDE) -c $< -o $@
 
 
 $(NAME): $(LIBFT) $(OBJ)

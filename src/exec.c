@@ -126,7 +126,7 @@ char	*find_valid_path(const char *str, t_store *store)
 	return (NULL);
 }
 
-void    exec_cmd(t_store *store, t_cmd *cmd)
+void	exec_cmd(t_store *store, t_cmd *cmd)
 {
 	char	*path;
 
@@ -142,11 +142,11 @@ void    exec_cmd(t_store *store, t_cmd *cmd)
 		perror("command not found");
 		exit(EXIT_FAILURE);
 	}
-    execve(path, cmd->cmd, store->env_tab);
-    perror("execve failed");
+	execve(path, cmd->cmd, store->env_tab);
+	perror("execve failed");
 	ft_free_tab(store->env_tab);
 	free(store);
-    exit(EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 
 void	close_heredoc(t_cmd *cmd)
@@ -272,7 +272,7 @@ void	handle_redirections(t_cmd *cmd)
 	}
 }
 
-void ft_echo(char **args)
+void	ft_echo(char **args)
 {
 	int	i;
 	int	newline_toggle;
@@ -298,11 +298,15 @@ int	is_built_in(t_cmd *cmd)
 	int		i;
 	char	*built_in_funcs[7];
 
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return (0);
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return (0);
 	i = 0;
-	built_in_funcs[0] = "echo";
+	built_in_funcs[0] = "echo_2";
 	built_in_funcs[1] = "cd_2";
 	built_in_funcs[2] = "pwd_2";
-	built_in_funcs[3] = "export_2";
+	built_in_funcs[3] = "export";
 	built_in_funcs[4] = "unset_2";
 	built_in_funcs[5] = "env_2";
 	built_in_funcs[6] = "exit_2";
@@ -318,8 +322,10 @@ int	is_built_in(t_cmd *cmd)
 void	exec_built_in(t_store *store, t_data *data)
 {
 	(void)data;
-	if (ft_strncmp(store->current->cmd[0], "echo", 7) == 0)
+	if (ft_strncmp(store->current->cmd[0], "echo_2", 7) == 0)
 		ft_echo(store->current->cmd);
+	if (ft_strncmp(store->current->cmd[0], "export", 7) == 0)
+		builtin_export(store->current->cmd, data);
 }
 
 void	check_for_heredoc(t_cmd *cmd)
@@ -344,15 +350,15 @@ void    launch_child(t_store *store, t_data *data)
 	setup_sigint();
 	if (store->in_fd != 0)
 	{
-		dup2(store->in_fd, 0); //if not first cmd, read from pipe
-    	close(store->in_fd);
-    }
-    if (store->current->next)
-    {
-        close(store->fd[0]);
-        dup2(store->fd[1], 1); //write in pipe
-    	close(store->fd[1]);
-    }
+		dup2(store->in_fd, 0); // if not first cmd, read from pipe
+		close(store->in_fd);
+	}
+	if (store->current->next)
+	{
+		close(store->fd[0]);
+		dup2(store->fd[1], 1); // write in pipe
+		close(store->fd[1]);
+	}
 	if (store->current->redir)
 		handle_redirections(store->current);
 	check_for_heredoc(store->current);
@@ -365,7 +371,7 @@ void    launch_child(t_store *store, t_data *data)
 		exec_cmd(store, store->current);
 }
 
-void    handle_parent(t_store *store)
+void	handle_parent(t_store *store)
 {
 	pause_signals();
     if (store->in_fd != 0)
@@ -392,7 +398,6 @@ void	save_fds(t_store *store)
 {
 	store->std_in = dup(0);
 	store->std_out = dup(1);
-
 	if (store->std_in < 0 || store->std_out < 0)
 		perror("dup fail");
 }
