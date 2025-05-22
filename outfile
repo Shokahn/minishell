@@ -1,0 +1,276 @@
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = CHROME_DESKTOP="code.deskto"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = COLORTERM="truecolo"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/146106/bu"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = DESKTOP_SESSION="ubunt"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = DISPLAY=":"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = DOCKER_HOST="unix:///run/user/146106/docker.soc"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = FT_HOOK_NAME="login-use"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = FT_HOOK_PATHNAME="login-user."
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GDK_BACKEND="x1"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GDMSESSION="ubunt"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GIO_LAUNCHED_DESKTOP_FILE="/usr/share/applications/code.deskto"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GIO_LAUNCHED_DESKTOP_FILE_PID="1037"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GIT_ASKPASS="/usr/share/code/resources/app/extensions/git/dist/askpass.s"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GJS_DEBUG_OUTPUT="stder"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GJS_DEBUG_TOPICS="JS ERROR;JS LO"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GNOME_DESKTOP_SESSION_ID="this-is-deprecate"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GPG_AGENT_INFO="/run/user/146106/gnupg/S.gpg-agent:0:"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GTK_IM_MODULE="ibu"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = GTK_MODULES="gail:atk-bridg"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = HOME="/home/stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = INVOCATION_ID="c024b9aa494c4c97a380ba9f4ef5c66"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = JOURNAL_STREAM="8:6486"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = KRB5CCNAME="FILE:/tmp/krb5cc_146106_9GNG5"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LANG="en_US.UTF-"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LESS="-"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LIBVIRT_DEFAULT_URI="qemu:///syste"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LOGNAME="stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LSCOLORS="Gxfxcxdxbxegedabagaca"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = MANAGERPID="922"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = OLDPWD="/home/stdevis/42/Cursus/minishel"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = ORIGINAL_XDG_CURRENT_DESKTOP="ubuntu:GNOM"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = PAGER="les"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = PATH="/home/stdevis/bin:/home/stdevis/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = PWD="/home/stdevis/42/Cursus/minishel"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = QT_ACCESSIBILITY=""
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = QT_IM_MODULE="ibu"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SESSION_MANAGER="local/fu-r4-p3.s19.be:@/tmp/.ICE-unix/9743,unix/fu-r4-p3.s19.be:/tmp/.ICE-unix/974"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SHELL="/bin/zs"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SHLVL=""
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SSH_AGENT_LAUNCHER="gnome-keyrin"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SSH_AUTH_SOCK="/run/user/146106/keyring/ss"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = SYSTEMD_EXEC_PID="976"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = TERM="xterm-256colo"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = TERM_PROGRAM="vscod"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = TERM_PROGRAM_VERSION="1.98."
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = USER="stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = USER_ZDOTDIR="/home/stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = VSCODE_GIT_ASKPASS_EXTRA_ARGS="
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = VSCODE_GIT_ASKPASS_MAIN="/usr/share/code/resources/app/extensions/git/dist/askpass-main.j"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = VSCODE_GIT_ASKPASS_NODE="/usr/share/code/cod"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = VSCODE_GIT_IPC_HANDLE="/run/user/146106/vscode-git-fe9ad994cb.soc"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = VSCODE_INJECTION=""
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XAUTHORITY="/home/stdevis/.Xauthorit"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_CONFIG_DIRS="/etc/xdg/xdg-ubuntu:/etc/xd"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_CURRENT_DESKTOP="Unit"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_DATA_DIRS="/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/deskto"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_GREETER_DATA_DIR="/var/lib/lightdm-data/stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_MENU_PREFIX="gnome"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_RUNTIME_DIR="/run/user/14610"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_SESSION_CLASS="use"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_SESSION_DESKTOP="ubunt"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XDG_SESSION_TYPE="x1"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = XMODIFIERS="@im=ibu"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = ZDOTDIR="/home/stdevi"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = ZSH="/home/stdevis/.oh-my-zs"
+[1m[32mtest
+[0m[1m[31mtest
+[0menv = _="/home/stdevis/42/Cursus/minishell/./minishel"
+declare -x CHROME_DESKTOP="code.deskto"
+declare -x COLORTERM="truecolo"
+declare -x DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/146106/bu"
+declare -x DESKTOP_SESSION="ubunt"
+declare -x DISPLAY=":"
+declare -x DOCKER_HOST="unix:///run/user/146106/docker.soc"
+declare -x FT_HOOK_NAME="login-use"
+declare -x FT_HOOK_PATHNAME="login-user."
+declare -x GDK_BACKEND="x1"
+declare -x GDMSESSION="ubunt"
+declare -x GIO_LAUNCHED_DESKTOP_FILE="/usr/share/applications/code.deskto"
+declare -x GIO_LAUNCHED_DESKTOP_FILE_PID="1037"
+declare -x GIT_ASKPASS="/usr/share/code/resources/app/extensions/git/dist/askpass.s"
+declare -x GJS_DEBUG_OUTPUT="stder"
+declare -x GJS_DEBUG_TOPICS="JS ERROR;JS LO"
+declare -x GNOME_DESKTOP_SESSION_ID="this-is-deprecate"
+declare -x GPG_AGENT_INFO="/run/user/146106/gnupg/S.gpg-agent:0:"
+declare -x GTK_IM_MODULE="ibu"
+declare -x GTK_MODULES="gail:atk-bridg"
+declare -x HOME="/home/stdevi"
+declare -x INVOCATION_ID="c024b9aa494c4c97a380ba9f4ef5c66"
+declare -x JOURNAL_STREAM="8:6486"
+declare -x KRB5CCNAME="FILE:/tmp/krb5cc_146106_9GNG5"
+declare -x LANG="en_US.UTF-"
+declare -x LESS="-"
+declare -x LIBVIRT_DEFAULT_URI="qemu:///syste"
+declare -x LOGNAME="stdevi"
+declare -x LSCOLORS="Gxfxcxdxbxegedabagaca"
+declare -x LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36"
+declare -x MANAGERPID="922"
+declare -x OLDPWD="/home/stdevis/42/Cursus/minishel"
+declare -x ORIGINAL_XDG_CURRENT_DESKTOP="ubuntu:GNOM"
+declare -x PAGER="les"
+declare -x PATH="/home/stdevis/bin:/home/stdevis/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bi"
+declare -x PWD="/home/stdevis/42/Cursus/minishel"
+declare -x QT_ACCESSIBILITY=""
+declare -x QT_IM_MODULE="ibu"
+declare -x SESSION_MANAGER="local/fu-r4-p3.s19.be:@/tmp/.ICE-unix/9743,unix/fu-r4-p3.s19.be:/tmp/.ICE-unix/974"
+declare -x SHELL="/bin/zs"
+declare -x SHLVL=""
+declare -x SSH_AGENT_LAUNCHER="gnome-keyrin"
+declare -x SSH_AUTH_SOCK="/run/user/146106/keyring/ss"
+declare -x SYSTEMD_EXEC_PID="976"
+declare -x TERM="xterm-256colo"
+declare -x TERM_PROGRAM="vscod"
+declare -x TERM_PROGRAM_VERSION="1.98."
+declare -x USER="stdevi"
+declare -x USER_ZDOTDIR="/home/stdevi"
+declare -x VSCODE_GIT_ASKPASS_EXTRA_ARGS="
+declare -x VSCODE_GIT_ASKPASS_MAIN="/usr/share/code/resources/app/extensions/git/dist/askpass-main.j"
+declare -x VSCODE_GIT_ASKPASS_NODE="/usr/share/code/cod"
+declare -x VSCODE_GIT_IPC_HANDLE="/run/user/146106/vscode-git-fe9ad994cb.soc"
+declare -x VSCODE_INJECTION=""
+declare -x XAUTHORITY="/home/stdevis/.Xauthorit"
+declare -x XDG_CONFIG_DIRS="/etc/xdg/xdg-ubuntu:/etc/xd"
+declare -x XDG_CURRENT_DESKTOP="Unit"
+declare -x XDG_DATA_DIRS="/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/deskto"
+declare -x XDG_GREETER_DATA_DIR="/var/lib/lightdm-data/stdevi"
+declare -x XDG_MENU_PREFIX="gnome"
+declare -x XDG_RUNTIME_DIR="/run/user/14610"
+declare -x XDG_SEAT_PATH="/org/freedesktop/DisplayManager/Seat"
+declare -x XDG_SESSION_CLASS="use"
+declare -x XDG_SESSION_DESKTOP="ubunt"
+declare -x XDG_SESSION_PATH="/org/freedesktop/DisplayManager/Session"
+declare -x XDG_SESSION_TYPE="x1"
+declare -x XMODIFIERS="@im=ibu"
+declare -x ZDOTDIR="/home/stdevi"
+declare -x ZSH="/home/stdevis/.oh-my-zs"
+declare -x _="/home/stdevis/42/Cursus/minishell/./minishel"

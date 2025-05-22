@@ -106,10 +106,9 @@ void				pause_signals(void);
 // builtin
 int					builtin_export(char **args, t_data *shell);
 
-// builtin
-int					builtin_export(char **args, t_data *shell);
-
-// builtin
-int					builtin_export(char **args, t_data *shell);
+// env
+char				**ft_list_to_tab(t_env *env);
+int					ft_envsize(t_env *lst);
+void				print_env(t_data *shell);
 
 #endif

@@ -888,6 +888,7 @@ int	expandation(t_data *shell)
 }
 int	minishell(char *input, t_data *shell, char **envp)
 {
+	(void)envp;
 	shell->input = input;
 	if (!ft_strncmp(input, "exit", 4)) // dont forget to free
 	{
@@ -898,7 +899,6 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	if (!making_token(shell))
 		return (0);
-	shell->env = get_env(shell, envp);
 	// print_env(shell);
 	if (!shell->env)
 		return (0);
@@ -930,6 +930,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	init_shell(&shell);
 	setup_signals();
+	shell.env = get_env(&shell, envp);
 	while (1)
 	{
 		input = readline(GREEN BOLD "minishell> " RESET);
@@ -944,4 +945,4 @@ int	main(int ac, char **av, char **envp)
 	}
 }
 
-// FINIR BUILTIN EXPORT + EXPAND QUI RECOMMENCE PAS !
+// FINIR BUILTIN EXPORT
