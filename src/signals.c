@@ -6,21 +6,16 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/21 16:48:05 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:34:32 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	ignore_sig(int sig)
-{
-	(void)sig;
-}
-
 void	pause_signals(void)
 {
-	signal(SIGINT, ignore_sig);
-	signal(SIGQUIT, ignore_sig);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 static void	sig_handler(int sig)
@@ -30,14 +25,17 @@ static void	sig_handler(int sig)
 		rl_replace_line("", 0);
 		write(1, "\n\033[1m\033[32mminishell> \033[0m", 26);
 	}
-	else
-		return ;
+}
+
+void	setup_sigint(void)
+{
+	signal(SIGINT, sig_handler);
 }
 
 // sigaction is overkill --> use signal
 void	setup_signals(void)
 {
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
+	setup_sigint();
+	signal(SIGQUIT, SIG_IGN);
 }
 // control+D sends EOF

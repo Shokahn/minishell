@@ -89,10 +89,9 @@ char	**get_paths(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp("PATH", env[i], 4) == 0)
+		if (ft_strncmp("PATH=", env[i], 5) == 0)
 		{
-			result = ft_split(env[i], ':');
-			result[0] = ft_substr(result[0], 5, ft_strlen(result[0]));
+			result = ft_split(env[i] + 5, ':');
 			return (result);
 		}
 		i++;
@@ -132,8 +131,14 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
 {
 	char	*path;
 
-	if (access(cmd->cmd[0], X_OK) == 0)
-		path = cmd->cmd[0];
+	if (cmd->cmd[0][0] == '/' || (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '/'))
+	{
+		if (access(cmd->cmd[0], X_OK) == 0)
+		{
+			path = cmd->cmd[0];
+			printf("true path found: %s\n", path);
+		}
+	}
 	else
 		path = find_valid_path(cmd->cmd[0], store);
     if (!path)
@@ -145,13 +150,35 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
 	perror("execve failed");
 	ft_free_tab(store->env_tab);
 	free(store);
+	free(path);
 	exit(EXIT_FAILURE);
 }
 
-void	pickup_children(void)
+void	close_heredoc(t_cmd *cmd)
+{
+	t_redir *redir;
+
+	while (cmd)
+	{
+		redir = cmd->redir;
+		while (redir)
+		{
+			if (redir && redir->type == HEREDOC && redir->fd != -1)
+			{
+				close(redir->fd);
+				unlink(redir->file);
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
+void	pickup_children(t_cmd *cmd)
 {
 	while (wait(NULL) > 0) // wait returns -1 when no children are left?
 		;
+	close_heredoc(cmd);
 	setup_signals();
 }
 
@@ -210,6 +237,27 @@ void	append_handler(t_redir *redir)
 	close(fd);
 }
 
+/*char	**add_to_tab(char *new_str, char **tab)
+{
+	int	i;
+	char	**new_tab;
+
+	i = 0;
+	while (tab[i] != 0)
+		i++;
+	new_tab = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (tab[i] != 0)
+	{
+		new_tab[i] = tab[i];
+		i++;
+	}
+	new_tab[i] = new_str;
+	new_tab[i + 1] = 0;
+	free(tab);
+	return (new_tab);
+}*/
+
 void	handle_redirections(t_cmd *cmd)
 {
 	t_redir	*redir;
@@ -236,7 +284,7 @@ void	ft_echo(char **args)
 
 	i = 1;
 	newline_toggle = 1;
-	if (strncmp(args[1], "-n", 3) == 0)
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		newline_toggle = 0;
 		i++;
@@ -288,9 +336,25 @@ void	exec_built_in(t_store *store, t_data *data)
 		print_env(data);
 }
 
+void	check_for_heredoc(t_cmd *cmd)
+{
+	t_redir	*redir;
+
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (redir && redir->type == HEREDOC && redir->fd != -1)
+		{
+			dup2(redir->fd, 0);
+			close(redir->fd);
+		}
+		redir = redir->next;
+	}
+}
+
 void    launch_child(t_store *store, t_data *data)
 {
-	setup_signals();
+	setup_sigint();
 	if (store->in_fd != 0)
 	{
 		dup2(store->in_fd, 0); // if not first cmd, read from pipe
@@ -304,6 +368,7 @@ void    launch_child(t_store *store, t_data *data)
 	}
 	if (store->current->redir)
 		handle_redirections(store->current);
+	check_for_heredoc(store->current);
 	if (is_built_in(store->current))
 	{
 		exec_built_in(store, data);
@@ -354,34 +419,67 @@ void	reset_fds(t_store *store)
 
 void	exec_cmds(t_store *store, t_data *data)
 {
-	if (is_built_in(store->current) && !store->current->next)
+	if (store->current && store->current->cmd && store->current->cmd[0])
 	{
-		if (store->current->redir)
+		if (is_built_in(store->current) && !store->current->next)
 		{
-			save_fds(store);
-			handle_redirections(store->current);
+			if (store->current->redir)
+			{
+				save_fds(store);
+				handle_redirections(store->current);
+				check_for_heredoc(store->current);
+			}
+			exec_built_in(store, data);
+			if (store->current->redir)
+				reset_fds(store);
+			store->current = store->current->next;
 		}
-		exec_built_in(store, data);
-		if (store->current->redir)
-			reset_fds(store);
-		store->current = store->current->next;
+    	while (store->current)
+    	{
+				if (open_pipe(store->fd, store->current) == 0)
+            		return ;
+        		store->pid = fork();
+        		if (store->pid == -1)
+	        	{
+    	        	perror("fork");
+        	    	return ;
+        		}
+	        	else if (store->pid == 0)
+    	        	launch_child(store, data);
+        		else
+            		handle_parent(store);
+    	}
 	}
-    while (store->current)
-    {
-			if (open_pipe(store->fd, store->current) == 0)
-            	return ;
-        	store->pid = fork();
-        	if (store->pid == -1)
-        	{
-            	perror("fork");
-            	return ;
-        	}
-        	else if (store->pid == 0)
-            	launch_child(store, data);
-        	else
-            	handle_parent(store);
-    }
-    pickup_children();
+    pickup_children(data->cmd);
+}
+
+void	init_heredoc(t_data *data)
+{
+	t_cmd	*cmd;
+	t_redir	*redir;
+	int		i;
+
+	i = 0;
+	cmd = data->cmd;
+	while (cmd)
+	{
+		if (i > 10)
+		{
+			printf("too many heredoc\n");
+			exit(EXIT_FAILURE);
+		}
+		redir = cmd->redir;
+		while (redir)
+		{
+			if (redir && redir->type == HEREDOC)
+			{
+				exec_heredoc(redir->file, cmd, data);
+				i++;
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
 }
 
 void	setup_exec(t_data *data)
@@ -393,6 +491,7 @@ void	setup_exec(t_data *data)
         return;
     }
 	init_store(data->store, data);
+	init_heredoc(data);
 	exec_cmds(data->store, data);
 	ft_free_tab(data->store->env_tab);
 	free(data->store);

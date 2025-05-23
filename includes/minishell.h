@@ -45,6 +45,7 @@ typedef struct s_redir
 {
 	t_type			type;
 	char			*file;
+	int				fd;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -101,6 +102,7 @@ void				ft_error(t_data *shell, int type, char *message);
 
 // signals
 void				setup_signals(void);
+void				setup_sigint(void);
 void				pause_signals(void);
 
 // builtin
@@ -112,5 +114,8 @@ void				print_env(t_data *shell);
 char				**ft_list_to_tab(t_env *env);
 int					ft_envsize(t_env *lst);
 void				print_env(t_data *shell);
+
+//heredoc
+void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
 
 #endif
