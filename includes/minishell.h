@@ -109,6 +109,6 @@ void				pause_signals(void);
 int					builtin_export(char **args, t_data *shell);
 
 //heredoc
-void				exec_heredoc(char *delimiter, t_cmd *cmd);
+void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
 
 #endif

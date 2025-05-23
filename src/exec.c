@@ -87,10 +87,9 @@ char	**get_paths(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp("PATH", env[i], 4) == 0)
+		if (ft_strncmp("PATH=", env[i], 5) == 0)
 		{
-			result = ft_split(env[i], ':');
-			result[0] = ft_substr(result[0], 5, ft_strlen(result[0]));
+			result = ft_split(env[i] + 5, ':');
 			return (result);
 		}
 		i++;
@@ -130,10 +129,13 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
 {
 	char	*path;
 
-	if (access(cmd->cmd[0], X_OK) == 0)
+	if (cmd->cmd[0][0] == '/' || (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '/'))
 	{
-		path = cmd->cmd[0];
-		printf("true path found: %s\n", path);
+		if (access(cmd->cmd[0], X_OK) == 0)
+		{
+			path = cmd->cmd[0];
+			printf("true path found: %s\n", path);
+		}
 	}
 	else
 		path = find_valid_path(cmd->cmd[0], store);
@@ -146,6 +148,7 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
 	perror("execve failed");
 	ft_free_tab(store->env_tab);
 	free(store);
+	free(path);
 	exit(EXIT_FAILURE);
 }
 
@@ -465,7 +468,7 @@ void	init_heredoc(t_data *data)
 		{
 			if (redir && redir->type == HEREDOC)
 			{
-				exec_heredoc(redir->file, cmd);
+				exec_heredoc(redir->file, cmd, data);
 				i++;
 			}
 			redir = redir->next;
