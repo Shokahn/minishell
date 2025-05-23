@@ -105,6 +105,8 @@ void				pause_signals(void);
 
 // builtin
 int					builtin_export(char **args, t_data *shell);
+void				builtin_unset(char **cmd, t_data *shell);
+void				print_env(t_data *shell);
 
 // env
 char				**ft_list_to_tab(t_env *env);

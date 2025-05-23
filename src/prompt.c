@@ -190,7 +190,7 @@ char	**split_line(t_data *shell, char *input)
 	define_separator(shell, input);
 	print_sep(shell);
 	count = wcount(input, shell->sep);
-	line = malloc(sizeof(char *) * (count));
+	line = malloc(sizeof(char *) * (count + 1));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, shell->sep, shell->input);
@@ -375,7 +375,7 @@ t_token	*token_cuting(t_token *current)
 		return (NULL);
 	tab = fill_the_tab(tab, current->inside);
 	count = wcount(current->inside, tab);
-	line = malloc(sizeof(char *) * count);
+	line = malloc(sizeof(char *) * (count + 1));
 	if (!line)
 		return (NULL);
 	line = makesplit(line, tab, current->inside);
@@ -608,7 +608,7 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 	check = 0;
 	count_arg = count_args(start, end);
 	printf("nbr of args = %d\n", count_arg);
-	args = malloc(sizeof(char *) * count_arg + 1);
+	args = malloc(sizeof(char *) * (count_arg + 1));
 	if (!args)
 		return (NULL);
 	while (start && start != end)
@@ -765,18 +765,6 @@ t_env	*get_env(t_data *shell, char **envp)
 	return (first);
 }
 
-void	print_env(t_data *shell)
-{
-	t_env	*tmp;
-
-	tmp = shell->env;
-	while (tmp)
-	{
-		printf("%s=", tmp->name);
-		printf("%s\n", tmp->inside);
-		tmp = tmp->next;
-	}
-}
 
 int	end_of_expansion_or_not(char *inside, int i)
 {
@@ -856,10 +844,11 @@ int	expand_string(t_token *current, t_data *shell)
 	in_the_dquote = 0;
 	while (current->inside[i])
 	{
-		if (current->inside[i] == '\'' && current->inside[i + 1] && in_the_dquote == 0)
+		if (current->inside[i] == '\'' && current->inside[i + 1]
+			&& in_the_dquote == 0)
 			i = pass_the_quote(current->inside, i + 1, '\'');
 		else if (current->inside[i] == '\"' && current->inside[i + 1])
-		{	
+		{
 			in_the_dquote = !in_the_dquote;
 			i++;
 		}
@@ -899,7 +888,6 @@ int	minishell(char *input, t_data *shell, char **envp)
 		return (0);
 	if (!making_token(shell))
 		return (0);
-	// print_env(shell);
 	if (!shell->env)
 		return (0);
 	print_token(shell);
@@ -908,7 +896,7 @@ int	minishell(char *input, t_data *shell, char **envp)
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = parse_tokens(shell->token);
-	// print_line(shell);
+	print_line(shell);
 	print_token(shell);
 	print_cmds(shell->cmd);
 	printf("\n\n\033[1mOutput :\033[0m\n\n");

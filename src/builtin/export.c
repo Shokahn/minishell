@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:21:58 by shokahn           #+#    #+#             */
-/*   Updated: 2025/05/22 19:48:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:22:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,31 +82,44 @@ void	ft_sort_env_tab(char **env_tab)
 	}
 }
 
+int has_equal(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*fill_the_env_quoted(char *str)
 {
 	char	*env;
 	int		len;
 	int i;
+	int j;
 
 	i = 0;
+	j = 0;
+	if (!has_equal(str))
+		return (ft_strdup(str));
 	len = ft_strlen(str);
-	env = malloc(sizeof(char) * len + 3);
+	env = malloc(sizeof(char) * (len + 3));
 	if (!env)
 		return (NULL);
 	while(str[i] && str[i] != '=')
-	{
-		env[i] = str[i];
-		i++;
-	}
-	env[i++] = '=';
-	env[i] = '"';
+		env[j++] = str[i++];
+	env[j++] = '=';
+	env[j++] = '"';
+	i++;
 	while(str[i])
-	{
-		env[i + 1] = str[i];
-		i++;
-	}
-	env[++i] = '"';
-	env[++i] = '\0';
+		env[j++] = str[i++];
+	env[j++] = '"';
+	env[j] = '\0';
 	return (env);
 }
 
@@ -118,7 +131,7 @@ char	**quoting_the_inside(char **env_tab)
 
 	i = 0;
 	len = ft_strlen_tab(env_tab);
-	env_quoted = malloc(sizeof(char *) * len);
+	env_quoted = malloc(sizeof(char *) * (len + 1));
 	if (!env_quoted)
 		return (NULL);
 	while (i < len)
@@ -133,7 +146,7 @@ char	**quoting_the_inside(char **env_tab)
 	return(env_quoted);
 }
 
-int	print_export(t_env *env, t_data *shell)
+int	print_export(t_env *env)
 {
 	char	**env_tab;
 	char	**env_quoted;
@@ -164,7 +177,7 @@ int	builtin_export(char **cmd, t_data *shell)
 	char	*equal_sign;
 
 	if (!cmd[1])
-		return (print_export(shell->env, shell));
+		return (print_export(shell->env));
 	i = 1;
 	while (cmd[i])
 	{
@@ -182,10 +195,8 @@ int	builtin_export(char **cmd, t_data *shell)
 			free(name);
 			free(value);
 		}
-		else if (!find_env(shell->env, cmd[i]))
-		{
-			update_env(&shell->env, cmd[i], "");
-		}
+		else
+			update_env(&shell->env, name, NULL);
 		i++;
 	}
 	return (0);

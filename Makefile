@@ -13,7 +13,7 @@ SRC_DIR = src/
 BUILTIN_DIR = builtin/
 INCLUDE = headers/
 
-BUILTIN = export.c
+BUILTIN = export.c unset.c env.c
 SRC = prompt.c error.c exec.c signals.c $(addprefix $(BUILTIN_DIR), $(BUILTIN))
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
