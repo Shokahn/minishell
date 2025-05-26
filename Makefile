@@ -10,11 +10,23 @@ ITALIC = \033[3m
 
 OBJ_DIR = obj/
 SRC_DIR = src/
+
 BUILTIN_DIR = builtin/
+EXPORT_DIR = export/
+PARSING_DIR = parsing/
+CMD_DIR = cmd/
+EXPAND_DIR = expand/
 INCLUDE = headers/
 
-BUILTIN = export.c unset.c env.c
-SRC = prompt.c error.c exec.c signals.c heredoc.c $(addprefix $(BUILTIN_DIR), $(BUILTIN))
+EXPORT = export.c print_export.c
+BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c
+CMD = collect_cmd_args.c making_cmd.c
+EXPAND = expand_token_recuting.c expandation.c replace_value.c
+PARSING = lexeur.c parsing.c print.c split.c token.c token_cleaning.c \
+		$(addprefix $(CMD_DIR), $(CMD)) $(addprefix $(EXPAND_DIR), $(EXPAND))
+
+SRC = main.c error.c exec.c signals.c heredoc.c env.c \
+	$(addprefix $(BUILTIN_DIR), $(BUILTIN)) $(addprefix $(PARSING_DIR), $(PARSING))
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
 CFLAGS = -Wall -Wextra -Werror -fPIC -g3
@@ -31,43 +43,43 @@ all: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(dir $@)
-	@echo -e "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
+	@echo "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
 	@cc $(CFLAGS) -I $(INCLUDE) -c $< -o $@
 
 
 $(NAME): $(LIBFT) $(OBJ)
 	@echo ""
-	@echo -e "		🚀 $(BOLD)$(YELLOW)Linking $(NAME)...$(RESET)"
+	@echo "		🚀 $(BOLD)$(YELLOW)Linking $(NAME)...$(RESET)"
 	@cc $(CFLAGS) $(OBJ) -o $(NAME) -I $(INCLUDE) $(LIBFT) $(EXTRAFLAGS)
 	@echo ""
-	@echo -e "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME) has been created$(RESET) ✅ "
+	@echo "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME) has been created$(RESET) ✅ "
 	@echo ""
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
-	@echo -e "		⚙ $(UNDERLINE)$(BOLD)Building $(NAME)$(RESET) ⚙"
+	@echo "		⚙ $(UNDERLINE)$(BOLD)Building $(NAME)$(RESET) ⚙"
 	@echo ""
 
 clean:
 	@echo ""
-	@echo -e "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"
+	@echo "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)
-	@echo -e "🗑️ $(YELLOW)$(BOLD) minishell$(RESET)$(YELLOW) object files cleaned$(RESET)"
+	@echo "🗑️ $(YELLOW)$(BOLD) minishell$(RESET)$(YELLOW) object files cleaned$(RESET)"
 
 
 
 fclean: clean
 	@echo ""
-	@echo -e "		🧹 $(BOLD)$(BLUE)Cleaning everything 🧹$(RESET)"
+	@echo "		🧹 $(BOLD)$(BLUE)Cleaning everything 🧹$(RESET)"
 	@echo ""
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo -e "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
-	@echo -e "↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
+	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
+	@echo "↪️ $(YELLOW)$(BOLD)$(NAME) has been cleaned$(RESET) ✅"
 	@rm -f $(NAME)
 	@echo ""
-	@echo -e "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
+	@echo "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
 	@echo ""
 
 re: fclean $(NAME)

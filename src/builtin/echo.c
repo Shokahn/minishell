@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 13:10:04 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:04:29 by stdevis          ###   ########.fr       */
+/*   Created: 2025/05/26 14:16:02 by stdevis           #+#    #+#             */
+/*   Updated: 2025/05/26 18:55:22 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/libft.h"
+#include "../../includes/minishell.h"
 
-char	*ft_strndup(const char *s1, size_t n)
+void	ft_echo(char **args)
 {
-	char	*dup;
-	size_t	i;
-	size_t	len;
+	int	i;
+	int	newline_toggle;
 
-	len = 0;
-	while (s1[len] && len < n)
-		len++;
-	i = 0;
-	dup = malloc(sizeof(char) * len + 1);
-	if (!dup)
-		return (NULL);
-	while (i < len)
+	i = 1;
+	newline_toggle = 1;
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
-		dup[i] = s1[i];
+		newline_toggle = 0;
 		i++;
 	}
-	dup[len] = '\0';
-	return (dup);
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], 1);
+		i++;
+	}
+	if (newline_toggle == 1)
+		ft_putchar_fd('\n', 1);
 }

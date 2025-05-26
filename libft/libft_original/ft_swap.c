@@ -6,16 +6,16 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:31:29 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/22 18:00:36 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:05:39 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-void ft_swap(char **a, char **b)
+void	ft_swap(char **a, char **b)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	tmp = *a;
 	*a = *b;
 	*b = tmp;

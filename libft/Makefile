@@ -53,21 +53,21 @@ $(OBJ_DIR)%.o: %.c
 
 $(NAME): $(OBJ)
 	@echo ""
-	@echo -e "		⚙ $(UNDERLINE)$(BOLD)Building libft$(RESET) ⚙"
+	@echo "		⚙ $(UNDERLINE)$(BOLD)Building libft$(RESET) ⚙"
 	@$(AR) $(NAME) $(OBJ)
 	@ranlib $(NAME)
 	@echo ""
-	@echo -e "    📚 $(BOLD)$(BLUE)SUCCESS: $(NAME) has been created$(RESET) 📚"
+	@echo "    📚 $(BOLD)$(BLUE)SUCCESS: $(NAME) has been created$(RESET) 📚"
 	@echo ""
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@echo -e "🗑️ $(YELLOW)$(BOLD) libft$(RESET)$(YELLOW) object files cleaned$(RESET)"
+	@echo "🗑️ $(YELLOW)$(BOLD) libft$(RESET)$(YELLOW) object files cleaned$(RESET)"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo -e "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
-	@echo -e "↪️ $(BOLD)$(YELLOW)libft has been cleaned$(RESET) ✅"
+	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
+	@echo "↪️ $(BOLD)$(YELLOW)libft has been cleaned$(RESET) ✅"
 
 re: fclean all
 

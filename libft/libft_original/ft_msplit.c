@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:20:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/22 18:22:48 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:05:06 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	ft_is_separator(char c, char *sep)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(sep[i])
+	while (sep[i])
 	{
 		if (sep[i] == c)
 			return (1);
@@ -110,4 +110,3 @@ char	**ft_msplit(char const *s, char *sep)
 		return (NULL);
 	return (split);
 }
-

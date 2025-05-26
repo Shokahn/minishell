@@ -277,26 +277,6 @@ void	handle_redirections(t_cmd *cmd)
 	}
 }
 
-void	ft_echo(char **args)
-{
-	int	i;
-	int	newline_toggle;
-
-	i = 1;
-	newline_toggle = 1;
-	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
-	{
-		newline_toggle = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], 1);
-		i++;
-	}
-	if (newline_toggle == 1)
-		ft_putchar_fd('\n', 1);
-}
 
 int	is_built_in(t_cmd *cmd)
 {
@@ -317,7 +297,7 @@ int	is_built_in(t_cmd *cmd)
 	built_in_funcs[6] = "exit_2";
 	while (i <= 6)
 	{
-		if (ft_strncmp(cmd->cmd[0], built_in_funcs[i], 10) == 0)
+		if (ft_strcmp(cmd->cmd[0], built_in_funcs[i]) == 0)
 			return (1);
 		i++;
 	}

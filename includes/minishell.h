@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
+/*   Updated: 2025/05/26 17:17:05 by stdevis          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -18,9 +30,6 @@
 # include <termios.h>
 # include <ttyent.h>
 # include <unistd.h>
-
-# define TEST printf(BOLD RED "test\n" RESET);
-# define TEST2 printf(BOLD GREEN "test\n" RESET);
 
 typedef enum e_type
 {
@@ -94,6 +103,35 @@ typedef struct s_built_in_cmd
 	s_built_in_cmd	*next;
 }	t_built_in_cmd;*/
 
+// lexeur
+int					lexeur(t_data *shell);
+
+// split
+char				**makesplit(char **line, int *sep, char *input);
+int					wcount(char *input, int *sep);
+
+// token
+int					making_token(t_data *shell);
+
+// expand
+int					expandation(t_data *shell);
+int					extract_variable(char *inside, int i, t_token *current,
+						t_data *shell);
+int					expand_token_recuting(t_data *shell);
+
+// parsing
+int					parsing(t_data *shell);
+void				token_cleaning(t_data *shell);
+char				*remove_quote(t_token *current);
+int					pass_the_quote(char *inside, int i, char c);
+
+// cmd
+t_cmd				*making_cmd(t_token *token);
+char				**collect_cmd_args(t_token *start, t_token *end);
+
+// env
+t_env				*get_env(t_data *shell, char **envp);
+
 // exec
 void				setup_exec(t_data *data);
 
@@ -109,13 +147,21 @@ void				pause_signals(void);
 int					builtin_export(char **args, t_data *shell);
 void				builtin_unset(char **cmd, t_data *shell);
 void				print_env(t_data *shell);
+void				ft_echo(char **args);
+int					print_export(t_env *env);
 
 // env
 char				**ft_list_to_tab(t_env *env);
 int					ft_envsize(t_env *lst);
 void				print_env(t_data *shell);
 
-//heredoc
+// heredoc
 void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
+
+// print
+void				print_token(t_data *shell);
+void				print_line(t_data *shell);
+void				print_cmds(t_cmd *cmd);
+void				print_sep(t_data *shell);
 
 #endif
