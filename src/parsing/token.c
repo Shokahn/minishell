@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:56:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 19:01:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:04:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*create_node(char *inside)
 	if (!new)
 		return (NULL);
 	new->inside = ft_strdup(inside);
-	if (!new->inside) // need to free still
+	if (!new->inside)
 	{
 		return (NULL);
 	}

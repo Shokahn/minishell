@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/23 16:27:28 by bri              ###   ########.fr       */
+/*   Updated: 2025/05/26 20:04:27 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 
 	before = ft_strndup(current->inside, start - 1);
 	tmp = ft_strjoin(before, expand);
-
 	free(before);
 	after = ft_substr(current->inside, i, ft_strlen(current->inside) - i);
 	joined = ft_strjoin(tmp, after);
-
 	free(tmp);
 	free(after);
 	free(current->inside);
@@ -80,8 +78,10 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 
 static int	expand_string(t_token *current, t_data *shell)
 {
-	int	i;
-	int	check;
+	int		i;
+	int		check;
+	int		i;
+	char	suffix[2];
 
 	i = 0;
 	check = 0;
@@ -94,12 +94,8 @@ static int	expand_string(t_token *current, t_data *shell)
 	}
 	return (1);
 } */
-
 static int	create_temp_file(char **temp_file)
 {
-	int	i;
-	char	suffix[2];
-
 	i = 0;
 	suffix[1] = '\0';
 	while (i < 10)
@@ -137,7 +133,7 @@ void	exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data)
 		{
 			free(input);
 			printf("\n");
-			break;
+			break ;
 		}
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);

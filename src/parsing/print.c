@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:58:06 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 15:59:35 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:03:49 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,18 @@ void	print_cmds(t_cmd *cmd)
 {
 	t_redir	*r;
 	int		y;
+	int		i;
 
 	y = 1;
 	while (cmd)
 	{
 		printf("CMD[%d]:\n", y);
-		for (int i = 0; cmd->cmd && cmd->cmd[i]; i++)
+		i = 0;
+		while (cmd->cmd && cmd->cmd[i])
+		{
 			printf("  arg[%d]: %s\n", i, cmd->cmd[i]);
-		r = cmd->redir;
+			i++;
+		}
 		while (r)
 		{
 			printf("  redir: type = %d, file = %s\n", r->type, r->file);

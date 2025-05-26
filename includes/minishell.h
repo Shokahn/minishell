@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:17:05 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:04:50 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ typedef enum e_type
 {
 	WORD,
 	PIPE,
-	REDIR_IN,  // <
-	REDIR_OUT, // >
-	APPEND,    // >>
-	HEREDOC,   // <<
+	REDIR_IN,
+	REDIR_OUT,
+	APPEND,
+	HEREDOC,
 }					t_type;
 
 typedef struct s_token

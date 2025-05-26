@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:35:10 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 16:56:13 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 19:59:27 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ char	**collect_cmd_args(t_token *start, t_token *end)
 					&& start->prev->type != REDIR_OUT
 					&& start->prev->type != APPEND
 					&& start->prev->type != HEREDOC)))
-		{
-			args[i] = ft_strdup(start->inside);
-			i++;
-		}
+			args[i++] = ft_strdup(start->inside);
 		start = start->next;
 		check++;
 	}

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:38:16 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 19:51:55 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:04:16 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ char	*wcreate(int start, int end, const char *str)
 
 char	**makesplit(char **line, int *sep, char *input)
 {
-	int i;
-	int j;
-	int start;
+	int	i;
+	int	j;
+	int	start;
 
 	i = 0;
 	j = 0;
@@ -93,9 +93,7 @@ char	**makesplit(char **line, int *sep, char *input)
 		{
 			line[j] = wcreate(start, i, input);
 			if (!line[j++])
-				ft_free_index(line, j - 1);
-				return (NULL);
-	
+				return (ft_free_index(line, j - 1), NULL);
 		}
 	}
 	line[j] = NULL;

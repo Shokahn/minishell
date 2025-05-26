@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:29:08 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:01:34 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_token	*divide_the_expanded_token(char **line, t_token *current)
 	{
 		new = malloc(sizeof(t_token));
 		if (!new)
-			return (NULL); // free
+			return (NULL);
 		new->inside = ft_strdup(line[i++]);
 		new->expand = 0;
 		new->type = 0;
