@@ -473,6 +473,4 @@ void	setup_exec(t_data *data)
 	init_store(data->store, data);
 	init_heredoc(data);
 	exec_cmds(data->store, data);
-	ft_free_tab(data->store->env_tab);
-	free(data->store);
 }

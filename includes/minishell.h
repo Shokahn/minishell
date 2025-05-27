@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 16:49:09 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:36:50 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,9 @@ void				print_token(t_data *shell);
 void				print_line(t_data *shell);
 void				print_cmds(t_cmd *cmd);
 void				print_sep(t_data *shell);
+
+// free
+
+void				ft_free_data(t_data *shell);
 
 #endif

@@ -1,0 +1,10 @@
+{
+  readline_leaks
+  Memcheck:Leak
+  fun:malloc
+  fun:free
+  fun:readline
+  fun:rl_free_line_state
+  fun:rl_initialize
+  ...
+}

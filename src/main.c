@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 16:35:31 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:43:02 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	main(int ac, char **av, char **envp)
 				continue ;
 		}
 	}
+	ft_free_data(&shell);
+	
 }
 
 // FINIR BUILTIN EXPORT

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:25:27 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 19:08:19 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 19:26:02 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	lexeur(t_data *shell)
 	int	len_input;
 
 	len_input = ft_strlen(shell->input);
-	shell->sep = ft_calloc(sizeof(int), len_input);
+	shell->sep = ft_calloc(sizeof(int), (len_input + 1));
 	if (!shell->sep)
 		return (ft_error(shell, 0, "sep malloc failed\n"), 0);
 	if (!validate_syntax(shell, shell->input))

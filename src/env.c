@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:27:50 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 16:47:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 19:13:52 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ t_env	*add_env_node(char *str, t_data *shell)
 	new->next = NULL;
 	while (str[i] && str[i] != '=')
 		i++;
-	split[0] = ft_calloc(sizeof(char), (i + 2));
 	split[0] = ft_substr(str, 0, i);
 	start = i + 1;
 	while (str[i])
 		i++;
-	split[1] = ft_calloc(sizeof(char), i - start + 1);
 	split[1] = ft_substr(str, start, i - start);
 	new->name = split[0];
 	new->inside = split[1];
