@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 18:43:02 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 19:46:28 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,12 @@ void	init_shell(t_data *shell)
 	shell->cmd = NULL;
 	shell->env = NULL;
 	shell->store = NULL;
+	shell->exit_status = 0;
 }
 
 int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
-	if (!ft_strncmp(input, "exit", 4))
-	{
-		printf("exit\n");
-		exit(0);
-	}
 	if (!lexeur(shell))
 		return (0);
 	if (!making_token(shell))
