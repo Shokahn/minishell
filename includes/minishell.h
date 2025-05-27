@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 16:23:36 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:18:56 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void				print_env(t_data *shell);
 
 // heredoc
 void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
+char				*expand_string_heredoc(char *inside, t_data *shell);
 
 // print
 void				print_token(t_data *shell);

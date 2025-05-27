@@ -16,8 +16,10 @@ EXPORT_DIR = export/
 PARSING_DIR = parsing/
 CMD_DIR = cmd/
 EXPAND_DIR = expand/
+HEREDOC_DIR = heredoc/
 INCLUDE = headers/
 
+HEREDOC = expand_heredoc.c heredoc.c
 EXPORT = export.c print_export.c
 BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c exit.c
 CMD = collect_cmd_args.c making_cmd.c
@@ -25,8 +27,10 @@ EXPAND = expand_token_recuting.c expandation.c replace_value.c
 PARSING = lexeur.c parsing.c print.c split.c token.c token_cleaning.c \
 		$(addprefix $(CMD_DIR), $(CMD)) $(addprefix $(EXPAND_DIR), $(EXPAND))
 
-SRC = main.c error.c exec.c signals.c heredoc.c env.c free.c \
-	$(addprefix $(BUILTIN_DIR), $(BUILTIN)) $(addprefix $(PARSING_DIR), $(PARSING))
+SRC = main.c error.c exec.c signals.c env.c \
+	$(addprefix $(BUILTIN_DIR), $(BUILTIN)) $(addprefix $(PARSING_DIR), $(PARSING)) \
+	$(addprefix $(HEREDOC_DIR), $(HEREDOC))
+
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 
 CFLAGS = -Wall -Wextra -Werror -fPIC -g3
