@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 17:20:38 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:18:31 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_shell(t_data *shell)
 	shell->cmd = NULL;
 	shell->env = NULL;
 	shell->store = NULL;
+	shell->exit_status = 0;
 }
 
 int	minishell(char *input, t_data *shell)

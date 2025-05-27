@@ -6,13 +6,13 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:16:35 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:56:06 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_all_num(char *str)
+static int	is_all_num(char *str)
 {
 	int	i;
 
@@ -34,7 +34,7 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 			fprintf(stderr, "exit: too many arguments\n");
 		else if (is_all_num(cmd->cmd[1]))
 		{
-			/*free_data(data);*/
+			free_data(data);
 			exit(ft_atoi(cmd->cmd[1]));
 		}
 		else
@@ -45,7 +45,7 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 	}
 	else
 	{
-		/*free_data(data);*/
+		free_data(data);
 		exit(data->exit_status);
 	}
 }

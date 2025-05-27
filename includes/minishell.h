@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 17:18:56 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:15:46 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,18 @@ char				**collect_cmd_args(t_token *start, t_token *end);
 
 // env
 t_env				*get_env(t_data *shell, char **envp);
+int					ft_envsize(t_env *lst);
+char				**ft_list_to_tab(t_env *env);
 
 // exec
 void				setup_exec(t_data *data);
+void				handle_redirections(t_cmd *cmd);
+char				**ft_tab_dup(char **tab);
+char				*find_valid_path(const char *str, t_store *store);
+int					open_pipe(int fd[2], t_cmd *current);
+void				exec_cmd(t_store *store, t_cmd *cmd);
+void    			launch_child(t_store *store, t_data *data);
+void				handle_parent(t_store *store);
 
 // error
 void				ft_error(t_data *shell, int type, char *message);
@@ -145,6 +154,10 @@ void				setup_sigint(void);
 void				pause_signals(void);
 
 // builtin
+void				save_fds(t_store *store);
+void				reset_fds(t_store *store);
+int					is_built_in(t_cmd *cmd);
+void				exec_built_in(t_store *store, t_data *data);
 int					builtin_export(char **args, t_data *shell);
 void				builtin_unset(char **cmd, t_data *shell);
 void				print_env(t_data *shell);
@@ -158,6 +171,9 @@ int					ft_envsize(t_env *lst);
 void				print_env(t_data *shell);
 
 // heredoc
+void				check_for_heredoc(t_cmd *cmd);
+void				close_heredoc(t_cmd *cmd);
+void				init_heredoc(t_data *data);
 void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
 char				*expand_string_heredoc(char *inside, t_data *shell);
 
