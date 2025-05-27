@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/26 20:06:17 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:35:12 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void	exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data)
 			printf("\n");
 			break;
 		}
+		//expand input
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 		free(input);

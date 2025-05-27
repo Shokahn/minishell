@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 20:04:50 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:23:36 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_data
 	char			*input;
 	int				*sep;
 	char			**line;
+	int				exit_status;
 	t_token			*token;
 	t_cmd			*cmd;
 	t_env			*env;
@@ -149,6 +150,7 @@ void				builtin_unset(char **cmd, t_data *shell);
 void				print_env(t_data *shell);
 void				ft_echo(char **args);
 int					print_export(t_env *env);
+void				ft_exit(t_data *data, t_cmd *cmd);
 
 // env
 char				**ft_list_to_tab(t_env *env);
@@ -163,5 +165,9 @@ void				print_token(t_data *shell);
 void				print_line(t_data *shell);
 void				print_cmds(t_cmd *cmd);
 void				print_sep(t_data *shell);
+
+// free
+void				free_store(t_store *store);
+void				free_data(t_data *data);
 
 #endif

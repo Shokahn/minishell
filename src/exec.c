@@ -174,11 +174,15 @@ void	close_heredoc(t_cmd *cmd)
 	}
 }
 
-void	pickup_children(t_cmd *cmd)
+void	pickup_children(t_data *data)
 {
-	while (wait(NULL) > 0) // wait returns -1 when no children are left?
+	int	status;
+
+	status = 0;
+	while (wait(&status) > 0) // wait returns -1 when no children are left?
 		;
-	close_heredoc(cmd);
+	data->exit_status = WEXITSTATUS(status);
+	close_heredoc(data->cmd);
 	setup_signals();
 }
 
@@ -237,27 +241,6 @@ void	append_handler(t_redir *redir)
 	close(fd);
 }
 
-/*char	**add_to_tab(char *new_str, char **tab)
-{
-	int	i;
-	char	**new_tab;
-
-	i = 0;
-	while (tab[i] != 0)
-		i++;
-	new_tab = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (tab[i] != 0)
-	{
-		new_tab[i] = tab[i];
-		i++;
-	}
-	new_tab[i] = new_str;
-	new_tab[i + 1] = 0;
-	free(tab);
-	return (new_tab);
-}*/
-
 void	handle_redirections(t_cmd *cmd)
 {
 	t_redir	*redir;
@@ -294,7 +277,7 @@ int	is_built_in(t_cmd *cmd)
 	built_in_funcs[3] = "export";
 	built_in_funcs[4] = "unset";
 	built_in_funcs[5] = "env";
-	built_in_funcs[6] = "exit_2";
+	built_in_funcs[6] = "exit";
 	while (i <= 6)
 	{
 		if (ft_strcmp(cmd->cmd[0], built_in_funcs[i]) == 0)
@@ -314,6 +297,8 @@ void	exec_built_in(t_store *store, t_data *data)
 		builtin_unset(store->current->cmd, data);
 	else if (ft_strncmp(store->current->cmd[0], "env", 4) == 0)
 		print_env(data);
+	else if (ft_strncmp(store->current->cmd[0], "exit", 5) == 0)
+		ft_exit(data, store->current);
 }
 
 void	check_for_heredoc(t_cmd *cmd)
@@ -430,7 +415,7 @@ void	exec_cmds(t_store *store, t_data *data)
             		handle_parent(store);
     	}
 	}
-    pickup_children(data->cmd);
+    pickup_children(data);
 }
 
 void	init_heredoc(t_data *data)
@@ -473,6 +458,5 @@ void	setup_exec(t_data *data)
 	init_store(data->store, data);
 	init_heredoc(data);
 	exec_cmds(data->store, data);
-	ft_free_tab(data->store->env_tab);
-	free(data->store);
+	/*free_data(data);*/
 }

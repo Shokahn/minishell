@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:13:26 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:59:21 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ void	init_shell(t_data *shell)
 int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
-	if (!ft_strncmp(input, "exit", 4))
-	{
-		printf("exit\n");
-		exit(0);
-	}
 	if (!lexeur(shell))
 		return (0);
 	if (!making_token(shell))
