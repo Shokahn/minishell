@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:15:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:23:19 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:16:17 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ char	**quoting_the_inside(char **env_tab)
 	{
 		env_quoted[i] = fill_the_env_quoted(env_tab[i]);
 		if (!env_quoted[i])
-			return (ft_free_index(env_quoted, i), NULL);
+			return (ft_free_index(&(env_quoted), i), NULL);
 		i++;
 	}
 	env_quoted[i] = NULL;
-	ft_free_tab(env_tab);
+	ft_free_tab((&env_tab));
 	return (env_quoted);
 }
 

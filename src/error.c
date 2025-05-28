@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:09:26 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:33:19 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:14:35 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,85 +24,98 @@ void	ft_error(t_data *shell, int type, char *message)
 		perror(message);
 }
 
-void	free_token(t_token *token)
+void	free_token(t_token **token)
 {
 	t_token	*current;
+	t_token	*tmp;
 
-	while (token)
+	if (!token | !*token)
+		return ;
+	current = *token;
+	while (current)
 	{
-		current = token->next;
-		if (token->inside)
-			free(token->inside);
-		free(token);
-		token = current;
+		tmp = current->next;
+		ft_free_str(&(current->inside));
+		free(current);
+		current = tmp;
 	}
+	*token = NULL;
 }
 
-void	free_redir(t_redir *redir)
+void	free_redir(t_redir **redir)
 {
 	t_redir	*current;
+	t_redir	*tmp;
 
-	while (redir)
+	if (!redir || !*redir)
+		return ;
+	current = *redir;
+	while (current)
 	{
-		current = redir->next;
-		if (redir->file)
-			free(redir->file);
-		free(redir);
-		redir = current;
+		tmp = current->next;
+		ft_free_str(&(current->file));
+		free(current);
+		current = tmp;
 	}
+	*redir = NULL;
 }
 
-void	free_cmd(t_cmd *cmd)
+void	free_cmd(t_cmd **cmd)
 {
 	t_cmd	*current;
+	t_cmd	*tmp;
 
-	while (cmd)
+	if (!cmd | !*cmd)
+		return ;
+	current = *cmd;
+	while (current)
 	{
-		current = cmd->next;
-		if (cmd->cmd)
-			ft_free_tab(cmd->cmd);
-		free_redir(cmd->redir);
-		free(cmd);
-		cmd = current;
+		tmp = current->next;
+		ft_free_tab(&(current->cmd));
+		free_redir(&(current->redir));
+		free(current);
+		current = tmp;
 	}
+	*cmd = NULL;
 }
 
-void	free_env(t_env *env)
+void	free_env(t_env **env)
 {
 	t_env	*current;
+	t_env	*tmp;
 
-	while (env)
+	if (!env | !*env)
+		return ;
+	current = *env;
+	while (current)
 	{
-		current = env->next;
-		if (env->inside)
-			free(env->inside);
-		if (env->name)
-			free(env->name);
-		free(env);
-		env = current;
+		tmp = current->next;
+		ft_free_str(&(current->inside));
+		ft_free_str(&(current->name));
+		free(current);
+		current = tmp;
 	}
+	*env = NULL;
 }
 
-void	free_store(t_store *store)
+void	free_store(t_store **store)
 {
-	if (store && store->env_tab)
-		ft_free_tab(store->env_tab);
-	if (store)
-		free(store);
+	if (!store || !*store)
+		return ;
+	ft_free_tab(&((*store)->env_tab));
+	free(*store);
+	*store = NULL;
 }
 
 void	ft_free_data(t_data *shell)
 {
 	if (!shell)
 		return ;
-	if (shell->sep)
-		free(shell->sep);
-	if (shell->input)
-		free(shell->input);
-	if (shell->line)
-		ft_free_tab(shell->line);
-	free_token(shell->token);
-	free_cmd(shell->cmd);
-	free_env(shell->env);
-	free_store(shell->store);
+	ft_free_int(&(shell->sep));
+	ft_free_str(&(shell->input));
+	ft_free_tab(&(shell->line));
+	free_token(&(shell->token));
+	free_cmd(&(shell->cmd));
+	free_env(&(shell->env));
+	free_store(&(shell->store));
 }

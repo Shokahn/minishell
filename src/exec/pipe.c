@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:05:24 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:17:24 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
 	}
 	execve(path, cmd->cmd, store->env_tab);
 	perror("execve failed");
-	ft_free_tab(store->env_tab);
+	ft_free_tab(&(store->env_tab));
 	free(store);
 	free(path);
 	exit(EXIT_FAILURE);

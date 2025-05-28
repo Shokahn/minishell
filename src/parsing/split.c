@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:38:16 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 20:04:16 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:16:26 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	**makesplit(char **line, int *sep, char *input)
 		{
 			line[j] = wcreate(start, i, input);
 			if (!line[j++])
-				return (ft_free_index(line, j - 1), NULL);
+				return (ft_free_index((&line), j - 1), NULL);
 		}
 	}
 	line[j] = NULL;

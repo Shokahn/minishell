@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:29:06 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:15:45 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,13 @@ int	minishell(char *input, t_data *shell)
 		return (0);
 	if (!making_token(shell))
 		return (0);
-	if (!shell->env)
-		return (0);
 	if (!expandation(shell))
 		return (0);
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = making_cmd(shell->token);
 	setup_exec(shell);
+	ft_free_data(shell);
 	return (1);
 }
 
@@ -50,8 +49,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac != 1)
 	{
-		ft_putstr_fd(ITALIC RED UNDERLINE "Error do not put argument\n" RESET,
-			2);
+		ft_putstr_fd(ITALIC RED "Error do not put argument\n" RESET, 2);
 		exit(1);
 	}
 	init_shell(&shell);
@@ -69,7 +67,7 @@ int	main(int ac, char **av, char **envp)
 				continue ;
 		}
 	}
-	ft_free_data(&shell);
+	free_env(&(shell.env));
 	printf("exit\n");
 }
 

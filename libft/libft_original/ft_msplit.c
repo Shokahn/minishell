@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:20:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:05:06 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:15:30 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	**ft_makesplit(char **split, const char *s, char *sep)
 			split[j] = ft_wcreate(start, i, s);
 			if (!split[j++])
 			{
-				ft_free_index(split, j - 1);
+				ft_free_index(&split, j - 1);
 				return (NULL);
 			}
 		}
