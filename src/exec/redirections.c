@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:37:22 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:38:59 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:02:50 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	redir_in_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 0); // change stdin?
+	dup2(fd, 0);
 	close(fd);
 }
 
@@ -36,7 +36,7 @@ static void	redir_out_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 1); // change stdout?
+	dup2(fd, 1);
 	close(fd);
 }
 
@@ -50,7 +50,7 @@ static void	append_handler(t_redir *redir)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 1); // change stdout?
+	dup2(fd, 1);
 	close(fd);
 }
 

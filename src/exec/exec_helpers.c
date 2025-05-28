@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 16:19:38 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:03:18 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,24 @@ int	ft_envsize(t_env *lst)
 	return (count);
 }
 
+char	*fill_tab(t_env *env)
+{
+	char	*tmp;
+	char	*join;
+
+	tmp = ft_strjoin(env->name, "=");
+	if (!tmp)
+		return (NULL);
+	join = ft_strjoin(tmp, env->inside);
+	free(tmp);
+	if (!join)
+		return (NULL);
+	return (join);
+}
+
 char	**ft_list_to_tab(t_env *env)
 {
 	char	**tab;
-	char	*tmp;
-	char	*join;
 	int		i;
 
 	i = 0;
@@ -41,16 +54,9 @@ char	**ft_list_to_tab(t_env *env)
 		if (env->inside == NULL)
 		{
 			env = env->next;
-			continue;
+			continue ;
 		}
-		tmp = ft_strjoin(env->name, "=");
-		if (!tmp)
-			return (ft_free_tab(tab), NULL);
-		join = ft_strjoin(tmp, env->inside);
-		free(tmp);
-		if (!join)
-			return (ft_free_tab(tab), NULL);
-		tab[i] = join;
+		tab[i] = fill_tab(env);
 		if (!tab[i])
 			return (ft_free_tab(tab), NULL);
 		i++;
@@ -60,7 +66,7 @@ char	**ft_list_to_tab(t_env *env)
 	return (tab);
 }
 
-char	**ft_tab_dup(char **tab)
+/*char	**ft_tab_dup(char **tab)
 {
 	char	**copy;
 	int		i;
@@ -87,7 +93,7 @@ char	**ft_tab_dup(char **tab)
 	}
 	copy[i] = 0;
 	return (copy);
-}
+}*/
 
 static char	**get_paths(char **env)
 {

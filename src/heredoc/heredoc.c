@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:48:55 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:15:31 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	close_heredoc(t_cmd *cmd)
 {
-	t_redir *redir;
+	t_redir	*redir;
 
 	while (cmd)
 	{
@@ -76,8 +76,7 @@ void	exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data)
 			break ;
 		}
 		input = expand_string_heredoc(input, data);
-		write(fd, input, ft_strlen(input));
-		write(fd, "\n", 1);
+		(write(fd, input, ft_strlen(input)), write(fd, "\n", 1));
 		free(input);
 	}
 	close(fd);
