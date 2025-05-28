@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 12:37:30 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:14:52 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	is_built_in(t_cmd *cmd)
 	int		i;
 	char	*built_in_funcs[7];
 
-	if (!cmd || !cmd->cmd || !cmd->cmd[0])
-		return (0);
 	if (!cmd || !cmd->cmd || !cmd->cmd[0])
 		return (0);
 	i = 0;

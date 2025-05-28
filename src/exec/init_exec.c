@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 15:29:19 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:24:09 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	setup_exec(t_data *data)
     if (!data->store)
 	{
         perror("Failed to allocate memory for store");
-        return;
+        ft_exit(data, data->cmd);
     }
 	init_store(data->store, data);
 	init_heredoc(data);

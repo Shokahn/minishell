@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 17:17:10 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:23:42 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ char	**ft_list_to_tab(t_env *env)
 	while (env)
 	{
 		if (env->inside == NULL)
+		{
 			env = env->next;
+			continue;
+		}
 		tmp = ft_strjoin(env->name, "=");
 		if (!tmp)
 			return (ft_free_tab(&tab), NULL);
@@ -71,6 +74,8 @@ char	**ft_tab_dup(char **tab)
 	while (tab[l])
 		l++;
 	copy = malloc(sizeof(char *) * (l + 1));
+	if (!copy)
+		return (NULL);
 	i = 0;
 	while (tab[i])
 	{

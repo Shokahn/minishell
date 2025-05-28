@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:14:58 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:22:28 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void				handle_redirections(t_cmd *cmd);
 char				**ft_tab_dup(char **tab);
 char				*find_valid_path(const char *str, t_store *store);
 int					open_pipe(int fd[2], t_cmd *current);
-void				exec_cmd(t_store *store, t_cmd *cmd);
+void				exec_cmd(t_store *store, t_cmd *cmd, t_data *data);
 void				launch_child(t_store *store, t_data *data);
 void				handle_parent(t_store *store);
 
