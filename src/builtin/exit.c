@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:13:30 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:20:31 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 		else
 		{
 			fprintf(stderr, "exit: argument must be numeric\n");
+			ft_free_data(data);
+			printf("exit\n");
 			exit(1);
 		}
 	}
+	printf("exit\n");
 	ft_free_data(data);
 	exit(data->exit_status);
 }

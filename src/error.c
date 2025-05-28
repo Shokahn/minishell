@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:09:26 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 19:16:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:33:19 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	free_env(t_env *env)
 
 void	free_store(t_store *store)
 {
-	if (store->env_tab)
+	if (store && store->env_tab)
 		ft_free_tab(store->env_tab);
 	if (store)
 		free(store);
