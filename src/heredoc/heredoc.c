@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:48:55 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:31:38 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	close_heredoc(t_cmd *cmd)
 {
-	t_redir *redir;
+	t_redir	*redir;
 
 	while (cmd)
 	{
@@ -25,6 +25,7 @@ void	close_heredoc(t_cmd *cmd)
 			{
 				close(redir->fd);
 				unlink(redir->file);
+				free(redir->file);
 			}
 			redir = redir->next;
 		}
@@ -56,7 +57,7 @@ static int	create_temp_file(char **temp_file)
 	return (-1);
 }
 
-void	exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data)
+void	exec_heredoc(char *delimiter, t_redir *redir, t_data *data)
 {
 	int		fd;
 	char	*input;
@@ -76,13 +77,12 @@ void	exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data)
 			break ;
 		}
 		input = expand_string_heredoc(input, data);
-		write(fd, input, ft_strlen(input));
-		write(fd, "\n", 1);
+		(write(fd, input, ft_strlen(input)), write(fd, "\n", 1));
 		free(input);
 	}
 	close(fd);
-	cmd->redir->file = tmp_file;
-	cmd->redir->fd = open(tmp_file, O_RDONLY);
+	redir->file = tmp_file;
+	redir->fd = open(tmp_file, O_RDONLY);
 	setup_signals();
 }
 
@@ -102,7 +102,7 @@ void	check_for_heredoc(t_cmd *cmd)
 	}
 }
 
-void	init_heredoc(t_data *data)
+int	count_heredocs(t_data *data)
 {
 	t_cmd	*cmd;
 	t_redir	*redir;
@@ -112,17 +112,39 @@ void	init_heredoc(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		if (i > 10)
+		redir = cmd->redir;
+		while (redir)
 		{
-			printf("too many heredoc\n");
-			exit(EXIT_FAILURE);
+			if (redir && redir->type == HEREDOC)
+				i++;
+			redir = redir->next;
 		}
+		cmd = cmd->next;
+	}
+	return (i);
+}
+
+void	init_heredoc(t_data *data)
+{
+	t_cmd	*cmd;
+	t_redir	*redir;
+	int		i;
+
+	i = 0;
+	cmd = data->cmd;
+	if (count_heredocs(data) > 9)
+	{
+		printf("maximum here-document count exceeded\n");
+		ft_exit(data, data->cmd, "2");
+	}
+	while (cmd)
+	{
 		redir = cmd->redir;
 		while (redir)
 		{
 			if (redir && redir->type == HEREDOC)
 			{
-				exec_heredoc(redir->file, cmd, data);
+				exec_heredoc(redir->file, redir, data);
 				i++;
 			}
 			redir = redir->next;

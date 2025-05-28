@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:20:31 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:30:07 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ static int	is_all_num(char *str)
 	return (1);
 }
 
-void	ft_exit(t_data *data, t_cmd *cmd)
+void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 {
-	if (cmd->cmd[1])
+	if (ft_strcmp(force_status, "") != 0)
+		data->exit_status = ft_atoi(force_status);
+	else if (cmd->cmd[1])
 	{
 		if (cmd->cmd[2])
 			fprintf(stderr, "exit: too many arguments\n");
@@ -37,12 +39,14 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 		else
 		{
 			fprintf(stderr, "exit: argument must be numeric\n");
+			free_env(&(data->env));
 			ft_free_data(data);
 			printf("exit\n");
 			exit(1);
 		}
 	}
 	printf("exit\n");
+	free_env(&(data->env));
 	ft_free_data(data);
 	exit(data->exit_status);
 }
