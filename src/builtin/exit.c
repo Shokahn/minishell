@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 19:51:25 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:13:30 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,13 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 		if (cmd->cmd[2])
 			fprintf(stderr, "exit: too many arguments\n");
 		else if (is_all_num(cmd->cmd[1]))
-		{
-			ft_free_data(data);
-			exit(ft_atoi(cmd->cmd[1]));
-		}
+			data->exit_status = ft_atoi(cmd->cmd[1]);
 		else
 		{
 			fprintf(stderr, "exit: argument must be numeric\n");
 			exit(1);
 		}
 	}
-	else
-	{
-		ft_free_data(data);
-		exit(data->exit_status);
-	}
+	ft_free_data(data);
+	exit(data->exit_status);
 }

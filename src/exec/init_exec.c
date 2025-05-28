@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 13:54:12 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:09:06 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static void	pickup_children(t_data *data)
 
 	status = 0;
 	while (wait(&status) > 0) // wait returns -1 when no children are left?
+		;
 	data->exit_status = WEXITSTATUS(status);
+	printf("exit status: %d\n", data->exit_status);
 	close_heredoc(data->cmd);
 	setup_signals();
 }

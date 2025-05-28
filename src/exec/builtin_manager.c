@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:06:25 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:37:30 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	is_built_in(t_cmd *cmd)
 		return (0);
 	i = 0;
 	built_in_funcs[0] = "echo";
-	built_in_funcs[1] = "cd_2";
-	built_in_funcs[2] = "pwd_2";
+	built_in_funcs[1] = "cd";
+	built_in_funcs[2] = "pwd";
 	built_in_funcs[3] = "export";
 	built_in_funcs[4] = "unset";
 	built_in_funcs[5] = "env";
@@ -66,4 +66,8 @@ void	exec_built_in(t_store *store, t_data *data)
 		print_env(data);
 	else if (ft_strncmp(store->current->cmd[0], "exit", 5) == 0)
 		ft_exit(data, store->current);
+	else if (ft_strncmp(store->current->cmd[0], "cd", 3) == 0)
+		ft_cd(data, store->current->cmd[1]);
+	else if (ft_strncmp(store->current->cmd[0], "pwd", 4) == 0)
+		ft_pwd();
 }

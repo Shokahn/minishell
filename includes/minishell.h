@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 19:50:10 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:00:59 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <termios.h>
 # include <ttyent.h>
 # include <unistd.h>
+
+# define PATH_MAX 4096
 
 typedef enum e_type
 {
@@ -164,11 +166,14 @@ void				print_env(t_data *shell);
 void				ft_echo(char **args);
 int					print_export(t_env *env);
 void				ft_exit(t_data *data, t_cmd *cmd);
+void				ft_cd(t_data *data, char *path);
+void				ft_pwd();
 
 // env
 char				**ft_list_to_tab(t_env *env);
 int					ft_envsize(t_env *lst);
 void				print_env(t_data *shell);
+void				update_env(t_env **env_list, char *name, char *value);
 
 // heredoc
 void				check_for_heredoc(t_cmd *cmd);

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 17:44:30 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:48:44 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,14 @@ char	**ft_list_to_tab(t_env *env)
 			env = env->next;
 		tmp = ft_strjoin(env->name, "=");
 		if (!tmp)
-		{
-			ft_free_tab(tab);
-			return (NULL);
-		}
+			return (ft_free_tab(tab), NULL);
 		join = ft_strjoin(tmp, env->inside);
 		free(tmp);
 		if (!join)
-		{
-			ft_free_tab(tab);
-			return (NULL);
-		}
+			return (ft_free_tab(tab), NULL);
 		tab[i] = join;
 		if (!tab[i])
-		{
-			ft_free_tab(tab);
-			return (NULL);
-		}
+			return (ft_free_tab(tab), NULL);
 		i++;
 		env = env->next;
 	}
