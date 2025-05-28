@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 13:58:31 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:39:58 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_cd(t_data *data, char *path)
 	char	wd[PATH_MAX];
 	char	old_wd[PATH_MAX];
 
-	if (getcwd(old_wd, sizeof(old_wd)) != NULL)
+	if (getcwd(old_wd, sizeof(old_wd)) == NULL)
 		perror("getcwd error");
 	if (chdir(path) != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:05:24 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:04:25 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	open_pipe(int fd[2], t_cmd *current)
 	return (1);
 }
 
-void	exec_cmd(t_store *store, t_cmd *cmd)
+void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 {
 	char	*path;
 
@@ -37,13 +37,12 @@ void	exec_cmd(t_store *store, t_cmd *cmd)
     if (!path)
 	{
 		perror("command not found");
+		ft_free_data(data);
 		exit(EXIT_FAILURE);
 	}
 	execve(path, cmd->cmd, store->env_tab);
 	perror("execve failed");
-	ft_free_tab(store->env_tab);
-	free(store);
-	free(path);
+	ft_free_data(data);
 	exit(EXIT_FAILURE);
 }
 
@@ -67,10 +66,11 @@ void    launch_child(t_store *store, t_data *data)
 	if (is_built_in(store->current))
 	{
 		exec_built_in(store, data);
+		ft_free_data(data);
 		exit(EXIT_SUCCESS);
 	}
 	else
-		exec_cmd(store, store->current);
+		exec_cmd(store, store->current, data);
 }
 
 void	handle_parent(t_store *store)

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:19:56 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:04:03 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	pickup_children(t_data *data)
 
 static void	exec_cmds(t_store *store, t_data *data)
 {
-	if (store->current && store->current->cmd && store->current->cmd[0])
+	if (store->current && store->current->cmd)
 	{
 		if (is_built_in(store->current) && !store->current->next)
 		{
@@ -76,7 +76,7 @@ void	setup_exec(t_data *data)
     if (!data->store)
 	{
         perror("Failed to allocate memory for store");
-        return;
+        ft_exit(data, data->cmd);
     }
 	init_store(data->store, data);
 	init_heredoc(data);

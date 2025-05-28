@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:29:06 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:07:57 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	minishell(char *input, t_data *shell)
 		return (0);
 	shell->cmd = making_cmd(shell->token);
 	setup_exec(shell);
+	ft_free_data(shell);
 	return (1);
 }
 
@@ -69,7 +70,6 @@ int	main(int ac, char **av, char **envp)
 				continue ;
 		}
 	}
-	ft_free_data(&shell);
 	printf("exit\n");
 }
 

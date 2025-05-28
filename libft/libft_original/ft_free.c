@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:46:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:34:36 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:21:37 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_free_tab(char **tab)
 {
 	int	i;
 
-	if (!tab || tab[0])
+	if (!tab || !tab[0])
 		return ;
 	i = 0;
 	while (tab[i])
