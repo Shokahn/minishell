@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 17:03:18 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:34:41 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	**ft_list_to_tab(t_env *env)
 	int		i;
 
 	i = 0;
+	if (!env)
+		return (NULL);
 	tab = malloc(sizeof(char *) * (ft_envsize(env) + 1));
 	if (!tab)
 		return (NULL);
@@ -58,7 +60,7 @@ char	**ft_list_to_tab(t_env *env)
 		}
 		tab[i] = fill_tab(env);
 		if (!tab[i])
-			return (ft_free_tab(tab), NULL);
+			return (ft_free_tab(&tab), NULL);
 		i++;
 		env = env->next;
 	}
@@ -86,7 +88,7 @@ char	**ft_list_to_tab(t_env *env)
 		copy[i] = ft_strdup(tab[i]);
 		if (!copy[i])
 		{
-			ft_free_tab(copy);
+			ft_free_tab(&copy);
 			return (NULL);
 		}
 		i++;
@@ -130,13 +132,13 @@ char	*find_valid_path(const char *str, t_store *store)
 		pathname = ft_strjoin(tmp, str);
 		if (access(pathname, X_OK) == 0)
 		{
-			ft_free_tab(paths);
+			ft_free_tab(&paths);
 			return (pathname);
 		}
 		free(tmp);
 		free(pathname);
 		i++;
 	}
-	ft_free_tab(paths);
+	ft_free_tab(&paths);
 	return (NULL);
 }

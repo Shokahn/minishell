@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:21:58 by shokahn           #+#    #+#             */
-/*   Updated: 2025/05/26 19:00:54 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:32:54 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,11 @@ int	builtin_export(char **cmd, t_data *shell)
 			free(value);
 		}
 		else
+		{
+			name = ft_strdup(cmd[i]);
 			update_env(&shell->env, name, NULL);
+			free(name);
+		}
 	}
 	return (0);
 }

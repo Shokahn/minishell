@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:05:25 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:22:28 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,6 @@ typedef struct s_data
 	t_store			*store;
 }					t_data;
 
-/*typedef void (*built_in_func)(char **args);
-
-typedef struct s_built_in_cmd
-{
-	const char		*cmd;
-	built_in_func	handler;
-	s_built_in_cmd	*next;
-}	t_built_in_cmd;*/
-
 // lexeur
 int					lexeur(t_data *shell);
 
@@ -167,7 +158,7 @@ void				ft_echo(char **args);
 int					print_export(t_env *env);
 void				ft_exit(t_data *data, t_cmd *cmd);
 void				ft_cd(t_data *data, char *path);
-void				ft_pwd();
+void				ft_pwd(void);
 
 // env
 char				**ft_list_to_tab(t_env *env);
@@ -191,5 +182,6 @@ void				print_sep(t_data *shell);
 // free
 
 void				ft_free_data(t_data *shell);
+void				free_env(t_env **env);
 
 #endif
