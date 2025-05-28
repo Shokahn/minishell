@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:14:02 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:49:22 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	pickup_children(t_data *data)
 	while (wait(&status) > 0) // wait returns -1 when no children are left?
 		;
 	data->exit_status = WEXITSTATUS(status);
+	printf("exit status: %d\n", data->exit_status);
 	close_heredoc(data->cmd);
 	setup_signals();
 }
@@ -81,5 +82,4 @@ void	setup_exec(t_data *data)
 	init_store(data->store, data);
 	init_heredoc(data);
 	exec_cmds(data->store, data);
-	free_data(data);
 }
