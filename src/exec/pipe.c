@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 17:34:59 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:41:51 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 	if (!path)
 	{
 		perror("command not found");
+		free_env(&(data->env));
 		ft_free_data(data);
 		exit(EXIT_FAILURE);
 	}
 	execve(path, cmd->cmd, store->env_tab);
 	perror("execve failed");
-	ft_free_tab(&(store->env_tab));
-	free(store);
-	free(path);
+	free_env(&(data->env));
+	ft_free_data(data);
 	exit(EXIT_FAILURE);
 }
 
@@ -63,11 +63,12 @@ void	launch_child(t_store *store, t_data *data)
 		close(store->fd[1]);
 	}
 	if (store->current->redir)
-		handle_redirections(store->current);
+		handle_redirections(store->current, data);
 	check_for_heredoc(store->current);
 	if (is_built_in(store->current))
 	{
 		exec_built_in(store, data);
+		free_env(&(data->env));
 		ft_free_data(data);
 		exit(EXIT_SUCCESS);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:22:28 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 18:42:08 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ char				**ft_list_to_tab(t_env *env);
 
 // exec
 void				setup_exec(t_data *data);
-void				handle_redirections(t_cmd *cmd);
-char				**ft_tab_dup(char **tab);
+void				handle_redirections(t_cmd *cmd, t_data *data);
 char				*find_valid_path(const char *str, t_store *store);
 int					open_pipe(int fd[2], t_cmd *current);
 void				exec_cmd(t_store *store, t_cmd *cmd, t_data *data);
@@ -156,7 +155,7 @@ void				builtin_unset(char **cmd, t_data *shell);
 void				print_env(t_data *shell);
 void				ft_echo(char **args);
 int					print_export(t_env *env);
-void				ft_exit(t_data *data, t_cmd *cmd);
+void				ft_exit(t_data *data, t_cmd *cmd, char *force_status);
 void				ft_cd(t_data *data, char *path);
 void				ft_pwd(void);
 
@@ -170,7 +169,7 @@ void				update_env(t_env **env_list, char *name, char *value);
 void				check_for_heredoc(t_cmd *cmd);
 void				close_heredoc(t_cmd *cmd);
 void				init_heredoc(t_data *data);
-void				exec_heredoc(char *delimiter, t_cmd *cmd, t_data *data);
+void				exec_heredoc(char *delimiter, t_redir *redir, t_data *data);
 char				*expand_string_heredoc(char *inside, t_data *shell);
 
 // print

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 17:33:05 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:37:52 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	exec_builtin_cmds(t_store *store, t_data *data)
 	if (store->current->redir)
 	{
 		save_fds(store);
-		handle_redirections(store->current);
+		handle_redirections(store->current, data);
 		check_for_heredoc(store->current);
 	}
 	exec_built_in(store, data);
@@ -80,7 +80,7 @@ void	setup_exec(t_data *data)
 	if (!data->store)
 	{
 		perror("Failed to allocate memory for store");
-		ft_exit(data, data->cmd);
+		ft_exit(data, data->cmd, "1");
 	}
 	init_store(data->store, data);
 	init_heredoc(data);

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 17:34:41 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:37:20 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,6 @@ char	**ft_list_to_tab(t_env *env)
 	tab[i] = 0;
 	return (tab);
 }
-
-/*char	**ft_tab_dup(char **tab)
-{
-	char	**copy;
-	int		i;
-	int		l;
-
-	if (!tab || !tab[0])
-		return (NULL);
-	l = 0;
-	while (tab[l])
-		l++;
-	copy = malloc(sizeof(char *) * (l + 1));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (tab[i])
-	{
-		copy[i] = ft_strdup(tab[i]);
-		if (!copy[i])
-		{
-			ft_free_tab(&copy);
-			return (NULL);
-		}
-		i++;
-	}
-	copy[i] = 0;
-	return (copy);
-}*/
 
 static char	**get_paths(char **env)
 {
