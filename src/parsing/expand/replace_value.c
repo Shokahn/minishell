@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:45:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 18:50:52 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 	current->inside = joined;
 }
 
+void replace_value_empty(t_token *current, int i)
+{
+	
+}
+
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
 	int		start;
@@ -76,10 +81,6 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		free(expand);
 	}
 	else if (ft_isdigit(inside[i]))
-	{
-		expand = ft_strdup("");
-		replace_value(expand, current, i, i + 1);
-		free(expand);
-	}
+		return (replace_value_empty(current, i), i);
 	return (i + 1);
 }

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:46:20 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:53:38 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ int	expand_string(t_token *current, t_data *shell)
 		else if (current->inside[i] == '$' && current->inside[i + 1]
 			&& current->inside[i + 1] != '$')
 		{
-			if (current->inside[i + 1] == '\0')
-				break;
-			i = extract_variable(current->inside, i + 1, current, shell);
+			if (current->inside[i + 1] != '$')
+				i = extract_variable(current->inside, i + 1, current, shell);
+			else
+				i++;
 		}
 		else
 			i++;

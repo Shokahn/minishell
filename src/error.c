@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:09:26 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:22:15 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:49:41 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,5 @@ void	ft_free_data(t_data *shell)
 	ft_free_tab(&(shell->line));
 	free_token(&(shell->token));
 	free_cmd(&(shell->cmd));
-	free_env(&(shell->env));
 	free_store(&(shell->store));
 }
