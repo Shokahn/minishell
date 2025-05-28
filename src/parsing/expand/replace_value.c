@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 20:01:56 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 13:50:05 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,13 @@ void	replace_value(char *expand, t_token *current, int start, int i)
 
 	before = ft_strndup(current->inside, start - 1);
 	tmp = ft_strjoin(before, expand);
-	printf("before = %s\n", before);
 	free(before);
 	after = ft_substr(current->inside, i, ft_strlen(current->inside) - i);
 	joined = ft_strjoin(tmp, after);
-	printf("after = %s\n", after);
 	free(tmp);
 	free(after);
 	free(current->inside);
 	current->inside = joined;
-	printf("current->inside = %s\n", current->inside);
 }
 
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
@@ -62,15 +59,14 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 	char	*expand;
 
 	current->expand++;
-	if (ft_isalpha(inside[i]) || inside[i] == '_')
+	if (inside[i] == '?')
+		replace_value(ft_itoa(shell->exit_status), current, i, i + 1);
+	else if (ft_isalpha(inside[i]) || inside[i] == '_')
 	{
 		start = i;
 		i = end_of_expansion_or_not(inside, i + 1);
 		name = ft_substr(inside, start, i - start);
-		printf(GREEN "i after expand = %d\n" RESET, i);
-		printf(RED "name = %s\n" RESET, name);
 		expand = check_value(shell, name);
-		printf(RED "expand = %s\n" RESET, expand);
 		replace_value(expand, current, start, i);
 	}
 	else if (ft_isdigit(inside[i]))

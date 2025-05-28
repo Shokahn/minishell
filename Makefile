@@ -18,7 +18,7 @@ EXEC_DIR = exec/
 CMD_DIR = cmd/
 EXPAND_DIR = expand/
 HEREDOC_DIR = heredoc/
-INCLUDE = headers/
+INCLUDE = headers/minishell.h
 
 HEREDOC = expand_heredoc.c heredoc.c
 EXPORT = export.c print_export.c
