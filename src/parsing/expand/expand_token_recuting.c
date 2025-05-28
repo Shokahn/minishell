@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 19:42:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:21:09 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	expand_token_recuting(t_data *shell)
 			tmp = current;
 			while (tmp)
 			{
-				printf("current = %s | type = %d\n", tmp->inside, tmp->type);
 				tmp = tmp->next;
 			}
 		}
