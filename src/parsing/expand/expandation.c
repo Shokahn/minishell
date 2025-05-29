@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 14:59:51 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/29 22:54:36 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	expand_string(t_token *current, t_data *shell)
 			&& current->inside[i + 1] != '$')
 		{
 			if (current->inside[i + 1] != '$')
-				i = extract_variable(current->inside, i + 1, current, shell);
+				extract_variable(current->inside, i + 1, current, shell);
 			else
 				i++;
 		}

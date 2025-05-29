@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 18:42:08 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/29 22:55:08 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int					making_token(t_data *shell);
 
 // expand
 int					expandation(t_data *shell);
-int					extract_variable(char *inside, int i, t_token *current,
+void				extract_variable(char *inside, int i, t_token *current,
 						t_data *shell);
 int					expand_token_recuting(t_data *shell);
 
