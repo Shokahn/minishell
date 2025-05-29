@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:31:38 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:23:01 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	close_heredoc(t_cmd *cmd)
 			{
 				close(redir->fd);
 				unlink(redir->file);
-				free(redir->file);
+				ft_free_str(&(redir->file));
 			}
 			redir = redir->next;
 		}
@@ -51,7 +51,7 @@ static int	create_temp_file(char **temp_file)
 			return (open(*temp_file, O_CREAT | O_RDWR | O_APPEND, 0600));
 		}
 		else
-			free(*temp_file);
+			ft_free_str(temp_file);
 		i++;
 	}
 	return (-1);
@@ -81,6 +81,7 @@ void	exec_heredoc(char *delimiter, t_redir *redir, t_data *data)
 		free(input);
 	}
 	close(fd);
+	ft_free_str(&(redir->file));
 	redir->file = tmp_file;
 	redir->fd = open(tmp_file, O_RDONLY);
 	setup_signals();

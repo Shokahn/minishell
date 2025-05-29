@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:23:31 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:12:23 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	minishell(char *input, t_data *shell)
 	if (!parsing(shell))
 		return (0);
 	shell->cmd = making_cmd(shell->token);
+	print_cmds(shell->cmd);
 	setup_exec(shell);
 	ft_free_data(shell);
 	return (1);

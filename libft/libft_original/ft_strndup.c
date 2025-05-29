@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:10:04 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 17:04:29 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:01:40 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-char	*ft_strndup(const char *s1, size_t n)
+char	*ft_strndup(const char *s1, int n)
 {
 	char	*dup;
-	size_t	i;
-	size_t	len;
+	int	i;
+	int	len;
 
 	len = 0;
 	while (s1[len] && len < n)

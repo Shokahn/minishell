@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:16:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 13:37:22 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:08:40 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_args_n(char *arg)
 	int i;
 
 	i = 1;
-	if (!arg || !arg[i])
+	if (!arg || !arg[0] || !arg[i])
 		return (0);
 	while (arg[i])
 	{

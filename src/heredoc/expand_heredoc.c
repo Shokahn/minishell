@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:48:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 16:48:55 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:38:37 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*replace_value_heredoc(char *expand, int start, int i, char *inside)
 	joined = ft_strjoin(tmp, after);
 	free(tmp);
 	free(after);
-	free(inside);
 	return (joined);
 }
 
@@ -67,12 +66,14 @@ int	extract_variable_heredoc(char **inside, int i, t_data *shell)
 		expand = check_value_heredoc(shell, name);
 		new_inside = replace_value_heredoc(expand, start, i, *inside);
 		free(name);
+		ft_free_str(inside);
 		*inside = new_inside;
 	}
 	else if (ft_isdigit((*inside)[i]))
 	{
 		expand = ft_strdup("");
 		new_inside = replace_value_heredoc(expand, i, i + 1, *inside);
+		ft_free_str(inside);
 		*inside = new_inside;
 	}
 	return (i + 1);
@@ -83,7 +84,7 @@ char	*expand_string_heredoc(char *inside, t_data *shell)
 	int	i;
 
 	i = 0;
-	while (inside[i])
+	while (i < ft_strlen(inside) && inside[i])
 	{
 		if (inside[i] == '$' && inside[i + 1])
 			i = extract_variable_heredoc(&inside, i + 1, shell);

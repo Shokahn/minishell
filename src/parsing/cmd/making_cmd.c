@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   making_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:33:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 15:55:46 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:09:52 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ t_redir	*init_redir(t_token *token)
 {
 	t_redir	*redir;
 
+	 if (!token || !token->next)
+	 	return (NULL);
 	redir = malloc(sizeof(t_redir));
-	if (!redir || !token || !token->next)
+	if (!redir)
 		return (NULL);
 	redir->type = token->type;
 	redir->file = strdup(token->next->inside);

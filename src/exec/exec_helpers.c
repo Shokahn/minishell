@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:39:59 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:37:20 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:45:29 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ char	*find_valid_path(const char *str, t_store *store)
 	char	*tmp;
 
 	paths = get_paths(store->env_tab);
-	if (!paths)
-		return (NULL);
+	if (!paths || !str)
+		return (ft_free_tab(&paths), NULL);
 	i = 0;
 	while (paths[i])
 	{

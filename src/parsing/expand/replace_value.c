@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_value.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 18:50:52 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:03:56 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,40 @@ char	*check_value(t_data *shell, char *name)
 	return (ft_strdup(""));
 }
 
-void	replace_value(char *expand, t_token *current, int start, int i)
+int	replace_value(char *expand, t_token *current, int start, int end)
 {
 	char	*before;
 	char	*after;
 	char	*tmp;
 	char	*joined;
 
-	before = ft_strndup(current->inside, start - 1);
+	if (start <= 0)
+		before = ft_strdup("");
+	else
+		before = ft_strndup(current->inside, start - 1);
+	if (!before)
+		return (end);
+
 	tmp = ft_strjoin(before, expand);
-	after = ft_substr(current->inside, i, ft_strlen(current->inside) - i);
-	joined = ft_strjoin(tmp, after);
 	free(before);
+	if (!tmp)
+		return (end);
+
+	after = ft_substr(current->inside, end, ft_strlen(current->inside) - end);
+	if (!after)
+	{
+		free(tmp);
+		return (end);
+	}
+	joined = ft_strjoin(tmp, after);
 	free(tmp);
 	free(after);
-	free(current->inside);
+	ft_free_str(&current->inside);
 	current->inside = joined;
+	return (start + ft_strlen(expand));
 }
 
-void replace_value_empty(t_token *current, int i)
-{
-	
-}
+
 
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
@@ -67,7 +79,7 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 	if (inside[i] == '?')
 	{
 		expand = ft_itoa(shell->exit_status);
-		replace_value(expand, current, i, i + 1);
+		i = replace_value(expand, current, i, i + 1);
 		free(expand);
 	}
 	else if (ft_isalpha(inside[i]) || inside[i] == '_')
@@ -77,10 +89,19 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		name = ft_substr(inside, start, i - start);
 		expand = check_value(shell, name);
 		free(name);
-		replace_value(expand, current, start, i);
+		i = replace_value(expand, current, start, i);
 		free(expand);
 	}
+	else if (ft_isdigit(inside[i]) && !inside[i + 1])
+		i = replace_value("", current, i, i + 1);
 	else if (ft_isdigit(inside[i]))
-		return (replace_value_empty(current, i), i);
-	return (i + 1);
+	{
+		expand = ft_strdup("");
+		i = replace_value(expand, current, i, i + 1);
+		free(expand);
+	}
+	else
+		i++;
+	return (i);
 }
+

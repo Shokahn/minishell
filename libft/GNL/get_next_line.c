@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:15:14 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:04:10 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	gnl_ft_free(char **str)
 
 char	*create_rest(char *line)
 {
-	ssize_t	i;
+	int	i;
 	char	*new_rest;
 
 	i = gnl_ft_strchr(line, '\n');
@@ -55,7 +55,7 @@ char	*get_the_line(char *rest, char *buff)
 
 char	*read_the_line(int fd, char *rest)
 {
-	ssize_t	byte;
+	int	byte;
 	char	buff[BUFFER_SIZE + 1];
 
 	byte = 1;
