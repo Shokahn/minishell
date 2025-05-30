@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 15:01:54 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:15:36 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,18 @@ int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
 	if (!lexeur(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!making_token(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!expandation(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!parsing(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	shell->cmd = making_cmd(shell->token);
+	if (!shell->cmd)
+		return (ft_free_data(shell), 0);
 	setup_exec(shell);
-	ft_free_data(shell);
-	return (1);
+	return (ft_free_data(shell), 1);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -62,7 +63,8 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		else
 		{
-			add_history(input);
+			if (input[0])
+				add_history(input);
 			if (!minishell(input, &shell))
 				continue ;
 		}
@@ -70,5 +72,3 @@ int	main(int ac, char **av, char **envp)
 	free_env(&(shell.env));
 	printf("exit\n");
 }
-
-// FINIR BUILTIN EXPORT

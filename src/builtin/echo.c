@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:16:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 13:37:22 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:02:54 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	is_args_n(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 1;
-	if (!arg || !arg[i])
+	if (!arg || !arg[0] || !arg[i])
 		return (0);
 	while (arg[i])
 	{
@@ -34,7 +34,7 @@ void	ft_echo(char **args)
 {
 	int	i;
 	int	newline_toggle;
-	int first_printed;
+	int	first_printed;
 
 	i = 1;
 	newline_toggle = 1;

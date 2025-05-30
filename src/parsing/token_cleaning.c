@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:25:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 19:01:34 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:12 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ char	*remove_quote(t_token *current)
 		i++;
 	}
 	result[j] = '\0';
+	ft_free_str(&(current->inside));
 	return (result);
 }
 
-void	token_cleaning(t_data *shell)
+int	token_cleaning(t_data *shell)
 {
 	t_token	*current;
 
@@ -59,6 +60,9 @@ void	token_cleaning(t_data *shell)
 	while (current)
 	{
 		current->inside = remove_quote(current);
+		if (!current->inside)
+			return (0);
 		current = current->next;
 	}
+	return (1);
 }

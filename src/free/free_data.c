@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 17:09:26 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:37:56 by brcoppie         ###   ########.fr       */
+/*   Created: 2025/05/30 16:57:08 by stdevis           #+#    #+#             */
+/*   Updated: 2025/05/30 16:57:33 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void	ft_error(t_data *shell, int type, char *message)
-{
-	(void)shell;
-	if (type == 0)
-	{
-		ft_putstr_fd(ITALIC RED BOLD "Error : " RESET, 2);
-		ft_putstr_fd(message, 2);
-	}
-	else if (type == 1)
-		perror(message);
-}
+#include "../../includes/minishell.h"
 
 void	free_token(t_token **token)
 {
@@ -77,25 +65,6 @@ void	free_cmd(t_cmd **cmd)
 		current = tmp;
 	}
 	*cmd = NULL;
-}
-
-void	free_env(t_env **env)
-{
-	t_env	*current;
-	t_env	*tmp;
-
-	if (!env | !*env)
-		return ;
-	current = *env;
-	while (current)
-	{
-		tmp = current->next;
-		ft_free_str(&(current->inside));
-		ft_free_str(&(current->name));
-		free(current);
-		current = tmp;
-	}
-	*env = NULL;
 }
 
 void	free_store(t_store **store)

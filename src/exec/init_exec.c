@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 15:26:27 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:13:12 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	setup_exec(t_data *data)
 	data->store = malloc(sizeof(t_store));
 	if (!data->store)
 	{
-		perror("Failed to allocate memory for store");
+		ft_error(0, "Failed to allocate memory for store\n");
 		ft_exit(data, data->cmd, "1");
 	}
 	init_store(data->store, data);

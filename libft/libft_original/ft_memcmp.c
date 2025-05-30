@@ -6,15 +6,15 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:04:49 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:54:05 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-int	ft_memcmp(const void *s1, const void *s2, size_t n)
+int	ft_memcmp(const void *s1, const void *s2, int n)
 {
-	size_t			i;
+	int				i;
 	unsigned char	*s1_temp;
 	unsigned char	*s2_temp;
 
@@ -32,7 +32,7 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	char s1[] = "teste";
 	char s2[] = "teste";
-	size_t n = 0;
+	int n = 0;
 	printf("%d \n", ft_memcmp(s1, s2, n));
 	printf("%d \n", memcmp(s1, s2, n));
 }*/

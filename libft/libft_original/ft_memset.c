@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:20:12 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:01:40 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-void	*ft_memset(void *s, int c, size_t len)
+void	*ft_memset(void *s, int c, int len)
 {
 	unsigned char	*temp;
 	int				i;

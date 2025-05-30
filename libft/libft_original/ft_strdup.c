@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:03:27 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/23 13:04:50 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:54:16 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 char	*ft_strdup(const char *s1)
 {
 	char	*dup;
-	size_t	i;
-	size_t	len_s1;
+	int		i;
+	int		len_s1;
 
 	if (!s1)
 		return (NULL);
 	len_s1 = ft_strlen(s1);
 	i = 0;
-	dup = malloc(sizeof(char) * len_s1 + 1);
+	dup = malloc(sizeof(char) * (len_s1 + 1));
 	if (!dup)
 		return (NULL);
 	while (s1[i])

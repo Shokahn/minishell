@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:21:09 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:19 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	*fill_the_tab(int *tab, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (!ft_isspace(input[i]))
-			i++;
-		else if (input[i] && input[i] == '"')
-			i = pass_the_quote(input, i, '"');
-		else if (input[i] && input[i] == '\'' && input[i])
-			i = pass_the_quote(input, i, '\'');
+		if (input[i] && input[i] == '"')
+			i = pass_the_quote(input, i + 1, '"');
+		else if (input[i] && input[i] == '\'')
+			i = pass_the_quote(input, i + 1, '\'');
 		else if (input[i] && ft_isspace(input[i]))
 		{
 			tab[i] = 1;
 			i++;
 		}
+		else
+			i++;
 	}
 	return (tab);
 }
@@ -45,8 +45,7 @@ t_token	*divide_the_expanded_token(char **line, t_token *current)
 	if (!line || !*line)
 		return (NULL);
 	last = current->next;
-	if (current->inside)
-		free(current->inside);
+	ft_free_str(&(current->inside));
 	current->inside = ft_strdup(line[i++]);
 	current->expand = 0;
 	current->next = NULL;
@@ -83,15 +82,16 @@ t_token	*token_cuting(t_token *current)
 	count = wcount(current->inside, tab);
 	line = malloc(sizeof(char *) * (count + 1));
 	if (!line)
-		return (NULL);
+		return (ft_free_int(&tab), NULL);
 	line = makesplit(line, tab, current->inside);
 	if (!line)
-		return (NULL);
-	free(tab);
+		return (ft_free_int(&tab), (NULL));
+	ft_free_int(&tab);
 	current = divide_the_expanded_token(line, current);
 	if (!current)
-		return (NULL);
+		return (ft_free_tab(&line), NULL);
 	current->type = 0;
+	ft_free_tab(&(line));
 	return (current);
 }
 
@@ -106,6 +106,8 @@ int	expand_token_recuting(t_data *shell)
 		if (current->expand > 0)
 		{
 			current = token_cuting(current);
+			if (!current)
+				return (0);
 			tmp = current;
 			while (tmp)
 			{

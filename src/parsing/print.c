@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:58:06 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:13:54 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:08 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	print_cmds(t_cmd *cmd)
 		r = cmd->redir;
 		while (r)
 		{
-    		printf("  redir: type = %d, file = %s\n", r->type, r->file);
+			printf("  redir: type = %d, file = %s\n", r->type, r->file);
 			r = r->next;
 		}
 		printf("----------\n");
@@ -70,14 +70,22 @@ void	print_cmds(t_cmd *cmd)
 	}
 }
 
-void	print_sep(t_data *shell)
+void	print_sep(int *sep, char *input)
 {
 	int	i;
 
 	i = 0;
-	while (shell->input[i])
+	while (input[i])
 	{
-		printf("[%d]", shell->sep[i]);
+		printf("[%c]", input[i]);
+		i++;
+	}
+	printf("\n");
+	printf(BOLD YELLOW "----------\n" RESET);
+	i = 0;
+	while (input[i])
+	{
+		printf("[%d]", sep[i]);
 		i++;
 	}
 	printf("\n");

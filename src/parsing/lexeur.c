@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:25:27 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 19:26:02 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:02 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@ int	validate_syntax(t_data *shell, char *input)
 	int	i;
 
 	i = 0;
+	(void)shell;
 	while (input[i])
 	{
 		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i]
 			&& input[i + 2] == input[i] && input[i + 3] == input[i])
-			return (ft_error(shell, 0,
+			return (ft_error(0,
 					"minishell: syntax error near unexpected token '>>'\n"), 0);
 		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i]
 			&& input[i + 2] == input[i])
-			return (ft_error(shell, 0,
+			return (ft_error(0,
 					"minishell: syntax error near unexpected token '>'\n"), 0);
 		if (input[i] == '|' && input[i + 1] == '|')
-			return (ft_error(shell, 0,
+			return (ft_error(0,
 					"minishell: syntax error near unexpected token '|'\n"), 0);
 		i++;
 	}
@@ -50,7 +51,7 @@ void	define_separator(t_data *shell, char *input)
 	int	i;
 
 	i = 0;
-	while (input[i])
+	while (input && i < ft_strlen(input) && input[i])
 	{
 		if (input[i] != '|' && !(ft_isspace(input[i])) && input[i] != '"'
 			&& input[i] != '\'' && input[i] != '<' && input[i] != '>')
@@ -95,11 +96,11 @@ int	lexeur(t_data *shell)
 	len_input = ft_strlen(shell->input);
 	shell->sep = ft_calloc(sizeof(int), (len_input + 1));
 	if (!shell->sep)
-		return (ft_error(shell, 0, "sep malloc failed\n"), 0);
+		return (ft_error(0, "sep malloc failed\n"), 0);
 	if (!validate_syntax(shell, shell->input))
 		return (0);
 	shell->line = split_line(shell, shell->input);
 	if (!shell->line)
-		return (ft_error(shell, 0, "split line failed\n"), 0);
+		return (ft_error(0, "split line failed\n"), 0);
 	return (1);
 }

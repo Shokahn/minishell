@@ -6,17 +6,17 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:35 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:55:12 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-char	*ft_substr(const char *s, unsigned int start, size_t len)
+char	*ft_substr(const char *s, unsigned int start, int len)
 {
-	size_t	i;
-	size_t	str_len;
-	char	*substr;
+	int				i;
+	unsigned int	str_len;
+	char			*substr;
 
 	if (!s)
 		return (NULL);
@@ -26,7 +26,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > ft_strlen(s + start))
 		len = ft_strlen(s + start);
-	substr = malloc(sizeof(char) * len + 1);
+	substr = malloc(sizeof(char) * (len + 1));
 	if (!substr)
 		return (NULL);
 	while (i < len)

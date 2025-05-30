@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:46:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:22:51 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:53:34 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,12 @@ void	ft_free_index(char ***split, int j)
 
 	i = 0;
 	if (!split || !*split)
-		while (i < j)
-		{
-			free((*split)[i]);
-			i++;
-		}
+		return ;
+	while (i < j)
+	{
+		free((*split)[i]);
+		i++;
+	}
 	free(*split);
 	*split = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:07:03 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:17:04 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	close_heredoc(t_cmd *cmd)
 			{
 				close(redir->fd);
 				unlink(redir->file);
+				ft_free_str(&(redir->file));
 			}
 			redir = redir->next;
 		}
@@ -99,6 +100,7 @@ int	exec_heredoc(char *delimiter, t_redir *redir, t_data *data)
 		if (heredoc_parent(fd, pid, tmp_file, data) == 0)
 			return (0);
 	}
+	ft_free_str(&(redir->file));
 	redir->file = tmp_file;
 	redir->fd = open(tmp_file, O_RDONLY);
 	return (1);

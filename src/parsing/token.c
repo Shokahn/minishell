@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:56:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 20:04:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 15:22:16 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@ t_token	*create_node(char *inside)
 
 	new = malloc(sizeof(t_token));
 	if (!new)
-		return (NULL);
+		return (ft_error(0, "new malloc failed\n"), NULL);
 	new->inside = ft_strdup(inside);
 	if (!new->inside)
-	{
-		return (NULL);
-	}
+		return (free(new), ft_error(0, "new->inside strdup failed\n"), NULL);
 	new->next = NULL;
 	new->prev = NULL;
 	new->type = 0;

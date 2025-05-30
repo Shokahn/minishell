@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:33:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 14:35:23 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:15:19 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ t_redir	*init_redir(t_token *token)
 {
 	t_redir	*redir;
 
+	if (!token || !token->next)
+		return (NULL);
 	redir = malloc(sizeof(t_redir));
-	if (!redir || !token || !token->next)
+	if (!redir)
 		return (NULL);
 	redir->type = token->type;
 	redir->file = strdup(token->next->inside);
@@ -68,6 +70,8 @@ t_token	*fill_cmd(t_token *token, t_cmd *cmd)
 			|| tmp->type == APPEND || tmp->type == HEREDOC)
 		{
 			redir = init_redir(tmp);
+			if (!redir)
+				return (NULL);
 			add_redir(&cmd->redir, redir);
 			tmp = tmp->next->next;
 		}
@@ -89,6 +93,8 @@ t_cmd	*making_cmd(t_token *token)
 	while (token)
 	{
 		cmd = init_cmd();
+		if (!cmd)
+			return (NULL);
 		token = fill_cmd(token, cmd);
 		if (!first)
 			first = cmd;

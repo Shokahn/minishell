@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:14:39 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/28 17:40:40 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:01:40 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+char	*ft_strnstr(const char *haystack, const char *needle, int len)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 
 	i = 0;
 	if (needle[i] == '\0')
@@ -36,7 +36,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	char *haystack = "J'aime le popoagagougagag";
 	char *needle = "456";
-	size_t len = 120;
+	int len = 120;
 	printf("%s\n", ft_strnstr(haystack, needle, len));
 	printf("%s\n", strnstr(haystack, needle, len));
 }*/
