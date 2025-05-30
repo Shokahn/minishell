@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 17:10:41 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:16:46 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int					expandation(t_data *shell);
 int					extract_variable(char *inside, int i, t_token *current,
 						t_data *shell);
 int					expand_token_recuting(t_data *shell);
+char				*check_value(t_data *shell, char *name);
 
 // parsing
 int					parsing(t_data *shell);
@@ -156,7 +157,7 @@ void				print_env(t_data *shell);
 void				ft_echo(char **args);
 int					print_export(t_env *env);
 void				ft_exit(t_data *data, t_cmd *cmd, char *force_status);
-void				ft_cd(t_data *data, char *path);
+int					ft_cd(t_data *data, char **paths);
 void				ft_pwd(void);
 
 // env

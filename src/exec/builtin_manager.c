@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:39:55 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:58:22 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exec_built_in(t_store *store, t_data *data)
 	else if (ft_strncmp(store->current->cmd[0], "exit", 5) == 0)
 		ft_exit(data, store->current, "");
 	else if (ft_strncmp(store->current->cmd[0], "cd", 3) == 0)
-		ft_cd(data, store->current->cmd[1]);
+		ft_cd(data, store->current->cmd);
 	else if (ft_strncmp(store->current->cmd[0], "pwd", 4) == 0)
 		ft_pwd();
 }

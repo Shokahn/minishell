@@ -6,27 +6,34 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 14:39:58 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:36:34 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_cd(t_data *data, char *path)
+int	ft_cd(t_data *data, char **paths)
 {
 	char	wd[PATH_MAX];
 	char	old_wd[PATH_MAX];
+	char	*home;
 
+	if (paths[2])
+		return (printf("cd: too many arguments\n"), 0);
+	home = check_value(data, "HOME");
 	if (getcwd(old_wd, sizeof(old_wd)) == NULL)
 		perror("getcwd error");
-	if (chdir(path) != 0)
+	if (!(paths[1]) || ft_strcmp(paths[1], "~") == 0)
 	{
-		perror("chdir");
-		return ;
+		if (chdir(home) != 0)
+			return (free(home), perror("chdir"), 0);
 	}
+	else if (chdir(paths[1]) != 0)
+		return (free(home), perror("chdir"), 0);
 	if (getcwd(wd, sizeof(wd)) != NULL)
 		update_env(&data->env, "PWD", wd);
 	else
 		perror("getcwd error");
 	update_env(&data->env, "OLDPWD", old_wd);
+	return (free(home), 1);
 }

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:17:04 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:25:57 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	close_heredoc(t_cmd *cmd)
 		redir = cmd->redir;
 		while (redir)
 		{
-			if (redir && redir->type == HEREDOC && redir->fd != -1)
+			if (redir && redir->type == HEREDOC && redir->fd != -2)
 			{
 				close(redir->fd);
 				unlink(redir->file);

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:33:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 17:15:19 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:26:17 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_redir	*init_redir(t_token *token)
 	redir->type = token->type;
 	redir->file = strdup(token->next->inside);
 	redir->next = NULL;
-	redir->fd = -1;
+	redir->fd = -2;
 	return (redir);
 }
 
