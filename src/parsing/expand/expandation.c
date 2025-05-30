@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expandation.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 22:54:36 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:25:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	expand_string(t_token *current, t_data *shell)
 
 	i = 0;
 	in_the_dquote = 0;
-	while (i < ft_strlen(current->inside) && current->inside[i])
+	while (current->inside && i < ft_strlen(current->inside) && current->inside[i])
 	{
 		if (current->inside[i] == '\'' && current->inside[i + 1]
 			&& in_the_dquote == 0)

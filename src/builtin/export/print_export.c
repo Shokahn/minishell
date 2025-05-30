@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:15:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 17:16:17 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 12:02:38 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ int	print_export(t_env *env)
 		printf("declare -x %s\n", env_quoted[i]);
 		i++;
 	}
+	ft_free_tab(&(env_quoted));
 	return (1);
 }

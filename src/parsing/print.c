@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:58:06 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:13:54 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:06:24 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,22 @@ void	print_cmds(t_cmd *cmd)
 	}
 }
 
-void	print_sep(t_data *shell)
+void	print_sep(int *sep, char *input)
 {
 	int	i;
 
 	i = 0;
-	while (shell->input[i])
+	while (input[i])
 	{
-		printf("[%d]", shell->sep[i]);
+		printf("[%c]", input[i]);
+		i++;
+	}
+	printf("\n");
+	printf(BOLD YELLOW "----------\n" RESET);
+	i = 0;
+	while (input[i])
+	{
+		printf("[%d]", sep[i]);
 		i++;
 	}
 	printf("\n");

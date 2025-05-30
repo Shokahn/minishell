@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 22:55:08 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:02:36 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ char				*expand_string_heredoc(char *inside, t_data *shell);
 void				print_token(t_data *shell);
 void				print_line(t_data *shell);
 void				print_cmds(t_cmd *cmd);
-void				print_sep(t_data *shell);
+void				print_sep(int *sep, char *input);
 
 // free
 

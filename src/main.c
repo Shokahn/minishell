@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 22:42:35 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:39:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,17 @@ int	minishell(char *input, t_data *shell)
 {
 	shell->input = input;
 	if (!lexeur(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!making_token(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!expandation(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	if (!parsing(shell))
-		return (0);
+		return (ft_free_data(shell), 0);
 	shell->cmd = making_cmd(shell->token);
 	print_cmds(shell->cmd);
 	setup_exec(shell);
-	ft_free_data(shell);
-	return (1);
+	return 	(ft_free_data(shell), 1);
 }
 
 int	main(int ac, char **av, char **envp)

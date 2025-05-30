@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 14:21:09 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:12:17 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	*fill_the_tab(int *tab, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (!ft_isspace(input[i]))
-			i++;
-		else if (input[i] && input[i] == '"')
-			i = pass_the_quote(input, i, '"');
-		else if (input[i] && input[i] == '\'' && input[i])
-			i = pass_the_quote(input, i, '\'');
+		if (input[i] && input[i] == '"')
+			i = pass_the_quote(input, i + 1, '"');
+		else if (input[i] && input[i] == '\'')
+			i = pass_the_quote(input, i + 1, '\'');
 		else if (input[i] && ft_isspace(input[i]))
 		{
 			tab[i] = 1;
 			i++;
 		}
+		else
+			i++;
 	}
 	return (tab);
 }
@@ -80,6 +80,7 @@ t_token	*token_cuting(t_token *current)
 	if (!tab)
 		return (NULL);
 	tab = fill_the_tab(tab, current->inside);
+	print_sep(tab, current->inside);
 	count = wcount(current->inside, tab);
 	line = malloc(sizeof(char *) * (count + 1));
 	if (!line)
@@ -92,6 +93,7 @@ t_token	*token_cuting(t_token *current)
 	if (!current)
 		return (NULL);
 	current->type = 0;
+	ft_free_tab(&(line));
 	return (current);
 }
 

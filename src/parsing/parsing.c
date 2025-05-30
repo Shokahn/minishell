@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:20:30 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 15:50:26 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 12:32:23 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	parsing(t_data *shell)
 		return (ft_error(shell, 0,
 				"minishell: syntax error near unexpected token 'newline'\n"),
 			0);
-	token_cleaning(shell);
 	if (!(expand_token_recuting(shell)))
 		return (0);
+	token_cleaning(shell);
 	return (1);
 }
