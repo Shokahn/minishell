@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:35:46 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 23:23:40 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,21 +109,20 @@ t_token	*token_cuting(t_token *current)
 int	expand_token_recuting(t_data *shell)
 {
 	t_token	*current;
-	t_token	*tmp;
 
 	current = shell->token;
 	while (current)
 	{
 		if (current->expand > 0)
 		{
-			current = token_cuting(current);
-			if (!current)
-				return (0);
-			tmp = current;
-			while (tmp)
+			if (current->inside[0])
 			{
-				tmp = tmp->next;
+				current = token_cuting(current);
+				if (!current)
+					return (0);
 			}
+			else
+				current = current->next;
 		}
 		else
 			current = current->next;

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:25:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:34:01 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 23:35:06 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,14 @@ char	*remove_quote(t_token *current)
 	int		in_double;
 	char	*result;
 
-	i = 0;
 	j = 0;
+	i = -1;
 	in_single = 0;
 	in_double = 0;
-	while (current->inside[i])
-		i++;
-	result = malloc(sizeof(char) * (i + 1));
+	result = malloc(sizeof(char) * (ft_strlen(current->inside) + 1));
 	if (!result)
 		return (NULL);
-	i = 0;
-	while (current->inside[i])
+	while (current->inside[++i])
 	{
 		if (current->inside[i] == '\'' && in_double == 0)
 			in_single = !in_single;
@@ -45,7 +42,6 @@ char	*remove_quote(t_token *current)
 			in_double = !in_double;
 		else
 			result[j++] = current->inside[i];
-		i++;
 	}
 	result[j] = '\0';
 	ft_free_str(&(current->inside));

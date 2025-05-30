@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:25:57 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 23:53:26 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,12 @@ typedef struct s_data
 	t_env			*env;
 	t_store			*store;
 }					t_data;
+
+typedef struct s_split_ij
+{
+	int				j;
+	int				i;
+}					t_split_ij;
 
 // lexeur
 int					lexeur(t_data *shell);

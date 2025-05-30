@@ -6,11 +6,18 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 14:20:49 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 22:48:00 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+
+static int	handle_dollar(t_token *current, int i, t_data *shell)
+{
+	if (current->inside[i + 1] != '"' && current->inside[i + 1] != '\'')
+		return (extract_variable(current->inside, i + 1, current, shell));
+	return (i + 1);
+}
 
 int	expand_string(t_token *current, t_data *shell)
 {
@@ -22,23 +29,18 @@ int	expand_string(t_token *current, t_data *shell)
 	while (current->inside && i < ft_strlen(current->inside)
 		&& current->inside[i])
 	{
-		if (current->inside[i] == '\'' && current->inside[i + 1]
-			&& in_the_dquote == 0)
+		if (current->inside[i] == '\'' && i + 1 < ft_strlen(current->inside)
+			&& !in_the_dquote)
 			i = pass_the_quote(current->inside, i + 1, '\'');
-		else if (current->inside[i] == '\"' && current->inside[i + 1])
+		else if (current->inside[i] == '\"' && i
+			+ 1 < ft_strlen(current->inside))
 		{
 			in_the_dquote = !in_the_dquote;
 			i++;
 		}
-		else if (current->inside[i] == '$' && current->inside[i + 1]
+		else if (current->inside[i] == '$' && i + 1 < ft_strlen(current->inside)
 			&& current->inside[i + 1] != '$')
-		{
-			if (current->inside[i + 1] != '$' && current->inside[i + 1] != '"'
-				&& current->inside[i + 1] != '\'')
-				i = extract_variable(current->inside, i + 1, current, shell);
-			else
-				i++;
-		}
+			i = handle_dollar(current, i, shell);
 		else
 			i++;
 	}
