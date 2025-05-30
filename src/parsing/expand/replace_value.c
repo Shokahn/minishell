@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_value.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 22:54:30 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:20:37 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ void	replace_value(char *expand, t_token *current, int start, int end)
 	current->inside = joined;
 }
 
-
-
-void	extract_variable(char *inside, int i, t_token *current, t_data *shell)
+int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
 	int		start;
 	char	*name;
@@ -67,8 +65,7 @@ void	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 	if (inside[i] == '?')
 	{
 		expand = ft_itoa(shell->exit_status);
-		replace_value(expand, current, i, i + 1);
-		free(expand);
+		return (replace_value(expand, current, i, i + 1), free(expand), i);
 	}
 	else if (ft_isalpha(inside[i]) || inside[i] == '_')
 	{
@@ -76,15 +73,13 @@ void	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		i = end_of_expansion_or_not(inside, i + 1);
 		name = ft_substr(inside, start, i - start);
 		expand = check_value(shell, name);
-		free(name);
-		replace_value(expand, current, start, i);
-		free(expand);
+		return (free(name), replace_value(expand, current, start, i),
+			free(expand), start);
 	}
 	else if (ft_isdigit(inside[i]))
 	{
 		expand = ft_strdup("");
-		replace_value(expand, current, i, i + 1);
-		free(expand);
+		return (replace_value(expand, current, i, i + 1), free(expand), i);
 	}
+	return (i + 1);
 }
-

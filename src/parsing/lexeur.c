@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:25:27 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 13:37:21 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:50:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	define_separator(t_data *shell, char *input)
 	int	i;
 
 	i = 0;
-	while (input && input[i])
+	while (input && i < ft_strlen(input) && input[i])
 	{
 		if (input[i] != '|' && !(ft_isspace(input[i])) && input[i] != '"'
 			&& input[i] != '\'' && input[i] != '<' && input[i] != '>')
