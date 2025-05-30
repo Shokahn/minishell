@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:27:50 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/27 19:13:52 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 15:01:04 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ t_env	*add_env_node(char *str, t_data *shell)
 	int		i;
 	int		start;
 
+	(void)shell;
 	i = 0;
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (ft_error(shell, 0, "malloc failed\n"), NULL);
+		return (ft_error(0, "malloc failed\n"), NULL);
 	new->next = NULL;
 	while (str[i] && str[i] != '=')
 		i++;

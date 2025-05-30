@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 13:56:27 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:19:01 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ t_token	*divide_the_expanded_token(char **line, t_token *current)
 	if (!line || !*line)
 		return (NULL);
 	last = current->next;
-	if (current->inside)
-		free(current->inside);
+	ft_free_str(&(current->inside));
 	current->inside = ft_strdup(line[i++]);
 	current->expand = 0;
 	current->next = NULL;
@@ -80,18 +79,17 @@ t_token	*token_cuting(t_token *current)
 	if (!tab)
 		return (NULL);
 	tab = fill_the_tab(tab, current->inside);
-	print_sep(tab, current->inside);
 	count = wcount(current->inside, tab);
 	line = malloc(sizeof(char *) * (count + 1));
 	if (!line)
-		return (NULL);
+		return (ft_free_int(&tab), NULL);
 	line = makesplit(line, tab, current->inside);
 	if (!line)
-		return (NULL);
-	free(tab);
+		return ft_free_int(&tab), (NULL);
+	ft_free_int(&tab);
 	current = divide_the_expanded_token(line, current);
 	if (!current)
-		return (NULL);
+		return (ft_free_tab(&line), NULL);
 	current->type = 0;
 	ft_free_tab(&(line));
 	return (current);
@@ -108,6 +106,8 @@ int	expand_token_recuting(t_data *shell)
 		if (current->expand > 0)
 		{
 			current = token_cuting(current);
+			if (!current)
+				return (0);
 			tmp = current;
 			while (tmp)
 			{

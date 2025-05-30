@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:37:52 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:33:33 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	setup_exec(t_data *data)
 	data->store = malloc(sizeof(t_store));
 	if (!data->store)
 	{
-		perror("Failed to allocate memory for store");
+		ft_error(0, "Failed to allocate memory for store\n");
 		ft_exit(data, data->cmd, "1");
 	}
 	init_store(data->store, data);

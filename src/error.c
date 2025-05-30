@@ -6,15 +6,14 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:09:26 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 18:58:36 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:55:42 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_error(t_data *shell, int type, char *message)
+void	ft_error(int type, char *message)
 {
-	(void)shell;
 	if (type == 0)
 	{
 		ft_putstr_fd(ITALIC RED BOLD "Error : " RESET, 2);
@@ -23,6 +22,7 @@ void	ft_error(t_data *shell, int type, char *message)
 	else if (type == 1)
 		perror(message);
 }
+
 
 void	free_token(t_token **token)
 {

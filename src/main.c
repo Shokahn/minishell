@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 13:39:18 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:42:26 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	minishell(char *input, t_data *shell)
 	if (!parsing(shell))
 		return (ft_free_data(shell), 0);
 	shell->cmd = making_cmd(shell->token);
-	print_cmds(shell->cmd);
+	if (!shell->cmd)
+		return (ft_free_data(shell), 0);
 	setup_exec(shell);
 	return 	(ft_free_data(shell), 1);
 }
@@ -62,7 +63,8 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		else
 		{
-			add_history(input);
+			if (input[0])
+				add_history(input);
 			if (!minishell(input, &shell))
 				continue ;
 		}

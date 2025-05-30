@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   making_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:33:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 17:09:52 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:29:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ t_token	*fill_cmd(t_token *token, t_cmd *cmd)
 			|| tmp->type == APPEND || tmp->type == HEREDOC)
 		{
 			redir = init_redir(tmp);
+			if (!redir)
+				return (NULL);
 			add_redir(&cmd->redir, redir);
 			tmp = tmp->next->next;
 		}
@@ -90,6 +92,8 @@ t_cmd	*making_cmd(t_token *token)
 	while (token)
 	{
 		cmd = init_cmd();
+		if (!cmd)
+			return (NULL);
 		token = fill_cmd(token, cmd);
 		if (!first)
 			first = cmd;

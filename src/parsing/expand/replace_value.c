@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 14:20:37 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:48:52 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*check_value(t_data *shell, char *name)
 	return (ft_strdup(""));
 }
 
-void	replace_value(char *expand, t_token *current, int start, int end)
+int	replace_value(char *expand, t_token *current, int start, int end)
 {
 	char	*before;
 	char	*after;
@@ -46,13 +46,16 @@ void	replace_value(char *expand, t_token *current, int start, int end)
 	else
 		before = ft_strndup(current->inside, start - 1);
 	tmp = ft_strjoin(before, expand);
-	free(before);
 	after = ft_substr(current->inside, end, ft_strlen(current->inside) - end);
 	joined = ft_strjoin(tmp, after);
-	free(tmp);
-	free(after);
+	ft_free_str(&before);
+	ft_free_str(&tmp);
+	ft_free_str(&after);
 	ft_free_str(&(current->inside));
+	if (!joined)
+		return (0);
 	current->inside = joined;
+	return (1);
 }
 
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
@@ -65,7 +68,9 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 	if (inside[i] == '?')
 	{
 		expand = ft_itoa(shell->exit_status);
-		return (replace_value(expand, current, i, i + 1), free(expand), i);
+		if (!replace_value(expand, current, i, i + 1))
+			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+		return (free(expand), i);
 	}
 	else if (ft_isalpha(inside[i]) || inside[i] == '_')
 	{
@@ -73,13 +78,16 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		i = end_of_expansion_or_not(inside, i + 1);
 		name = ft_substr(inside, start, i - start);
 		expand = check_value(shell, name);
-		return (free(name), replace_value(expand, current, start, i),
-			free(expand), start);
+		if (!replace_value(expand, current, start, i))
+			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+		return (ft_free_str(&name), ft_free_str(&expand), start - 1);
 	}
 	else if (ft_isdigit(inside[i]))
 	{
 		expand = ft_strdup("");
-		return (replace_value(expand, current, i, i + 1), free(expand), i);
+		if (!replace_value(expand, current, i, i + 1))
+			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+		return (ft_free_str(&expand), i);
 	}
 	return (i + 1);
 }

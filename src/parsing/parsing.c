@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:20:30 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 12:32:23 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:23:06 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,18 @@ int	no_file_after_redir(t_data *shell)
 int	parsing(t_data *shell)
 {
 	if (shell->sep[0] == 4)
-		return (ft_error(shell, 0,
+		return (ft_error(0,
 				"minishell : syntax error quote in unquoted cell\n"), 0);
 	if (!(pipe_startend(shell)))
-		return (ft_error(shell, 0,
+		return (ft_error(0,
 				"minishell : syntax error near unexpected token '|'\n"), 0);
 	if (!(no_file_after_redir(shell)))
-		return (ft_error(shell, 0,
+		return (ft_error(0,
 				"minishell: syntax error near unexpected token 'newline'\n"),
 			0);
 	if (!(expand_token_recuting(shell)))
-		return (0);
-	token_cleaning(shell);
+		return (ft_error(0, "token_recuting memory alloc failed\n"), 0);
+	if (!(token_cleaning(shell)));
+		return (ft_error(0, "token_cleaning memory alloc failed\n"), 0);
 	return (1);
 }
