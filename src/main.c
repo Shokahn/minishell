@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 17:15:36 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:28:31 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_shell(t_data *shell)
 {
+	setup_signals();
 	shell->input = NULL;
 	shell->sep = 0;
 	shell->line = NULL;
@@ -47,14 +48,12 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_data	shell;
 
-	(void)av;
-	if (ac != 1)
+	if (ac != 1 && av)
 	{
 		ft_putstr_fd(ITALIC RED "Error do not put argument\n" RESET, 2);
 		exit(1);
 	}
 	init_shell(&shell);
-	setup_signals();
 	shell.env = get_env(&shell, envp);
 	while (1)
 	{
