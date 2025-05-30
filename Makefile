@@ -27,7 +27,7 @@ EXPORT = export.c print_export.c
 BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c exit.c \
 			cd.c pwd.c
 CMD = collect_cmd_args.c making_cmd.c
-EXPAND = expand_token_recuting.c expandation.c replace_value.c
+EXPAND = expand_token_recuting.c expandation.c replace_value.c extract_variable.c
 PARSING = lexeur.c parsing.c print.c split.c token.c token_cleaning.c \
 		$(addprefix $(CMD_DIR), $(CMD)) $(addprefix $(EXPAND_DIR), $(EXPAND))
 EXEC = redirections.c exec_helpers.c builtin_manager.c init_exec.c pipe.c

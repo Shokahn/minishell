@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 17:03:19 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 22:35:46 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ int	*fill_the_tab(int *tab, char *input)
 	return (tab);
 }
 
+t_token	*create_new_token(char *str, t_token *prev)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return (NULL);
+	new->inside = ft_strdup(str);
+	new->expand = 0;
+	new->type = 0;
+	new->prev = prev;
+	new->next = NULL;
+	return (new);
+}
+
 t_token	*divide_the_expanded_token(char **line, t_token *current)
 {
 	int		i;
@@ -41,27 +56,23 @@ t_token	*divide_the_expanded_token(char **line, t_token *current)
 	t_token	*last;
 	t_token	*tmp;
 
-	i = 0;
 	if (!line || !*line)
 		return (NULL);
 	last = current->next;
 	ft_free_str(&(current->inside));
-	current->inside = ft_strdup(line[i++]);
+	current->inside = ft_strdup(line[0]);
 	current->expand = 0;
 	current->next = NULL;
 	tmp = current;
+	i = 1;
 	while (line[i])
 	{
-		new = malloc(sizeof(t_token));
+		new = create_new_token(line[i], tmp);
 		if (!new)
 			return (NULL);
-		new->inside = ft_strdup(line[i++]);
-		new->expand = 0;
-		new->type = 0;
-		new->prev = tmp;
-		new->next = NULL;
 		tmp->next = new;
 		tmp = new;
+		i++;
 	}
 	tmp->next = last;
 	return (current);

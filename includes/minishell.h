@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 18:16:46 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:25:57 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,10 @@ int					expandation(t_data *shell);
 int					extract_variable(char *inside, int i, t_token *current,
 						t_data *shell);
 int					expand_token_recuting(t_data *shell);
+char				*check_value(t_data *shell, char *name);
+int					replace_value(char *expand, t_token *current, int start,
+						int end);
+int					end_of_expansion_or_not(char *inside, int i);
 char				*check_value(t_data *shell, char *name);
 
 // parsing

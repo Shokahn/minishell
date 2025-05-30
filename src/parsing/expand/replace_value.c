@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:48:52 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 22:22:59 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	replace_value(char *expand, t_token *current, int start, int end)
 	return (1);
 }
 
-int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
+/* int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
 	int		start;
 	char	*name;
@@ -90,4 +90,4 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		return (ft_free_str(&expand), i);
 	}
 	return (i + 1);
-}
+} */
