@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:37:52 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:26:27 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	init_store(t_store *store, t_data *data)
 
 void	setup_exec(t_data *data)
 {
+	data->exit_status = 0;
 	data->store = malloc(sizeof(t_store));
 	if (!data->store)
 	{
@@ -84,5 +85,7 @@ void	setup_exec(t_data *data)
 	}
 	init_store(data->store, data);
 	init_heredoc(data);
+	if (data->exit_status == 130)
+		return ;
 	exec_cmds(data->store, data);
 }

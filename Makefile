@@ -20,7 +20,7 @@ EXPAND_DIR = expand/
 HEREDOC_DIR = heredoc/
 INCLUDE = headers/minishell.h
 
-HEREDOC = expand_heredoc.c heredoc.c
+HEREDOC = expand_heredoc.c heredoc.c heredoc_setup.c
 EXPORT = export.c print_export.c
 BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c exit.c \
 			cd.c pwd.c

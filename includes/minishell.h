@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/28 18:42:08 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:02:35 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,10 @@ void				update_env(t_env **env_list, char *name, char *value);
 
 // heredoc
 void				check_for_heredoc(t_cmd *cmd);
+int					create_temp_file(char **temp_file);
+int					exec_heredoc(char *delimiter, t_redir *redir, t_data *data);
 void				close_heredoc(t_cmd *cmd);
 void				init_heredoc(t_data *data);
-void				exec_heredoc(char *delimiter, t_redir *redir, t_data *data);
 char				*expand_string_heredoc(char *inside, t_data *shell);
 
 // print
