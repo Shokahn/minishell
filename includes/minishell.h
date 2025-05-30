@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:21:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:54:51 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int					expand_token_recuting(t_data *shell);
 
 // parsing
 int					parsing(t_data *shell);
-int				token_cleaning(t_data *shell);
+int					token_cleaning(t_data *shell);
 char				*remove_quote(t_token *current);
 int					pass_the_quote(char *inside, int i, char c);
 

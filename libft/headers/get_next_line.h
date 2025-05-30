@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:12:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 15:03:56 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:54:40 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-int	gnl_ft_strchr(char *s, int c);
-int	gnl_ft_strlen(char *s);
+int		gnl_ft_strchr(char *s, int c);
+int		gnl_ft_strlen(char *s);
 char	*gnl_ft_strjoin(char *s1, char *s2);
 char	*gnl_ft_substr(char *s, int start, int len);
 char	*gnl_ft_strdup(char *s1);

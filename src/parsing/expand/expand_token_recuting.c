@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:29:59 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:19:01 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:19 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_token	*token_cuting(t_token *current)
 		return (ft_free_int(&tab), NULL);
 	line = makesplit(line, tab, current->inside);
 	if (!line)
-		return ft_free_int(&tab), (NULL);
+		return (ft_free_int(&tab), (NULL));
 	ft_free_int(&tab);
 	current = divide_the_expanded_token(line, current);
 	if (!current)

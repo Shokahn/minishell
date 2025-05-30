@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:16:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 15:08:40 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:02:54 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_args_n(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!arg || !arg[0] || !arg[i])
@@ -34,7 +34,7 @@ void	ft_echo(char **args)
 {
 	int	i;
 	int	newline_toggle;
-	int first_printed;
+	int	first_printed;
 
 	i = 1;
 	newline_toggle = 1;

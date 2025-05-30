@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:51:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 15:04:26 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:51:38 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	gnl_ft_strchr(char *s, int c)
 
 char	*gnl_ft_strjoin(char *s1, char *s2)
 {
-	int	i;
-	int	j;
-	int	len1;
-	int	len2;
+	int		i;
+	int		j;
+	int		len1;
+	int		len2;
 	char	*str_join;
 
 	if (!s1 || !s2)
@@ -66,7 +66,7 @@ char	*gnl_ft_strjoin(char *s1, char *s2)
 
 char	*gnl_ft_substr(char *s, int start, int len)
 {
-	int	i;
+	int		i;
 	char	*substr;
 
 	if (!s)
@@ -89,8 +89,8 @@ char	*gnl_ft_substr(char *s, int start, int len)
 char	*gnl_ft_strdup(char *s1)
 {
 	char	*dup;
-	int	i;
-	int	len_s1;
+	int		i;
+	int		len_s1;
 
 	len_s1 = gnl_ft_strlen(s1);
 	i = 0;

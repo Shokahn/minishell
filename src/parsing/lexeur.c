@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:25:27 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 15:16:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:02 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	define_separator(t_data *shell, char *input)
 		else if (input[i] == '\'')
 			i = pass_the_quote_separator(shell, input, '\'', i);
 		else if (ft_isspace(input[i]))
-		
 			shell->sep[i++] = 1;
 		else if (((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<'
 					&& input[i + 1] == '<')))

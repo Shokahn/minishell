@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:20:30 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:23:06 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:59:02 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	parsing(t_data *shell)
 			0);
 	if (!(expand_token_recuting(shell)))
 		return (ft_error(0, "token_recuting memory alloc failed\n"), 0);
-	if (!(token_cleaning(shell)));
+	if (!(token_cleaning(shell)))
 		return (ft_error(0, "token_cleaning memory alloc failed\n"), 0);
 	return (1);
 }

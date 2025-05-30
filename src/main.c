@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:42:26 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:02:15 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	minishell(char *input, t_data *shell)
 	if (!shell->cmd)
 		return (ft_free_data(shell), 0);
 	setup_exec(shell);
-	return 	(ft_free_data(shell), 1);
+	return (ft_free_data(shell), 1);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -72,5 +72,3 @@ int	main(int ac, char **av, char **envp)
 	free_env(&(shell.env));
 	printf("exit\n");
 }
-
-// FINIR BUILTIN EXPORT

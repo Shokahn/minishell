@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:33:11 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 16:29:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/30 17:03:31 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_redir	*init_redir(t_token *token)
 {
 	t_redir	*redir;
 
-	 if (!token || !token->next)
-	 	return (NULL);
+	if (!token || !token->next)
+		return (NULL);
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		return (NULL);

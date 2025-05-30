@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:08:19 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 15:03:15 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:54:45 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <unistd.h>
 
 int					ft_isalpha(int c);
-int				ft_strlen(const char *s);
+int					ft_strlen(const char *s);
 void				*ft_memset(void *s, int c, int len);
 void				*ft_memmove(void *dst, const void *src, int len);
 void				*ft_memcpy(void *dst, const void *src, int n);
@@ -46,8 +46,9 @@ char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *s, int c);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strjoin(char const *s1, char const *s2);
-int				ft_strlcat(char *dst, const char *src, unsigned int dstsize);
-int				ft_strlcpy(char *dst, const char *src, int dstsize);
+int					ft_strlcat(char *dst, const char *src,
+						unsigned int dstsize);
+int					ft_strlcpy(char *dst, const char *src, int dstsize);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strnstr(const char *haystack, const char *needle,
