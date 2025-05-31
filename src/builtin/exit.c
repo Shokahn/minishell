@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 13:39:11 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:44:05 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_all_num(char *str)
 	return (1);
 }
 
-int	convert_exit_status(int	status)
+static int	convert_exit_status(int status)
 {
 	if (status < 0)
 		status = convert_exit_status(status + 256);
