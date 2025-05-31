@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 23:53:26 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 13:54:41 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char				**ft_list_to_tab(t_env *env);
 // exec
 void				setup_exec(t_data *data);
 void				handle_redirections(t_cmd *cmd, t_data *data);
-char				*find_valid_path(const char *str, t_store *store);
+char				*find_valid_path(char *str, t_store *store);
 int					open_pipe(int fd[2], t_cmd *current);
 void				exec_cmd(t_store *store, t_cmd *cmd, t_data *data);
 void				launch_child(t_store *store, t_data *data);
