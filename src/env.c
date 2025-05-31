@@ -6,24 +6,23 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:27:50 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 23:21:42 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/01 00:45:38 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*add_env_node(char *str, t_data *shell)
+t_env	*add_env_node(char *str)
 {
 	t_env	*new;
 	char	*split[2];
 	int		i;
 	int		start;
 
-	(void)shell;
 	i = 0;
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (ft_error(0, "malloc failed\n"), NULL);
+		return (NULL);
 	new->next = NULL;
 	while (str[i] && str[i] != '=')
 		i++;
@@ -32,6 +31,34 @@ t_env	*add_env_node(char *str, t_data *shell)
 	while (str[i])
 		i++;
 	split[1] = ft_substr(str, start, i - start);
+	new->name = split[0];
+	new->inside = split[1];
+	return (new);
+}
+
+t_env	*add_env_node_shlvl(char *str)
+{
+	t_env	*new;
+	char	*split[2];
+	int		i;
+	int		start;
+	int		nbr;
+
+	i = 0;
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->next = NULL;
+	while (str[i] && str[i] != '=')
+		i++;
+	split[0] = ft_substr(str, 0, i);
+	start = i + 1;
+	while (str[i])
+		i++;
+	split[1] = ft_substr(str, start, i - start);
+	nbr = ft_atoi(split[1]) + 1;
+	ft_free_str(&split[1]);
+	split[1] = ft_itoa(nbr);
 	new->name = split[0];
 	new->inside = split[1];
 	return (new);
@@ -60,17 +87,17 @@ int	create_env_from_empty(t_data *shell)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (0);
-	node = add_env_node("PWD=", shell);
+	node = add_env_node("PWD=");
 	if (!node)
 		return (0);
 	ft_free_str(&node->inside);
 	node->inside = pwd;
 	link_env_node(&shell->env, node);
-	node = add_env_node("SHLVL=1", shell);
+	node = add_env_node("SHLVL=1");
 	if (!node)
 		return (0);
 	link_env_node(&shell->env, node);
-	node = add_env_node("_=/usr/bin/env", shell);
+	node = add_env_node("_=/usr/bin/env");
 	if (!node)
 		return (0);
 	link_env_node(&shell->env, node);
@@ -83,7 +110,7 @@ t_env	*get_env(t_data *shell, char **envp)
 	t_env	*first;
 	t_env	*current;
 
-	i = 0;
+	i = -1;
 	first = NULL;
 	if (!envp || !*envp || !**envp)
 	{
@@ -92,13 +119,15 @@ t_env	*get_env(t_data *shell, char **envp)
 			return (NULL);
 		return (shell->env);
 	}
-	while (envp[i])
+	while (envp[++i])
 	{
-		current = add_env_node(envp[i], shell);
+		if (ft_strncmp(envp[i], "SHLVL=", 6) == 0)
+			current = add_env_node_shlvl(envp[i]);
+		else
+			current = add_env_node(envp[i]);
 		if (!current)
 			return (NULL);
 		link_env_node(&first, current);
-		i++;
 	}
 	shell->env = first;
 	return (first);
