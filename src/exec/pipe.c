@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 13:18:30 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 17:44:39 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	launch_child(t_store *store, t_data *data)
 		ft_free_data(data);
 		exit(EXIT_SUCCESS);
 	}
-	else
+	else if (store->current->cmd[0])
 		exec_cmd(store, store->current, data);
+	exit(0);
 }
 
 void	handle_parent(t_store *store)

@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:13:12 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 17:29:59 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	pickup_children(t_data *data)
 	while (wait(&status) > 0)
 		;
 	data->exit_status = WEXITSTATUS(status);
+	g_sigint_catcher = 0;
 	close_heredoc(data->cmd);
 	setup_signals();
 }
@@ -45,7 +46,7 @@ static void	exec_cmds(t_store *store, t_data *data)
 	{
 		if (is_built_in(store->current) && !store->current->next)
 			exec_builtin_cmds(store, data);
-		while (store->current)
+		while (store->current && store->current->cmd)
 		{
 			if (open_pipe(store->fd, store->current) == 0)
 				return ;

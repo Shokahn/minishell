@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 19:30:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:31:20 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:29:08 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	handle_special_var(int i, t_token *current, t_data *shell)
 {
 	char	*expand;
 
+	if (g_sigint_catcher != 0)
+	{
+		shell->exit_status = 130;
+		g_sigint_catcher = 0;
+	}
 	expand = ft_itoa(shell->exit_status);
 	if (!replace_value(expand, current, i, i + 1))
 		return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
