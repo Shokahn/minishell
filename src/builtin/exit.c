@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:30:07 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:09:48 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_all_num(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isalnum(str[i]))
+		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
 		i++;
 	}
@@ -48,5 +48,7 @@ void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 	printf("exit\n");
 	free_env(&(data->env));
 	ft_free_data(data);
+	if (data->exit_status > 255 || data->exit_status <= 0)
+		exit(1);
 	exit(data->exit_status);
 }

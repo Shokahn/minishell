@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:04:50 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 13:04:45 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 		perror("command not found");
 		free_env(&(data->env));
 		ft_free_data(data);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	execve(path, cmd->cmd, store->env_tab);
 	perror("execve failed");
