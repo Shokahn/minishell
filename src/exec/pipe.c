@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 13:04:45 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:18:30 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 		exit(127);
 	}
 	execve(path, cmd->cmd, store->env_tab);
-	perror("execve failed");
+	perror("not executable");
 	free_env(&(data->env));
 	ft_free_data(data);
-	exit(EXIT_FAILURE);
+	exit(126);
 }
 
 void	launch_child(t_store *store, t_data *data)

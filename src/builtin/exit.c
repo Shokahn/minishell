@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 13:09:48 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:39:11 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	is_all_num(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
@@ -24,6 +26,15 @@ static int	is_all_num(char *str)
 		i++;
 	}
 	return (1);
+}
+
+int	convert_exit_status(int	status)
+{
+	if (status < 0)
+		status = convert_exit_status(status + 256);
+	if (status > 255)
+		status = convert_exit_status(status - 256);
+	return (status);
 }
 
 void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
@@ -48,7 +59,7 @@ void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 	printf("exit\n");
 	free_env(&(data->env));
 	ft_free_data(data);
-	if (data->exit_status > 255 || data->exit_status <= 0)
-		exit(1);
+	if (data->exit_status < 0 || data->exit_status > 255)
+		data->exit_status = convert_exit_status(data->exit_status);
 	exit(data->exit_status);
 }
