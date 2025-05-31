@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 13:54:41 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 17:06:24 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void				ft_pwd(void);
 char				**ft_list_to_tab(t_env *env);
 int					ft_envsize(t_env *lst);
 void				print_env(t_data *shell);
-void				update_env(t_env **env_list, char *name, char *value);
+void				update_env(t_env **env_list, char *name, char *value, int append);
 
 // heredoc
 void				check_for_heredoc(t_cmd *cmd);
