@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 23:19:41 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 23:06:14 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	init_shell(t_data *shell)
+void	init_shell(t_data *shell, char **envp)
 {
 	setup_signals();
 	shell->input = NULL;
@@ -23,6 +23,7 @@ void	init_shell(t_data *shell)
 	shell->env = NULL;
 	shell->store = NULL;
 	shell->exit_status = 0;
+	shell->env = get_env(shell, envp);
 }
 
 int	minishell(char *input, t_data *shell)
@@ -53,8 +54,7 @@ int	main(int ac, char **av, char **envp)
 		ft_putstr_fd(ITALIC RED "Error do not put argument\n" RESET, 2);
 		exit(1);
 	}
-	init_shell(&shell);
-	shell.env = get_env(&shell, envp);
+	init_shell(&shell, envp);
 	while (1)
 	{
 		input = readline(GREEN BOLD "minishell> " RESET);

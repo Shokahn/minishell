@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:27:50 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 15:01:04 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 23:21:42 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,31 @@ void	link_env_node(t_env **first, t_env *new)
 	tmp->next = new;
 }
 
+int	create_env_from_empty(t_data *shell)
+{
+	t_env	*node;
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (0);
+	node = add_env_node("PWD=", shell);
+	if (!node)
+		return (0);
+	ft_free_str(&node->inside);
+	node->inside = pwd;
+	link_env_node(&shell->env, node);
+	node = add_env_node("SHLVL=1", shell);
+	if (!node)
+		return (0);
+	link_env_node(&shell->env, node);
+	node = add_env_node("_=/usr/bin/env", shell);
+	if (!node)
+		return (0);
+	link_env_node(&shell->env, node);
+	return (1);
+}
+
 t_env	*get_env(t_data *shell, char **envp)
 {
 	int		i;
@@ -60,13 +85,21 @@ t_env	*get_env(t_data *shell, char **envp)
 
 	i = 0;
 	first = NULL;
+	if (!envp || !*envp || !**envp)
+	{
+		shell->env = NULL;
+		if (!create_env_from_empty(shell))
+			return (NULL);
+		return (shell->env);
+	}
 	while (envp[i])
 	{
 		current = add_env_node(envp[i], shell);
 		if (!current)
-			return (0);
+			return (NULL);
 		link_env_node(&first, current);
 		i++;
 	}
+	shell->env = first;
 	return (first);
 }

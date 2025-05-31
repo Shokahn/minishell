@@ -23,7 +23,7 @@ INCLUDE = headers/minishell.h
 
 HEREDOC = expand_heredoc.c heredoc.c heredoc_setup.c
 FREE = error.c free_data.c
-EXPORT = export.c print_export.c
+EXPORT = export.c print_export.c update_env.c
 BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c exit.c \
 			cd.c pwd.c
 CMD = collect_cmd_args.c making_cmd.c

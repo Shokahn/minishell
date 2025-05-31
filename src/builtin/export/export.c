@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:21:58 by shokahn           #+#    #+#             */
-/*   Updated: 2025/05/31 14:13:15 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 23:20:44 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,57 +30,13 @@ int	is_valid_identifier(char *str)
 	return (1);
 }
 
-t_env	*find_env(t_env *env, char *name)
-{
-	while (env)
-	{
-		if (!ft_strcmp(env->name, name))
-			return (env);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-void	update_env(t_env **env_list, char *name, char *value, int append)
-{
-	t_env	*existing;
-	t_env	*new;
-	char	*joined;
-
-	existing = find_env(*env_list, name);
-	if (existing)
-	{
-		if (append)
-		{
-			joined = ft_strjoin(existing->inside, value);
-			ft_free_str(&(existing->inside));
-			existing->inside = joined;
-		}
-		else
-		{
-			ft_free_str(&(existing->inside));
-			existing->inside = ft_strdup(value);
-		}
-	}
-	else
-	{
-		new = malloc(sizeof(t_env));
-		new->name = ft_strdup(name);
-		new->inside = ft_strdup(value);
-		new->next = *env_list;
-		*env_list = new;
-	}
-}
-
-void	handle_export_assignment(char *arg, t_env **env)
+void	true_export(char *arg, t_env **env, char *equal_sign)
 {
 	char	*name;
 	char	*value;
-	char	*equal_sign;
 	int		append;
 
 	append = 0;
-	equal_sign = ft_strchr(arg, '=');
 	if (equal_sign > arg && *(equal_sign - 1) == '+')
 	{
 		append = 1;
@@ -90,8 +46,35 @@ void	handle_export_assignment(char *arg, t_env **env)
 		name = ft_substr(arg, 0, equal_sign - arg);
 	value = ft_strdup(equal_sign + 1);
 	update_env(env, name, value, append);
-	free(name);
-	free(value);
+	ft_free_str(&name);
+	ft_free_str(&value);
+}
+
+void	export_without_equal(char *arg, t_env **env)
+{
+	char	*name;
+	char	*value;
+
+	if (!find_env(*env, arg))
+	{
+		name = ft_strdup(arg);
+		value = NULL;
+		update_env(env, name, value, 0);
+		ft_free_str(&name);
+	}
+	else
+		return ;
+}
+
+void	handle_export_assignment(char *arg, t_env **env)
+{
+	char	*equal_sign;
+
+	equal_sign = ft_strchr(arg, '=');
+	if (equal_sign)
+		true_export(arg, env, equal_sign);
+	else
+		export_without_equal(arg, env);
 }
 
 int	builtin_export(char **cmd, t_data *shell)
@@ -105,8 +88,7 @@ int	builtin_export(char **cmd, t_data *shell)
 	{
 		if (!is_valid_identifier(cmd[i]))
 			return (write(2, "export: not a valid identifier\n", 31), 1);
-		if (ft_strchr(cmd[i], '='))
-			handle_export_assignment(cmd[i], &shell->env);
+		handle_export_assignment(cmd[i], &shell->env);
 	}
 	return (0);
 }

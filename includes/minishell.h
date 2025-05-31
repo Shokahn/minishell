@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 17:57:27 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/05/31 23:24:03 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,9 @@ char			**collect_cmd_args(t_token *start, t_token *end);
 t_env			*get_env(t_data *shell, char **envp);
 int				ft_envsize(t_env *lst);
 char			**ft_list_to_tab(t_env *env);
+t_env			*find_env(t_env *env, char *name);
+int				ft_envsize(t_env *lst);
+char			*fill_tab(t_env *env);
 
 // exec
 void			setup_exec(t_data *data);
@@ -171,12 +174,14 @@ int				print_export(t_env *env);
 void			ft_exit(t_data *data, t_cmd *cmd, char *force_status);
 int				ft_cd(t_data *data, char **paths);
 void			ft_pwd(void);
+char			**ft_list_to_tab_export(t_env *env);
 
 // env
 char			**ft_list_to_tab(t_env *env);
 int				ft_envsize(t_env *lst);
 void			print_env(t_data *shell);
-void			update_env(t_env **env_list, char *name, char *value, int append);
+void			update_env(t_env **env_list, char *name, char *value,
+					int append);
 
 // heredoc
 void			check_for_heredoc(t_cmd *cmd);

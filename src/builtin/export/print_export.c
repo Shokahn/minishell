@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:15:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 12:02:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 23:22:44 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ int	print_export(t_env *env)
 	char	**env_quoted;
 	int		i;
 
-	env_tab = ft_list_to_tab(env);
+	if (!env)
+		return (0);
+	env_tab = ft_list_to_tab_export(env);
 	if (!env_tab)
 		return (0);
 	ft_sort_env_tab(env_tab);

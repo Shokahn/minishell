@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:28:33 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/26 18:55:06 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/05/31 21:17:33 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	unset_variable(t_env **env, char *unset_var)
 	{
 		if (ft_strcmp(current->name, unset_var) == 0)
 		{
+			if (ft_strcmp(current->name, "_") == 0)
+				break ;
 			if (tmp == NULL)
 				*env = current->next;
 			else
