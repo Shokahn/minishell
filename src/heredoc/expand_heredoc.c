@@ -6,90 +6,84 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:48:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/29 17:38:37 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/01 21:55:41 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	end_of_expansion_or_not_heredoc(char *inside, int i)
-{
-	while (inside[i] && (ft_isalpha(inside[i]) || ft_isdigit(inside[i])
-			|| inside[i] == '_'))
-		i++;
-	return (i);
-}
-
-char	*check_value_heredoc(t_data *shell, char *name)
-{
-	t_env	*current;
-
-	current = shell->env;
-	while (current)
-	{
-		if (!ft_strcmp(name, current->name))
-			return (current->inside);
-		current = current->next;
-	}
-	return (ft_strdup(""));
-}
-
-char	*replace_value_heredoc(char *expand, int start, int i, char *inside)
+int	replace_value_heredoc(char **inside, char *expand, int start, int end)
 {
 	char	*before;
 	char	*after;
 	char	*tmp;
 	char	*joined;
 
-	before = ft_strndup(inside, start - 1);
+	if (start <= 0)
+		before = ft_strdup("");
+	else
+		before = ft_strndup(*inside, start - 1);
 	tmp = ft_strjoin(before, expand);
-	free(before);
-	after = ft_substr(inside, i, ft_strlen(inside) - i);
+	after = ft_substr(*inside, end, ft_strlen(*inside) - end);
 	joined = ft_strjoin(tmp, after);
-	free(tmp);
-	free(after);
-	return (joined);
+	ft_free_str(&before);
+	ft_free_str(&tmp);
+	ft_free_str(&after);
+	ft_free_str(inside);
+	if (!joined)
+		return (0);
+	*inside = joined;
+	return (1);
 }
 
-int	extract_variable_heredoc(char **inside, int i, t_data *shell)
+int	handle_special_var_heredoc(char **inside, int i, t_data *shell)
+{
+	char	*expand;
+
+	if (g_sigint_catcher != 0)
+	{
+		shell->exit_status = 130;
+		g_sigint_catcher = 0;
+	}
+	expand = ft_itoa(shell->exit_status);
+	if (!replace_value_heredoc(inside, expand, i, i + 1))
+		return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+	return (ft_free_str(&expand), i);
+}
+
+int	handle_alpha_var_heredoc(char **inside, int i, t_data *shell)
 {
 	int		start;
 	char	*name;
 	char	*expand;
-	char	*new_inside;
 
-	if (ft_isalpha((*inside)[i]) || (*inside)[i] == '_')
-	{
-		start = i;
-		i = end_of_expansion_or_not_heredoc(*inside, i + 1);
-		name = ft_substr(*inside, start, i - start);
-		expand = check_value_heredoc(shell, name);
-		new_inside = replace_value_heredoc(expand, start, i, *inside);
-		free(name);
-		ft_free_str(inside);
-		*inside = new_inside;
-	}
-	else if (ft_isdigit((*inside)[i]))
-	{
-		expand = ft_strdup("");
-		new_inside = replace_value_heredoc(expand, i, i + 1, *inside);
-		ft_free_str(inside);
-		*inside = new_inside;
-	}
-	return (i + 1);
+	start = i;
+	i = end_of_expansion_or_not(*inside, i + 1);
+	name = ft_substr(*inside, start, i - start);
+	expand = check_value(shell, name);
+	if (!replace_value_heredoc(inside, expand, start, i))
+		return (ft_free_str(&name), ft_free_str(&expand), ft_exit(shell, NULL,
+				"1"), 0);
+	return (ft_free_str(&name), ft_free_str(&expand), start - 1);
 }
 
-char	*expand_string_heredoc(char *inside, t_data *shell)
+int	handle_digit_var_heredoc(char **inside, int i, t_data *shell)
 {
-	int	i;
+	char	*expand;
 
-	i = 0;
-	while (i < ft_strlen(inside) && inside[i])
-	{
-		if (inside[i] == '$' && inside[i + 1])
-			i = extract_variable_heredoc(&inside, i + 1, shell);
-		else
-			i++;
-	}
-	return (inside);
+	expand = ft_strdup("");
+	if (!replace_value_heredoc(inside, expand, i, i + 1))
+		return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+	return (ft_free_str(&expand), i - 1);
+}
+
+int	extract_variable_heredoc(char **inside, int i, t_data *shell)
+{
+	if ((*inside)[i] == '?')
+		return (handle_special_var_heredoc(inside, i, shell));
+	else if (ft_isalpha((*inside)[i]) || (*inside)[i] == '_')
+		return (handle_alpha_var_heredoc(inside, i, shell));
+	else if (ft_isdigit((*inside)[i]))
+		return (handle_digit_var_heredoc(inside, i, shell));
+	return (i + 1);
 }

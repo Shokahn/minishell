@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_value.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:22:59 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/01 17:02:40 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,37 +57,3 @@ int	replace_value(char *expand, t_token *current, int start, int end)
 	current->inside = joined;
 	return (1);
 }
-
-/* int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
-{
-	int		start;
-	char	*name;
-	char	*expand;
-
-	current->expand++;
-	if (inside[i] == '?')
-	{
-		expand = ft_itoa(shell->exit_status);
-		if (!replace_value(expand, current, i, i + 1))
-			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
-		return (free(expand), i);
-	}
-	else if (ft_isalpha(inside[i]) || inside[i] == '_')
-	{
-		start = i;
-		i = end_of_expansion_or_not(inside, i + 1);
-		name = ft_substr(inside, start, i - start);
-		expand = check_value(shell, name);
-		if (!replace_value(expand, current, start, i))
-			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
-		return (ft_free_str(&name), ft_free_str(&expand), start - 1);
-	}
-	else if (ft_isdigit(inside[i]))
-	{
-		expand = ft_strdup("");
-		if (!replace_value(expand, current, i, i + 1))
-			return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
-		return (ft_free_str(&expand), i);
-	}
-	return (i + 1);
-} */

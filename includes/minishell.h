@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 23:24:03 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/01 21:56:28 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ int				exec_heredoc(char *delimiter, t_redir *redir, t_data *data);
 void			close_heredoc(t_cmd *cmd);
 void			init_heredoc(t_data *data);
 char			*expand_string_heredoc(char *inside, t_data *shell);
+int				extract_variable_heredoc(char **inside, int i, t_data *shell);
 
 // print
 void			print_token(t_data *shell);

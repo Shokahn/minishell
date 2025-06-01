@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 18:25:57 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:55:52 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@ void	close_heredoc(t_cmd *cmd)
 		}
 		cmd = cmd->next;
 	}
+}
+
+char	*expand_string_heredoc(char *inside, t_data *shell)
+{
+	int	i;
+
+	i = 0;
+	while (i < ft_strlen(inside) && inside[i])
+	{
+		if (inside[i] == '$' && i + 1 < ft_strlen(inside)
+			&& inside[i + 1] != '$')
+			i = extract_variable_heredoc(&inside, i + 1, shell);
+		else
+			i++;
+	}
+	return (inside);
 }
 
 static void	heredoc_child(int fd, char *delimiter, t_data *data)
