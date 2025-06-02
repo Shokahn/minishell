@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 17:54:41 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:45:59 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	sig_handler(int sig)
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 		write(1, "\n\033[1m\033[32mminishell> \033[0m", 26);
 	}
 }
