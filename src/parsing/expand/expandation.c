@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/30 22:48:00 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/02 13:48:13 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,18 @@ int	expandation(t_data *shell)
 	while (tmp)
 	{
 		if (tmp->type == WORD)
-			if (!expand_string(tmp, shell))
-				return (0);
+		{
+			if (!tmp->prev)
+			{
+				if (!expand_string(tmp, shell))
+					return (0);
+			}
+			else if (tmp->prev->type != HEREDOC)
+			{
+				if (!expand_string(tmp, shell))
+					return (0);
+			}
+		}
 		tmp = tmp->next;
 	}
 	return (1);
