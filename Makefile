@@ -71,7 +71,7 @@ $(LIBFT):
 	@echo ""
 
 valgrind:
-	valgrind --leak-check=full --track-origins=yes --trace-children=yes --track-fds=yes \
+	valgrind --show-leak-kinds=all --leak-check=full --track-origins=yes --trace-children=yes --track-fds=yes \
 	--suppressions=valgrind.supp ./minishell
 
 
