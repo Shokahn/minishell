@@ -25,7 +25,7 @@ HEREDOC = expand_heredoc.c heredoc.c heredoc_setup.c
 FREE = error.c free_data.c
 EXPORT = export.c print_export.c update_env.c
 BUILTIN = $(addprefix $(EXPORT_DIR), $(EXPORT)) unset.c env.c echo.c exit.c \
-			cd.c pwd.c
+			cd.c pwd.c utils.c
 CMD = collect_cmd_args.c making_cmd.c
 EXPAND = expand_token_recuting.c expandation.c replace_value.c extract_variable.c
 PARSING = lexeur.c parsing.c print.c split.c token.c token_cleaning.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/02 11:37:00 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:07:52 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,46 @@ static int	is_all_num(char *str)
 	return (1);
 }
 
-static int	convert_exit_status(int status)
+static int	convert_exit_status(long status)
 {
+	if (status > 0)
+		return (status % 256);
 	if (status < 0)
-		status = convert_exit_status(status + 256);
-	if (status > 255)
-		status = convert_exit_status(status - 256);
-	return (status);
+		return (status % 256 + 256);
+	return (0);
 }
 
-static void	ft_free_everything_and_exit_1(t_data *data)
+static void	ft_free_everything_and_exit(t_data *data, int i, int check)
 {
+	write(2, "exit\n", 5);
+	if (check == 0)
+		ft_putstr_fd("exit: too many arguments\n", 2);
+	if (check == 1)
+		ft_putstr_fd("exit: argument must be numeric\n", 2);
 	free_env(&(data->env));
 	ft_free_data(data);
-	printf("exit\n");
-	exit(1);
+	errno = 0;
+	exit(i);
 }
 
 void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 {
 	if (ft_strcmp(force_status, "") != 0)
 		data->exit_status = ft_atoi(force_status);
-	else if (cmd->cmd[1])
+	if (cmd->cmd[1])
 	{
 		if (cmd->cmd[2])
-		{
-			ft_putstr_fd("exit: too many arguments\n", 2);
-			ft_free_everything_and_exit_1(data);
-		}
+			ft_free_everything_and_exit(data, 1, 0);
 		else if (is_all_num(cmd->cmd[1]))
-			data->exit_status = ft_atoi(cmd->cmd[1]);
-		else
 		{
-			ft_putstr_fd("exit: argument must be numeric\n", 2);
-			ft_free_everything_and_exit_1(data);
+			data->exit_status = ft_atol(cmd->cmd[1]);
+			if (errno == ERANGE)
+				ft_free_everything_and_exit(data, 2, 1);
 		}
+		else
+			ft_free_everything_and_exit(data, 1, 1);
 	}
-	printf("exit\n");
+	write(2, "exit\n", 5);
 	free_env(&(data->env));
 	ft_free_data(data);
 	if (data->exit_status < 0 || data->exit_status > 255)
