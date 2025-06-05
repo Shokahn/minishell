@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 15:24:50 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:13:05 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ static void	pickup_children(t_data *data)
 	status = 0;
 	while (wait(&status) > 0)
 		;
-	if (WIFEXITED(status))
-		data->exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		data->exit_status = WTERMSIG(status) + 128;
+	if (data->builtin_check == 1)
+	{
+		if (WIFEXITED(status))
+			data->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			data->exit_status = WTERMSIG(status) + 128;
+	}
 	close_heredoc(data->cmd);
 	setup_signals();
 }

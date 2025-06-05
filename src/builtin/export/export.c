@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:21:58 by shokahn           #+#    #+#             */
-/*   Updated: 2025/05/31 23:20:44 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:55:53 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,15 @@ int	builtin_export(char **cmd, t_data *shell)
 	int	i;
 
 	if (!cmd[1])
-		return (print_export(shell->env));
+		return (print_export(shell->env), 0);
 	i = 0;
 	while (cmd[++i])
 	{
 		if (!is_valid_identifier(cmd[i]))
+		{
+			shell->exit_status = 1;
 			return (write(2, "export: not a valid identifier\n", 31), 1);
+		}
 		handle_export_assignment(cmd[i], &shell->env);
 	}
 	return (0);

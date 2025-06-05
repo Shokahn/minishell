@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 12:52:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:08:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int ac, char **av, char **envp)
 	init_shell(&shell, envp);
 	while (1)
 	{
-		input = readline(GREEN BOLD "minishell> " RESET);
+		input = readline("minishell> ");
 		if (!input)
 			break ;
 		else
@@ -70,5 +70,5 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 	free_env(&(shell.env));
-	printf("exit\n");
+	ft_putstr_fd("exit\n", 2);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_setup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 17:00:15 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:02:27 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:19:51 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	init_heredoc(t_data *data)
 	cmd = data->cmd;
 	if (count_heredocs(data) > 9)
 	{
-		printf("maximum here-document count exceeded\n");
+		ft_putstr_fd("maximum here-document count exceeded\n", 2);
 		ft_exit(data, data->cmd, "2");
 	}
 	while (cmd)
