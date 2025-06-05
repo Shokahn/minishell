@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:13:52 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/01 21:55:52 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/05 14:54:52 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	heredoc_child(int fd, char *delimiter, t_data *data)
 {
 	char	*input;
 
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, sigint_heredoc_child);
 	while (1)
 	{
 		input = readline("> ");
@@ -82,7 +82,7 @@ static int	heredoc_parent(int fd, pid_t pid, char *tmp_file, t_data *data)
 {
 	int	status;
 
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sigint_heredoc_parent);
 	close(fd);
 	waitpid(pid, &status, 0);
 	setup_sigint();

@@ -11,6 +11,7 @@ ITALIC = \033[3m
 OBJ_DIR = obj/
 SRC_DIR = src/
 
+SIGNALS_DIR = signals/
 BUILTIN_DIR = builtin/
 EXPORT_DIR = export/
 PARSING_DIR = parsing/
@@ -21,6 +22,7 @@ HEREDOC_DIR = heredoc/
 FREE_DIR = free/
 INCLUDE = headers/minishell.h
 
+SIGNALS = signals.c signal_helpers.c
 HEREDOC = expand_heredoc.c heredoc.c heredoc_setup.c
 FREE = error.c free_data.c
 EXPORT = export.c print_export.c update_env.c
@@ -32,10 +34,10 @@ PARSING = lexeur.c parsing.c print.c split.c token.c token_cleaning.c \
 		$(addprefix $(CMD_DIR), $(CMD)) $(addprefix $(EXPAND_DIR), $(EXPAND))
 EXEC = redirections.c exec_helpers.c builtin_manager.c init_exec.c pipe.c
 
-SRC = main.c signals.c env.c \
+SRC = main.c env.c \
 	$(addprefix $(BUILTIN_DIR), $(BUILTIN)) $(addprefix $(PARSING_DIR), $(PARSING)) \
 	$(addprefix $(HEREDOC_DIR), $(HEREDOC)) $(addprefix $(EXEC_DIR), $(EXEC)) \
-	$(addprefix $(FREE_DIR), $(FREE))
+	$(addprefix $(FREE_DIR), $(FREE)) $(addprefix $(SIGNALS_DIR), $(SIGNALS))
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 

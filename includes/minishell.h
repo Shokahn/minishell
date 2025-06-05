@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 13:01:09 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 15:02:18 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ void							ft_error(int type, char *message);
 long							ft_atol(const char *str);
 
 // signals
+void							sigint_heredoc_parent(int sig);
+void							sigint_heredoc_child(int sig);
 void							child_signal(void);
 void							setup_signals(void);
 void							setup_sigint(void);

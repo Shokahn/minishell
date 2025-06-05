@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:37:22 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 13:03:54 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 15:06:21 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	redir_in_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
+		data->exit_status = 1;
 		if (data->builtin_check == 1)
 		{
 			free_env(&(data->env));
@@ -42,6 +43,7 @@ static int	redir_out_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
+		data->exit_status = 1;
 		if (data->builtin_check == 1)
 		{
 			free_env(&(data->env));
@@ -64,6 +66,7 @@ static int	append_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
+		data->exit_status = 1;
 		if (data->builtin_check == 1)
 		{
 			free_env(&(data->env));
