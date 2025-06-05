@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/01 15:07:14 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:55:21 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ int	ft_cd(t_data *data, char **paths)
 	char	old_wd[PATH_MAX];
 
 	if (ft_tab_len(paths) > 2)
-		return (write(2, "cd: too many arguments\n", 24), 0);
+		return (write(2, "cd: too many arguments\n", 24), 1);
 	else if (getcwd(old_wd, sizeof(old_wd)) == NULL)
 		perror("getcwd error");
 	else if (!change_dir(data, paths))
-		return (perror("chdir"), 0);
+		return (perror("chdir"), 1);
 	else if (getcwd(wd, sizeof(wd)) != NULL)
 		update_env(&data->env, "PWD", wd, 0);
 	else
-		perror("getcwd error");
+		return (perror("getcwd error"), update_env(&data->env, "OLDPWD", old_wd, 0), 1);
 	update_env(&data->env, "OLDPWD", old_wd, 0);
-	return (1);
+	return (0);
 }

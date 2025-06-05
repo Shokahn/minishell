@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 15:24:50 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:42:42 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ static void	pickup_children(t_data *data)
 	status = 0;
 	while (wait(&status) > 0)
 		;
-	if (WIFEXITED(status))
-		data->exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		data->exit_status = WTERMSIG(status) + 128;
+	if (data->builtin_check == 1)
+	{
+		if (WIFEXITED(status))
+			data->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			data->exit_status = WTERMSIG(status) + 128;
+	}
 	close_heredoc(data->cmd);
 	setup_signals();
 }
@@ -65,12 +68,12 @@ static void	exec_cmds(t_store *store, t_data *data)
 			if (store->pid == -1)
 				return (perror("fork"));
 			else if (store->pid == 0)
-			{
 				launch_child(store, data);
+			else
+			{
+				handle_parent(store);
 				data->builtin_check = 1;
 			}
-			else
-				handle_parent(store);
 		}
 	}
 	pickup_children(data);

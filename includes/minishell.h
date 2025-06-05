@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 15:02:18 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:42:57 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,20 +176,20 @@ void							reset_fds(t_store *store);
 int								is_built_in(t_cmd *cmd);
 void							exec_built_in(t_store *store, t_data *data);
 int								builtin_export(char **args, t_data *shell);
-void							builtin_unset(char **cmd, t_data *shell);
-void							print_env(t_data *shell);
-void							ft_echo(char **args);
+int								builtin_unset(char **cmd, t_data *shell);
+int								print_env(t_data *shell);
+int								ft_echo(char **args);
 int								print_export(t_env *env);
-void							ft_exit(t_data *data, t_cmd *cmd,
+int								ft_exit(t_data *data, t_cmd *cmd,
 									char *force_status);
 int								ft_cd(t_data *data, char **paths);
-void							ft_pwd(void);
+int								ft_pwd(void);
 char							**ft_list_to_tab_export(t_env *env);
 
 // env
 char							**ft_list_to_tab(t_env *env);
 int								ft_envsize(t_env *lst);
-void							print_env(t_data *shell);
+int								print_env(t_data *shell);
 void							update_env(t_env **env_list, char *name,
 									char *value, int append);
 

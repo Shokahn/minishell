@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:47:38 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 15:44:40 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:32:03 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	sigint_catcher(int sig)
 {
 	(void)sig;
 	g_sigint_catcher = 1;
+	write(1, "\n", 1);
 }
 
 void	sigquit_handler(int sig)

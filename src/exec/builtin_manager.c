@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_manager.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/04 20:26:06 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:58:00 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,17 @@ int	is_built_in(t_cmd *cmd)
 void	exec_built_in(t_store *store, t_data *data)
 {
 	if (ft_strncmp(store->current->cmd[0], "echo", 5) == 0)
-		ft_echo(store->current->cmd);
+		data->exit_status = ft_echo(store->current->cmd);
 	else if (ft_strncmp(store->current->cmd[0], "export", 7) == 0)
-		builtin_export(store->current->cmd, data);
+		data->exit_status = builtin_export(store->current->cmd, data);
 	else if (ft_strncmp(store->current->cmd[0], "unset", 6) == 0)
-		builtin_unset(store->current->cmd, data);
+		data->exit_status = builtin_unset(store->current->cmd, data);
 	else if (ft_strncmp(store->current->cmd[0], "env", 4) == 0)
-		print_env(data);
+		data->exit_status = print_env(data);
 	else if (ft_strncmp(store->current->cmd[0], "exit", 5) == 0)
-		ft_exit(data, store->current, "");
+		data->exit_status = ft_exit(data, store->current, "");
 	else if (ft_strncmp(store->current->cmd[0], "cd", 3) == 0)
-		ft_cd(data, store->current->cmd);
+		data->exit_status = ft_cd(data, store->current->cmd);
 	else if (ft_strncmp(store->current->cmd[0], "pwd", 4) == 0)
-		ft_pwd();
+		data->exit_status = ft_pwd();
 }
