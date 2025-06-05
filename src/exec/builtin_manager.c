@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 16:58:00 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:44 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,24 @@ void	exec_built_in(t_store *store, t_data *data)
 		data->exit_status = ft_cd(data, store->current->cmd);
 	else if (ft_strncmp(store->current->cmd[0], "pwd", 4) == 0)
 		data->exit_status = ft_pwd();
+}
+
+int	exec_builtin_cmds(t_store *store, t_data *data)
+{
+	if (store->current->redir)
+	{
+		save_fds(store);
+		if (!handle_redirections(store->current, data))
+		{
+			reset_fds(store);
+			store->current = store->current->next;
+			return (0);
+		}
+		check_for_heredoc(store->current);
+	}
+	exec_built_in(store, data);
+	if (store->current->redir)
+		reset_fds(store);
+	store->current = store->current->next;
+	return (1);
 }

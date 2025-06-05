@@ -6,11 +6,26 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 18:53:23 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:29 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	set_exit_status(int status, t_data *data, pid_t pid)
+{
+	if (WIFEXITED(status) && pid == data->store->last_pid)
+		data->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == 2)
+			printf("\n");
+		else if (WTERMSIG(status) == 3)
+			printf("Quit (core dumped)\n");
+		if (pid == data->store->last_pid)
+			data->exit_status = WTERMSIG(status) + 128;
+	}
+}
 
 // wait returns -1 when no children are left
 static void	pickup_children(t_data *data)
@@ -19,45 +34,16 @@ static void	pickup_children(t_data *data)
 	pid_t	pid;
 
 	status = 0;
-	while ((pid = wait(&status)) > 0)
+	while (1)
 	{
-		if (data->builtin_check == 1)
-		{
-			if (WIFEXITED(status) && pid == data->store->last_pid)
-				data->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-			{
-				if (WTERMSIG(status) == 2)
-					printf("\n");
-				else if (WTERMSIG(status) == 3)
-					printf("Quit (core dumped)\n");
-				if (pid == data->store->last_pid)
-					data->exit_status = WTERMSIG(status) + 128;
-			}
-		}
+		pid = wait(&status);
+		if (pid <= 0)
+			break ;
+		else if (data->builtin_check == 1)
+			set_exit_status(status, data, pid);
 	}
 	close_heredoc(data->cmd);
 	setup_signals();
-}
-
-static int	exec_builtin_cmds(t_store *store, t_data *data)
-{
-	if (store->current->redir)
-	{
-		save_fds(store);
-		if (!handle_redirections(store->current, data))
-		{
-			reset_fds(store);
-			store->current = store->current->next;
-			return (0);
-		}
-		check_for_heredoc(store->current);
-	}
-	exec_built_in(store, data);
-	if (store->current->redir)
-		reset_fds(store);
-	store->current = store->current->next;
-	return (1);
 }
 
 static void	exec_cmds(t_store *store, t_data *data)
