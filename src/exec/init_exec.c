@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 14:57:46 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:24:50 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	pickup_children(t_data *data)
 	setup_signals();
 }
 
-static void	exec_builtin_cmds(t_store *store, t_data *data)
+static int	exec_builtin_cmds(t_store *store, t_data *data)
 {
 	if (store->current->redir)
 	{
@@ -37,7 +37,7 @@ static void	exec_builtin_cmds(t_store *store, t_data *data)
 		{
 			reset_fds(store);
 			store->current = store->current->next;
-			return ;
+			return (0);
 		}
 		check_for_heredoc(store->current);
 	}
@@ -45,6 +45,7 @@ static void	exec_builtin_cmds(t_store *store, t_data *data)
 	if (store->current->redir)
 		reset_fds(store);
 	store->current = store->current->next;
+	return (1);
 }
 
 static void	exec_cmds(t_store *store, t_data *data)
@@ -52,17 +53,17 @@ static void	exec_cmds(t_store *store, t_data *data)
 	if (store->current && store->current->cmd)
 	{
 		if (is_built_in(store->current) && !store->current->next)
-			exec_builtin_cmds(store, data);
+		{
+			if (!exec_builtin_cmds(store, data))
+				return ;
+		}
 		while (store->current && store->current->cmd)
 		{
 			if (open_pipe(store->fd, store->current) == 0)
 				return ;
 			store->pid = fork();
 			if (store->pid == -1)
-			{
-				perror("fork");
-				return ;
-			}
+				return (perror("fork"));
 			else if (store->pid == 0)
 			{
 				launch_child(store, data);

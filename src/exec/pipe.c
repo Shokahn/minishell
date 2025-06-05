@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 12:20:01 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 15:33:24 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 	exit(126);
 }
 
+void	exit_and_free(t_data *data, int exit_status)
+{
+	free_env(&(data->env));
+	ft_free_data(data);
+	exit(exit_status);
+}
+
 void	launch_child(t_store *store, t_data *data)
 {
 	child_signal();
@@ -63,15 +70,13 @@ void	launch_child(t_store *store, t_data *data)
 		dup2(store->fd[1], 1);
 		close(store->fd[1]);
 	}
-	if (store->current->redir)
-		handle_redirections(store->current, data);
+	if (store->current->redir && !handle_redirections(store->current, data))
+		exit_and_free(data, 1);
 	check_for_heredoc(store->current);
 	if (is_built_in(store->current))
 	{
 		exec_built_in(store, data);
-		free_env(&(data->env));
-		ft_free_data(data);
-		exit(EXIT_SUCCESS);
+		exit_and_free(data, 0);
 	}
 	else if (store->current->cmd[0])
 		exec_cmd(store, store->current, data);
