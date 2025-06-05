@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:28:33 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 21:17:33 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:20:43 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	unset_variable(t_env **env, char *unset_var)
 	}
 }
 
-void	builtin_unset(char **cmd, t_data *shell)
+int	builtin_unset(char **cmd, t_data *shell)
 {
 	int	i;
 
@@ -49,4 +49,5 @@ void	builtin_unset(char **cmd, t_data *shell)
 		unset_variable(&shell->env, cmd[i]);
 		i++;
 	}
+	return (0);
 }

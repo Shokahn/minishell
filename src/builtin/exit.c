@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 11:15:48 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:58:57 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	ft_free_everything_and_exit(t_data *data, int i, int check)
 	exit(i);
 }
 
-void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
+int	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 {
 	if (ft_strcmp(force_status, "") != 0)
 		data->exit_status = ft_atoi(force_status);
@@ -73,4 +73,5 @@ void	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 	if (data->exit_status < 0 || data->exit_status > 255)
 		data->exit_status = convert_exit_status(data->exit_status);
 	exit(data->exit_status);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 16:13:05 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:50:14 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	pickup_children(t_data *data)
 	status = 0;
 	while (wait(&status) > 0)
 		;
+
 	if (data->builtin_check == 1)
 	{
 		if (WIFEXITED(status))
@@ -68,12 +69,12 @@ static void	exec_cmds(t_store *store, t_data *data)
 			if (store->pid == -1)
 				return (perror("fork"));
 			else if (store->pid == 0)
-			{
 				launch_child(store, data);
+			else
+			{
+				handle_parent(store);
 				data->builtin_check = 1;
 			}
-			else
-				handle_parent(store);
 		}
 	}
 	pickup_children(data);
