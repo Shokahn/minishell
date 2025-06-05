@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/04 17:10:04 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 12:21:37 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void							ft_error(int type, char *message);
 long							ft_atol(const char *str);
 
 // signals
+void							child_signal(void);
 void							setup_signals(void);
 void							setup_sigint(void);
 void							pause_signals(void);

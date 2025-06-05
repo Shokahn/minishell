@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/31 17:44:39 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:20:01 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 
 void	launch_child(t_store *store, t_data *data)
 {
-	setup_sigint();
+	child_signal();
 	if (store->in_fd != 0)
 	{
 		dup2(store->in_fd, 0);

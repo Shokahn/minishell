@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/04 15:37:15 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 12:29:43 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,29 @@
 
 volatile sig_atomic_t	g_sigint_catcher = 0;
 
+void	child_signal(void)
+{
+	signal(SIGQUIT, SIG_DFL);
+	setup_sigint();
+}
+
+static void	sigint_catcher(int sig)
+{
+	(void)sig;
+	g_sigint_catcher = 1;
+	printf("\n");
+}
+
+void	sigquit_handler(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("Quit (core dumped)\n", 2);
+}
+
 void	pause_signals(void)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigint_catcher);
+	signal(SIGQUIT, sigquit_handler);
 }
 
 static void	sig_handler(int sig)

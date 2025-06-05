@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:37:22 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/05/28 18:41:34 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:47:17 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ void	handle_redirections(t_cmd *cmd, t_data *data)
 			redir_out_handler(redir, data);
 		else if (redir->type == APPEND)
 			append_handler(redir, data);
-		else
-			break ;
 		redir = redir->next;
 	}
 }

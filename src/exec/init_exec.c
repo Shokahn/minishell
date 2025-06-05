@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/04 20:32:37 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 12:06:38 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	pickup_children(t_data *data)
 	while (wait(&status) > 0)
 		;
 	data->exit_status = WEXITSTATUS(status);
+	if (g_sigint_catcher != 0)
+		data->exit_status = 130;
 	g_sigint_catcher = 0;
 	close_heredoc(data->cmd);
 	setup_signals();
@@ -85,7 +87,5 @@ void	setup_exec(t_data *data)
 	}
 	init_store(data->store, data);
 	init_heredoc(data);
-	if (data->exit_status == 130)
-		return ;
 	exec_cmds(data->store, data);
 }
