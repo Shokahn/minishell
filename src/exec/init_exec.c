@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/04 13:51:53 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/04 20:32:37 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static void	init_store(t_store *store, t_data *data)
 
 void	setup_exec(t_data *data)
 {
-	data->exit_status = 0;
 	data->store = malloc(sizeof(t_store));
 	if (!data->store)
 	{
