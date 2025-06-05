@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:47:38 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 17:45:56 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:12:14 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,8 @@ void	child_signal(void)
 	signal(SIGINT, SIG_DFL);
 }
 
-static void	sigint_catcher(int sig)
-{
-	(void)sig;
-	g_sigint_catcher = 1;
-}
-
 void	pause_signals(void)
 {
-	signal(SIGINT, sigint_catcher);
+	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
