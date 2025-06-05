@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:44 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/04 20:07:47 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 18:44:00 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ long	check_range(const char *str, long sign, unsigned long result, int i)
 		errno = ERANGE;
 		return (0);
 	}
-	return (result);
+	return (sign * result);
 }
 
 long	ft_atol(const char *str)
