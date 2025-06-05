@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 16:55:21 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:27 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	ft_cd(t_data *data, char **paths)
 	else if (getcwd(wd, sizeof(wd)) != NULL)
 		update_env(&data->env, "PWD", wd, 0);
 	else
-		return (perror("getcwd error"), update_env(&data->env, "OLDPWD", old_wd, 0), 1);
+		return (perror("getcwd error"), update_env(&data->env, "OLDPWD", old_wd,
+				0), 1);
 	update_env(&data->env, "OLDPWD", old_wd, 0);
 	return (0);
 }

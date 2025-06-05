@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:00:01 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 17:06:01 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:20 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	change_underscore_env(t_data *shell)
 	}
 }
 
-int		print_env(t_data *shell)
+int	print_env(t_data *shell)
 {
 	t_env	*tmp;
 

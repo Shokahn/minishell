@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 17:50:14 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:16 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	pickup_children(t_data *data)
 	status = 0;
 	while (wait(&status) > 0)
 		;
-
 	if (data->builtin_check == 1)
 	{
 		if (WIFEXITED(status))

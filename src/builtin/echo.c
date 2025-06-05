@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:16:02 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 17:49:42 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:23 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_args_n(char *arg)
 	return (1);
 }
 
-int		ft_echo(char **args)
+int	ft_echo(char **args)
 {
 	int	i;
 	int	newline_toggle;
