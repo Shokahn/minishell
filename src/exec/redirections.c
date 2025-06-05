@@ -6,13 +6,13 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:37:22 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 11:47:17 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 13:03:54 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	redir_in_handler(t_redir *redir, t_data *data)
+static int	redir_in_handler(t_redir *redir, t_data *data)
 {
 	int	fd;
 
@@ -20,15 +20,21 @@ static void	redir_in_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
-		free_env(&(data->env));
-		ft_free_data(data);
-		exit(EXIT_FAILURE);
+		if (data->builtin_check == 1)
+		{
+			free_env(&(data->env));
+			ft_free_data(data);
+			exit(EXIT_FAILURE);
+		}
+		else
+			return (0);
 	}
 	dup2(fd, 0);
 	close(fd);
+	return (1);
 }
 
-static void	redir_out_handler(t_redir *redir, t_data *data)
+static int	redir_out_handler(t_redir *redir, t_data *data)
 {
 	int	fd;
 
@@ -36,15 +42,21 @@ static void	redir_out_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
-		free_env(&(data->env));
-		ft_free_data(data);
-		exit(EXIT_FAILURE);
+		if (data->builtin_check == 1)
+		{
+			free_env(&(data->env));
+			ft_free_data(data);
+			exit(EXIT_FAILURE);
+		}
+		else
+			return (0);
 	}
 	dup2(fd, 1);
 	close(fd);
+	return (1);
 }
 
-static void	append_handler(t_redir *redir, t_data *data)
+static int	append_handler(t_redir *redir, t_data *data)
 {
 	int	fd;
 
@@ -52,15 +64,21 @@ static void	append_handler(t_redir *redir, t_data *data)
 	if (fd == -1)
 	{
 		perror("open");
-		free_env(&(data->env));
-		ft_free_data(data);
-		exit(EXIT_FAILURE);
+		if (data->builtin_check == 1)
+		{
+			free_env(&(data->env));
+			ft_free_data(data);
+			exit(EXIT_FAILURE);
+		}
+		else
+			return (0);
 	}
 	dup2(fd, 1);
 	close(fd);
+	return (1);
 }
 
-void	handle_redirections(t_cmd *cmd, t_data *data)
+int	handle_redirections(t_cmd *cmd, t_data *data)
 {
 	t_redir	*redir;
 
@@ -68,11 +86,21 @@ void	handle_redirections(t_cmd *cmd, t_data *data)
 	while (redir)
 	{
 		if (redir->type == REDIR_IN)
-			redir_in_handler(redir, data);
+		{
+			if (!redir_in_handler(redir, data))
+				return (0);
+		}
 		else if (redir->type == REDIR_OUT)
-			redir_out_handler(redir, data);
+		{
+			if (!redir_out_handler(redir, data))
+				return (0);
+		}
 		else if (redir->type == APPEND)
-			append_handler(redir, data);
+		{
+			if (!append_handler(redir, data))
+				return (0);
+		}
 		redir = redir->next;
 	}
+	return (1);
 }

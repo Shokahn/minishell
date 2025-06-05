@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/05/31 23:06:14 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/05 12:52:44 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_shell(t_data *shell, char **envp)
 	shell->env = NULL;
 	shell->store = NULL;
 	shell->exit_status = 0;
+	shell->builtin_check = 0;
 	shell->env = get_env(shell, envp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 12:21:37 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 13:01:09 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_data
 	int							*sep;
 	char						**line;
 	int							exit_status;
+	int							builtin_check;
 	t_token						*token;
 	t_cmd						*cmd;
 	t_env						*env;
@@ -149,7 +150,7 @@ char							*fill_tab(t_env *env);
 
 // exec
 void							setup_exec(t_data *data);
-void							handle_redirections(t_cmd *cmd, t_data *data);
+int								handle_redirections(t_cmd *cmd, t_data *data);
 char							*find_valid_path(char *str, t_store *store);
 int								open_pipe(int fd[2], t_cmd *current);
 void							exec_cmd(t_store *store, t_cmd *cmd,

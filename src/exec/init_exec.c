@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 12:06:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 13:03:00 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ static void	exec_builtin_cmds(t_store *store, t_data *data)
 	if (store->current->redir)
 	{
 		save_fds(store);
-		handle_redirections(store->current, data);
+		if (!handle_redirections(store->current, data))
+		{
+			reset_fds(store);
+			store->current = store->current->next;
+			return ;
+		}
 		check_for_heredoc(store->current);
 	}
 	exec_built_in(store, data);
@@ -59,7 +64,10 @@ static void	exec_cmds(t_store *store, t_data *data)
 				return ;
 			}
 			else if (store->pid == 0)
+			{
 				launch_child(store, data);
+				data->builtin_check = 1;
+			}
 			else
 				handle_parent(store);
 		}

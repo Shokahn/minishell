@@ -6,11 +6,11 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:59:08 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 12:29:43 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 13:04:20 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 volatile sig_atomic_t	g_sigint_catcher = 0;
 
