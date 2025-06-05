@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 17:42:57 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:43:17 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_store
 	int							fd[2];
 	int							in_fd;
 	pid_t						pid;
+	pid_t						last_pid;
 	t_cmd						*current;
 	char						**env_tab;
 	int							std_in;

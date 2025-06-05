@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 17:51:16 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 18:53:23 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,26 @@
 // wait returns -1 when no children are left
 static void	pickup_children(t_data *data)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
 
 	status = 0;
-	while (wait(&status) > 0)
-		;
-	if (data->builtin_check == 1)
+	while ((pid = wait(&status)) > 0)
 	{
-		if (WIFEXITED(status))
-			data->exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			data->exit_status = WTERMSIG(status) + 128;
+		if (data->builtin_check == 1)
+		{
+			if (WIFEXITED(status) && pid == data->store->last_pid)
+				data->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				if (WTERMSIG(status) == 2)
+					printf("\n");
+				else if (WTERMSIG(status) == 3)
+					printf("Quit (core dumped)\n");
+				if (pid == data->store->last_pid)
+					data->exit_status = WTERMSIG(status) + 128;
+			}
+		}
 	}
 	close_heredoc(data->cmd);
 	setup_signals();
@@ -71,6 +80,7 @@ static void	exec_cmds(t_store *store, t_data *data)
 				launch_child(store, data);
 			else
 			{
+				store->last_pid = store->pid;
 				handle_parent(store);
 				data->builtin_check = 1;
 			}
@@ -82,6 +92,7 @@ static void	exec_cmds(t_store *store, t_data *data)
 static void	init_store(t_store *store, t_data *data)
 {
 	store->pid = -2;
+	store->last_pid = -2;
 	store->fd[0] = -2;
 	store->fd[1] = -2;
 	store->in_fd = 0;
