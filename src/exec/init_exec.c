@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:07:01 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 19:23:29 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:56:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	pickup_children(t_data *data)
 		pid = wait(&status);
 		if (pid <= 0)
 			break ;
-		else if (data->builtin_check == 1)
+		else if (data->fork_check == 1)
 			set_exit_status(status, data, pid);
 	}
 	close_heredoc(data->cmd);
@@ -57,6 +57,7 @@ static void	exec_cmds(t_store *store, t_data *data)
 		}
 		while (store->current && store->current->cmd)
 		{
+			data->fork_check = 1;
 			if (open_pipe(store->fd, store->current) == 0)
 				return ;
 			store->pid = fork();
@@ -68,7 +69,6 @@ static void	exec_cmds(t_store *store, t_data *data)
 			{
 				store->last_pid = store->pid;
 				handle_parent(store);
-				data->builtin_check = 1;
 			}
 		}
 	}
@@ -83,6 +83,7 @@ static void	init_store(t_store *store, t_data *data)
 	store->fd[1] = -2;
 	store->in_fd = 0;
 	store->current = data->cmd;
+	data->fork_check = 0;
 	store->env_tab = ft_list_to_tab(data->env);
 }
 

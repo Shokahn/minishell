@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 17:08:18 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:56:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_shell(t_data *shell, char **envp)
 	shell->env = NULL;
 	shell->store = NULL;
 	shell->exit_status = 0;
-	shell->builtin_check = 0;
+	shell->fork_check = 0;
 	shell->env = get_env(shell, envp);
 }
 
@@ -41,6 +41,7 @@ int	minishell(char *input, t_data *shell)
 	shell->cmd = making_cmd(shell->token);
 	if (!shell->cmd)
 		return (ft_free_data(shell), 0);
+	g_sigint_catcher = 0;
 	setup_exec(shell);
 	return (ft_free_data(shell), 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:37:22 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 15:06:21 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:56:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	redir_in_handler(t_redir *redir, t_data *data)
 	{
 		perror("open");
 		data->exit_status = 1;
-		if (data->builtin_check == 1)
+		if (data->fork_check == 1)
 		{
 			free_env(&(data->env));
 			ft_free_data(data);
@@ -44,7 +44,7 @@ static int	redir_out_handler(t_redir *redir, t_data *data)
 	{
 		perror("open");
 		data->exit_status = 1;
-		if (data->builtin_check == 1)
+		if (data->fork_check == 1)
 		{
 			free_env(&(data->env));
 			ft_free_data(data);
@@ -67,7 +67,7 @@ static int	append_handler(t_redir *redir, t_data *data)
 	{
 		perror("open");
 		data->exit_status = 1;
-		if (data->builtin_check == 1)
+		if (data->fork_check == 1)
 		{
 			free_env(&(data->env));
 			ft_free_data(data);
