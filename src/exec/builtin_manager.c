@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_manager.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:01:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 19:23:44 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:04:03 by bri              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	reset_fds(t_store *store)
 int	is_built_in(t_cmd *cmd)
 {
 	int		i;
-	char	*built_in_funcs[7];
+	char	*built_in_funcs[8];
 
 	if (!cmd || !cmd->cmd || !cmd->cmd[0])
 		return (0);
@@ -43,7 +43,8 @@ int	is_built_in(t_cmd *cmd)
 	built_in_funcs[4] = "unset";
 	built_in_funcs[5] = "env";
 	built_in_funcs[6] = "exit";
-	while (i <= 6)
+	built_in_funcs[7] = "";
+	while (i <= 7)
 	{
 		if (ft_strcmp(cmd->cmd[0], built_in_funcs[i]) == 0)
 			return (1);

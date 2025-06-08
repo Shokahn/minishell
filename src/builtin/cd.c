@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/05 17:51:27 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 18:08:19 by bri              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	ft_cd(t_data *data, char **paths)
 	if (ft_tab_len(paths) > 2)
 		return (write(2, "cd: too many arguments\n", 24), 1);
 	else if (getcwd(old_wd, sizeof(old_wd)) == NULL)
-		perror("getcwd error");
-	else if (!change_dir(data, paths))
+		perror("getcwd error: old directory");
+	if (!change_dir(data, paths))
 		return (perror("chdir"), 1);
 	else if (getcwd(wd, sizeof(wd)) != NULL)
 		update_env(&data->env, "PWD", wd, 0);

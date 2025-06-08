@@ -6,7 +6,7 @@
 /*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 17:38:51 by bri              ###   ########.fr       */
+/*   Updated: 2025/06/08 19:30:47 by bri              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ int	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 		data->exit_status = ft_atoi(force_status);
 	if (cmd->cmd[1])
 	{
-		if (cmd->cmd[2])
-			return (ft_free_everything_and_exit(data, 1, 0), 1);
-		else if (is_all_num(cmd->cmd[1]))
+		if (is_all_num(cmd->cmd[1]))
 		{
 			data->exit_status = ft_atol(cmd->cmd[1]);
 			if (errno == ERANGE)
@@ -69,6 +67,8 @@ int	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 		}
 		else
 			ft_free_everything_and_exit(data, 2, 1);
+		if (cmd->cmd[2])
+			return (ft_free_everything_and_exit(data, 1, 0), 1);
 	}
 	if (data->exit_status < 0 || data->exit_status > 255)
 		data->exit_status = convert_exit_status(data->exit_status);
