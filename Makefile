@@ -72,6 +72,9 @@ $(LIBFT):
 	@echo "		⚙ $(UNDERLINE)$(BOLD)Building $(NAME)$(RESET) ⚙"
 	@echo ""
 
+valgrind:
+	valgrind --leak-check=full --track-origins=yes --track-fds=yes \
+	--trace-children=yes ./minishell
 clean:
 	@echo ""
 	@echo "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"

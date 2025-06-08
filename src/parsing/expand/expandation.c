@@ -3,44 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   expandation.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:02:07 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/02 13:48:13 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 19:25:10 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static int	handle_dollar(t_token *current, int i, t_data *shell)
-{
-	if (current->inside[i + 1] != '"' && current->inside[i + 1] != '\'')
-		return (extract_variable(current->inside, i + 1, current, shell));
-	return (i + 1);
-}
-
 int	expand_string(t_token *current, t_data *shell)
 {
 	int	i;
-	int	in_the_dquote;
 
 	i = 0;
-	in_the_dquote = 0;
+	shell->in_the_quote = 0;
 	while (current->inside && i < ft_strlen(current->inside)
 		&& current->inside[i])
 	{
 		if (current->inside[i] == '\'' && i + 1 < ft_strlen(current->inside)
-			&& !in_the_dquote)
+			&& !shell->in_the_quote)
 			i = pass_the_quote(current->inside, i + 1, '\'');
 		else if (current->inside[i] == '\"' && i
 			+ 1 < ft_strlen(current->inside))
 		{
-			in_the_dquote = !in_the_dquote;
+			shell->in_the_quote = !shell->in_the_quote;
 			i++;
 		}
 		else if (current->inside[i] == '$' && i + 1 < ft_strlen(current->inside)
 			&& current->inside[i + 1] != '$')
-			i = handle_dollar(current, i, shell);
+			i = extract_variable(current->inside, i + 1, current, shell);
 		else
 			i++;
 	}

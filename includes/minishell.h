@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 19:56:18 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 18:57:59 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
 	char						**line;
 	int							exit_status;
 	int							fork_check;
+	int							in_the_quote;
 	t_token						*token;
 	t_cmd						*cmd;
 	t_env						*env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 19:30:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 19:46:21 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 19:32:15 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ int	handle_digit_var(int i, t_token *current, t_data *shell)
 	return (ft_free_str(&expand), i - 1);
 }
 
+int	handle_quoted_var(int i, t_token *current, t_data *shell)
+{
+	char	*expand;
+
+	expand = ft_strdup("");
+	if (!replace_value(expand, current, i, i))
+		return (ft_free_str(&expand), ft_exit(shell, NULL, "1"), 0);
+	return (ft_free_str(&expand), i - 1);
+}
+
 int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 {
 	current->expand++;
@@ -62,5 +72,8 @@ int	extract_variable(char *inside, int i, t_token *current, t_data *shell)
 		return (handle_alpha_var(inside, i, current, shell));
 	else if (ft_isdigit(inside[i]))
 		return (handle_digit_var(i, current, shell));
+	else if ((inside[i] == '"' || inside[i] == '\'')
+		&& shell->in_the_quote == 0)
+		return (handle_quoted_var(i, current, shell));
 	return (i + 1);
 }
