@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 20:26:36 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/08 21:20:57 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,57 @@ static void	ft_free_everything_and_exit(t_data *data, int i, int check)
 	}
 }
 
+int	count_no_empty_arg(char **cmd)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while(cmd[i])
+	{
+		if (cmd[i][0])
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+
+char **arg_without_empty(char **cmd)
+{
+	int i;
+	int j;
+	int count;
+	char **noempty_cmd;
+	
+	count = 0;
+	count = count_no_empty_arg(cmd);
+	noempty_cmd = malloc(sizeof(char *) * (count + 1));
+	if (!noempty_cmd)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while(cmd[++i])
+	{
+		if (cmd[i][0])
+		{
+			noempty_cmd[j] = ft_strdup(cmd[i]);
+			if (!noempty_cmd)
+				return (ft_free_index(&noempty_cmd, j), NULL);
+			j++;
+		}
+	}
+	noempty_cmd[j] = NULL;
+	ft_free_tab(&cmd);
+	return (noempty_cmd);
+}
+
 int	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 {
+	cmd->cmd = arg_without_empty(cmd->cmd);
+	if (!cmd->cmd)
+		return(ft_free_data(data), free_env(&(data->env)), exit(1), 1);
 	if (ft_strcmp(force_status, "") != 0)
 		data->exit_status = ft_atoi(force_status);
 	if (cmd->cmd[1])
