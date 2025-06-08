@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 20:23:07 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/08 20:26:53 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	ft_cd(t_data *data, char **paths)
 	if (ft_tab_len(paths) > 2)
 		return (write(2, "cd: too many arguments\n", 24), 1);
 	else if (getcwd(old_wd, sizeof(old_wd)) == NULL)
-		perror("getcwd error");
-	else if (!change_dir(data, paths))
+		perror("getcwd error: old directory");
+	if (!change_dir(data, paths))
 		return (perror("chdir"), 1);
 	else if (getcwd(wd, sizeof(wd)) != NULL)
 		update_env(&data->env, "PWD", wd, 0);
