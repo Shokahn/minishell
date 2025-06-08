@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:21:58 by shokahn           #+#    #+#             */
-/*   Updated: 2025/06/05 16:55:53 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 20:13:57 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	builtin_export(char **cmd, t_data *shell)
 {
 	int	i;
 
-	if (!cmd[1])
+	if (!cmd[1] || all_empty_arg(cmd))
 		return (print_export(shell->env), 0);
 	i = 0;
 	while (cmd[++i])

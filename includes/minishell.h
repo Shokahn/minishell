@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:07:53 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/08 18:57:59 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/08 20:18:37 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int								ft_cd(t_data *data, char **paths);
 int								ft_pwd(void);
 char							**ft_list_to_tab_export(t_env *env);
 int								exec_builtin_cmds(t_store *store, t_data *data);
+int								all_empty_arg(char **arg);
 
 // env
 char							**ft_list_to_tab(t_env *env);

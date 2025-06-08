@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:44 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/05 18:44:00 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/06/08 20:19:33 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,18 @@ long	ft_atol(const char *str)
 		i++;
 	}
 	return (check_range(str, sign, result, i));
+}
+
+int	all_empty_arg(char **arg)
+{
+	int i;
+
+	i = 1;
+	while(arg[i])
+	{
+		if (arg[i][0])
+			return (0);
+		i++;
+	}
+	return (1);
 }
