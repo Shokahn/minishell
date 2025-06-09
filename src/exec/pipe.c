@@ -6,7 +6,7 @@
 /*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/09 11:52:03 by brcoppie         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:56:28 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 	char	*path;
 
 	if (cmd->cmd && cmd->cmd[0] && (cmd->cmd[0][0] == '/'
-		|| (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '/')
-		|| (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '.')))
+		|| (cmd->cmd[0][0] == '.')))
 	{
 		if (access(cmd->cmd[0], X_OK) == 0)
 			path = cmd->cmd[0];
