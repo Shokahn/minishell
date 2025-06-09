@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bri <bri@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:08:53 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 20:10:32 by bri              ###   ########.fr       */
+/*   Updated: 2025/06/09 11:52:03 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ void	exec_cmd(t_store *store, t_cmd *cmd, t_data *data)
 	char	*path;
 
 	if (cmd->cmd && cmd->cmd[0] && (cmd->cmd[0][0] == '/'
-		|| (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '/'))
-		&& access(cmd->cmd[0], X_OK) == 0)
-		path = cmd->cmd[0];
+		|| (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '/')
+		|| (cmd->cmd[0][0] == '.' && cmd->cmd[0][1] == '.')))
+	{
+		if (access(cmd->cmd[0], X_OK) == 0)
+			path = cmd->cmd[0];
+		else
+			path = NULL;
+	}
 	else
 		path = find_valid_path(cmd->cmd[0], store);
 	if (!path)
