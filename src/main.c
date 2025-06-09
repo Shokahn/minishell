@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:11:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/08 20:26:59 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/09 11:09:35 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	minishell(char *input, t_data *shell)
 	if (!shell->cmd)
 		return (ft_free_data(shell), 0);
 	g_sigint_catcher = 0;
-    setup_exec(shell);
+	setup_exec(shell);
 	return (ft_free_data(shell), 1);
 }
 

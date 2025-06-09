@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:39:46 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 21:20:57 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/09 11:14:54 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	is_all_num(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	while (str[i])
-	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static int	convert_exit_status(long status)
 {
@@ -55,12 +39,12 @@ static void	ft_free_everything_and_exit(t_data *data, int i, int check)
 
 int	count_no_empty_arg(char **cmd)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
-	while(cmd[i])
+	while (cmd[i])
 	{
 		if (cmd[i][0])
 			count++;
@@ -69,14 +53,13 @@ int	count_no_empty_arg(char **cmd)
 	return (count);
 }
 
-
-char **arg_without_empty(char **cmd)
+char	**arg_without_empty(char **cmd)
 {
-	int i;
-	int j;
-	int count;
-	char **noempty_cmd;
-	
+	int		i;
+	int		j;
+	int		count;
+	char	**noempty_cmd;
+
 	count = 0;
 	count = count_no_empty_arg(cmd);
 	noempty_cmd = malloc(sizeof(char *) * (count + 1));
@@ -84,7 +67,7 @@ char **arg_without_empty(char **cmd)
 		return (NULL);
 	i = -1;
 	j = 0;
-	while(cmd[++i])
+	while (cmd[++i])
 	{
 		if (cmd[i][0])
 		{
@@ -103,7 +86,7 @@ int	ft_exit(t_data *data, t_cmd *cmd, char *force_status)
 {
 	cmd->cmd = arg_without_empty(cmd->cmd);
 	if (!cmd->cmd)
-		return(ft_free_data(data), free_env(&(data->env)), exit(1), 1);
+		return (ft_free_data(data), free_env(&(data->env)), exit(1), 1);
 	if (ft_strcmp(force_status, "") != 0)
 		data->exit_status = ft_atoi(force_status);
 	if (cmd->cmd[1])

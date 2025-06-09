@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:25:54 by brcoppie          #+#    #+#             */
-/*   Updated: 2025/06/08 20:26:53 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/09 11:11:15 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static int	ft_tab_len(char **tab)
 {
 	int	i;
-	int count;
-	
+	int	count;
+
 	i = 0;
 	count = 0;
 	while (tab[i])
-	{	
+	{
 		if (tab[i][0])
 			count++;
 		i++;
@@ -35,7 +35,7 @@ static int	change_dir(t_data *data, char **paths)
 
 	home = check_value(data, "HOME");
 	older_wd = check_value(data, "OLDPWD");
-	if ( all_empty_arg(paths) || !(paths[1]) || ft_strcmp(paths[1], "~") == 0)
+	if (all_empty_arg(paths) || !(paths[1]) || ft_strcmp(paths[1], "~") == 0)
 	{
 		if (chdir(home) != 0)
 			return (free(home), free(older_wd), 0);

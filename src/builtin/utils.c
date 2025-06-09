@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: brcoppie <brcoppie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:57:44 by stdevis           #+#    #+#             */
-/*   Updated: 2025/06/08 20:19:33 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/06/09 11:15:11 by brcoppie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,28 @@ long	ft_atol(const char *str)
 
 int	all_empty_arg(char **arg)
 {
-	int i;
+	int	i;
 
 	i = 1;
-	while(arg[i])
+	while (arg[i])
 	{
 		if (arg[i][0])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	is_all_num(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (0);
 		i++;
 	}
